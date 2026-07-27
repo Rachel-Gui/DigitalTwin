@@ -1,0 +1,3026 @@
+{
+  "schema_version": "1.0.0",
+  "source": "/Users/paul/Desktop/vr/01_Rhino模型/学校场景/主模型/Concord International School.3dm",
+  "source_open_mode": "read-only",
+  "summary": {
+    "layers": 27,
+    "objects": 13904,
+    "materials": 4503,
+    "groups": 709,
+    "layers_with_merge_risks": 21
+  },
+  "layers": [
+    {
+      "index": 0,
+      "path": "A-FLOR-LEVL",
+      "layer_material": "(unassigned)",
+      "objects_total": 3,
+      "renderable_objects": 2,
+      "geometry_types": {
+        "Mesh": 2
+      },
+      "materials": {
+        "(unassigned)": 2
+      },
+      "material_sources": {
+        "layer": 2
+      },
+      "groups": {},
+      "child_layers": [
+        "A-FLOR-LEVL::Topography",
+        "A-FLOR-LEVL::0",
+        "A-FLOR-LEVL::C-TOPO-MINR",
+        "A-FLOR-LEVL::C-TOPO-MAJR"
+      ],
+      "instance_definition_objects": 2,
+      "bounds_source_units": [
+        -0.0,
+        -0.125,
+        0.0,
+        0.25,
+        0.125,
+        0.0
+      ],
+      "merge_risks": [
+        "contains-instance-definition-geometry"
+      ]
+    },
+    {
+      "index": 1,
+      "path": "A-FLOR-LEVL::Topography",
+      "layer_material": "(unassigned)",
+      "objects_total": 55,
+      "renderable_objects": 0,
+      "geometry_types": {},
+      "materials": {},
+      "material_sources": {},
+      "groups": {},
+      "child_layers": [],
+      "instance_definition_objects": 0,
+      "bounds_source_units": null,
+      "merge_risks": []
+    },
+    {
+      "index": 2,
+      "path": "A-FLOR-LEVL::0",
+      "layer_material": "(unassigned)",
+      "objects_total": 258,
+      "renderable_objects": 20,
+      "geometry_types": {
+        "InstanceReference": 20
+      },
+      "materials": {
+        "(unassigned)": 20
+      },
+      "material_sources": {
+        "layer": 20
+      },
+      "groups": {},
+      "child_layers": [],
+      "instance_definition_objects": 20,
+      "bounds_source_units": [
+        4997.238209,
+        4473.573113,
+        702.0,
+        6037.981164,
+        5611.917233,
+        784.0
+      ],
+      "merge_risks": [
+        "contains-instance-definition-geometry"
+      ]
+    },
+    {
+      "index": 3,
+      "path": "A-FLOR-LEVL::C-TOPO-MINR",
+      "layer_material": "(unassigned)",
+      "objects_total": 511,
+      "renderable_objects": 0,
+      "geometry_types": {},
+      "materials": {},
+      "material_sources": {},
+      "groups": {},
+      "child_layers": [],
+      "instance_definition_objects": 0,
+      "bounds_source_units": null,
+      "merge_risks": []
+    },
+    {
+      "index": 4,
+      "path": "A-FLOR-LEVL::C-TOPO-MAJR",
+      "layer_material": "(unassigned)",
+      "objects_total": 59,
+      "renderable_objects": 0,
+      "geometry_types": {},
+      "materials": {},
+      "material_sources": {},
+      "groups": {},
+      "child_layers": [],
+      "instance_definition_objects": 0,
+      "bounds_source_units": null,
+      "merge_risks": []
+    },
+    {
+      "index": 5,
+      "path": "C-TOPO",
+      "layer_material": "Grass 04",
+      "objects_total": 16,
+      "renderable_objects": 16,
+      "geometry_types": {
+        "Mesh": 16
+      },
+      "materials": {
+        "Grass 04": 16
+      },
+      "material_sources": {
+        "layer": 16
+      },
+      "groups": {},
+      "child_layers": [
+        "C-TOPO::A-GLAZ-CURT",
+        "C-TOPO::A-GLAZ-CWMG",
+        "C-TOPO::Road"
+      ],
+      "instance_definition_objects": 0,
+      "bounds_source_units": [
+        6025.370142,
+        4341.492901,
+        993.905752,
+        6106.172021,
+        4395.441119,
+        995.704596
+      ],
+      "merge_risks": [
+        "child-layers-retain-different-materials"
+      ]
+    },
+    {
+      "index": 6,
+      "path": "C-TOPO::A-GLAZ-CURT",
+      "layer_material": "石膏 (4)",
+      "objects_total": 170,
+      "renderable_objects": 170,
+      "geometry_types": {
+        "Mesh": 170
+      },
+      "materials": {
+        "glass": 170
+      },
+      "material_sources": {
+        "object": 170
+      },
+      "groups": {},
+      "child_layers": [],
+      "instance_definition_objects": 170,
+      "bounds_source_units": [
+        -69.5,
+        -1.75,
+        0.0,
+        69.5,
+        1.75,
+        73.5
+      ],
+      "merge_risks": [
+        "contains-instance-definition-geometry"
+      ]
+    },
+    {
+      "index": 7,
+      "path": "C-TOPO::A-GLAZ-CWMG",
+      "layer_material": "石膏 (6)",
+      "objects_total": 443,
+      "renderable_objects": 443,
+      "geometry_types": {
+        "Mesh": 443
+      },
+      "materials": {
+        "石膏 (10)": 443
+      },
+      "material_sources": {
+        "object": 443
+      },
+      "groups": {},
+      "child_layers": [],
+      "instance_definition_objects": 443,
+      "bounds_source_units": [
+        -2.5,
+        -2.5,
+        -85.25,
+        1.25,
+        2.5,
+        0.0
+      ],
+      "merge_risks": [
+        "contains-instance-definition-geometry"
+      ]
+    },
+    {
+      "index": 8,
+      "path": "C-TOPO::Road",
+      "layer_material": "Plastic 07, Hay",
+      "objects_total": 0,
+      "renderable_objects": 0,
+      "geometry_types": {},
+      "materials": {},
+      "material_sources": {},
+      "groups": {},
+      "child_layers": [],
+      "instance_definition_objects": 0,
+      "bounds_source_units": null,
+      "merge_risks": []
+    },
+    {
+      "index": 9,
+      "path": "A-WALL",
+      "layer_material": "Brick 01",
+      "objects_total": 2518,
+      "renderable_objects": 2518,
+      "geometry_types": {
+        "InstanceReference": 38,
+        "Mesh": 2480
+      },
+      "materials": {
+        "Brick 01": 2518
+      },
+      "material_sources": {
+        "layer": 2518
+      },
+      "groups": {
+        "10:群组16": {
+          "Brick 01": 49
+        },
+        "11:群组20": {
+          "Brick 01": 46
+        },
+        "12:群组21": {
+          "Brick 01": 10
+        },
+        "13:群组22": {
+          "Brick 01": 26
+        },
+        "14:群组23": {
+          "Brick 01": 36
+        },
+        "15:群组24": {
+          "Brick 01": 26
+        },
+        "16:群组25": {
+          "Brick 01": 27
+        },
+        "17:群组26": {
+          "Brick 01": 75
+        },
+        "18:群组27": {
+          "Brick 01": 29
+        },
+        "19:群组28": {
+          "Brick 01": 56
+        },
+        "20:群组29": {
+          "Brick 01": 28
+        },
+        "21:群组30": {
+          "Brick 01": 31
+        },
+        "22:群组31": {
+          "Brick 01": 52
+        },
+        "23:群组32": {
+          "Brick 01": 50
+        },
+        "24:群组33": {
+          "Brick 01": 46
+        },
+        "25:群组34": {
+          "Brick 01": 41
+        },
+        "26:群组35": {
+          "Brick 01": 26
+        },
+        "27:群组37": {
+          "Brick 01": 26
+        },
+        "28:群组38": {
+          "Brick 01": 48
+        },
+        "29:群组39": {
+          "Brick 01": 62
+        },
+        "30:群组43": {
+          "Brick 01": 72
+        },
+        "31:群组44": {
+          "Brick 01": 57
+        },
+        "32:群组45": {
+          "Brick 01": 36
+        },
+        "33:群组46": {
+          "Brick 01": 26
+        },
+        "40:群组02": {
+          "Brick 01": 36
+        },
+        "41:群组06": {
+          "Brick 01": 48
+        },
+        "42:群组42": {
+          "Brick 01": 48
+        },
+        "8:群组10": {
+          "Brick 01": 46
+        },
+        "9:群组11": {
+          "Brick 01": 59
+        }
+      },
+      "child_layers": [],
+      "instance_definition_objects": 266,
+      "bounds_source_units": [
+        3856.158401,
+        3708.966406,
+        800.0,
+        7243.321655,
+        5562.292233,
+        1484.75
+      ],
+      "merge_risks": [
+        "contains-instance-definition-geometry"
+      ]
+    },
+    {
+      "index": 10,
+      "path": "A-DOOR",
+      "layer_material": "Plastic 07, Hay",
+      "objects_total": 384,
+      "renderable_objects": 384,
+      "geometry_types": {
+        "InstanceReference": 16,
+        "Mesh": 368
+      },
+      "materials": {
+        "Plastic 07, Hay": 384
+      },
+      "material_sources": {
+        "layer": 384
+      },
+      "groups": {
+        "1:群组03": {
+          "Plastic 07, Hay": 4
+        },
+        "3:群组05": {
+          "Plastic 07, Hay": 16
+        }
+      },
+      "child_layers": [],
+      "instance_definition_objects": 368,
+      "bounds_source_units": [
+        -18.0,
+        -5.730315,
+        0.0,
+        6074.108588,
+        4389.771826,
+        997.933132
+      ],
+      "merge_risks": [
+        "contains-instance-definition-geometry"
+      ]
+    },
+    {
+      "index": 11,
+      "path": "A-ROOF",
+      "layer_material": "石膏 (2)",
+      "objects_total": 658,
+      "renderable_objects": 658,
+      "geometry_types": {
+        "Mesh": 658
+      },
+      "materials": {
+        "石膏 (2)": 658
+      },
+      "material_sources": {
+        "layer": 658
+      },
+      "groups": {
+        "10:群组16": {
+          "石膏 (2)": 16
+        },
+        "11:群组20": {
+          "石膏 (2)": 32
+        },
+        "12:群组21": {
+          "石膏 (2)": 6
+        },
+        "13:群组22": {
+          "石膏 (2)": 8
+        },
+        "14:群组23": {
+          "石膏 (2)": 19
+        },
+        "15:群组24": {
+          "石膏 (2)": 8
+        },
+        "16:群组25": {
+          "石膏 (2)": 11
+        },
+        "17:群组26": {
+          "石膏 (2)": 26
+        },
+        "18:群组27": {
+          "石膏 (2)": 14
+        },
+        "19:群组28": {
+          "石膏 (2)": 31
+        },
+        "20:群组29": {
+          "石膏 (2)": 12
+        },
+        "21:群组30": {
+          "石膏 (2)": 14
+        },
+        "22:群组31": {
+          "石膏 (2)": 14
+        },
+        "23:群组32": {
+          "石膏 (2)": 20
+        },
+        "24:群组33": {
+          "石膏 (2)": 14
+        },
+        "25:群组34": {
+          "石膏 (2)": 16
+        },
+        "26:群组35": {
+          "石膏 (2)": 14
+        },
+        "27:群组37": {
+          "石膏 (2)": 8
+        },
+        "28:群组38": {
+          "石膏 (2)": 24
+        },
+        "29:群组39": {
+          "石膏 (2)": 44
+        },
+        "30:群组43": {
+          "石膏 (2)": 29
+        },
+        "31:群组44": {
+          "石膏 (2)": 26
+        },
+        "32:群组45": {
+          "石膏 (2)": 26
+        },
+        "33:群组46": {
+          "石膏 (2)": 8
+        },
+        "40:群组02": {
+          "石膏 (2)": 26
+        },
+        "41:群组06": {
+          "石膏 (2)": 16
+        },
+        "42:群组42": {
+          "石膏 (2)": 17
+        },
+        "8:群组10": {
+          "石膏 (2)": 14
+        },
+        "9:群组11": {
+          "石膏 (2)": 24
+        }
+      },
+      "child_layers": [],
+      "instance_definition_objects": 0,
+      "bounds_source_units": [
+        5965.471586,
+        4305.18005,
+        996.632688,
+        6180.471736,
+        4435.559712,
+        1012.122648
+      ],
+      "merge_risks": []
+    },
+    {
+      "index": 12,
+      "path": "A-GENM",
+      "layer_material": "石膏 (10)",
+      "objects_total": 2883,
+      "renderable_objects": 2883,
+      "geometry_types": {
+        "InstanceReference": 584,
+        "Mesh": 2299
+      },
+      "materials": {
+        "石膏 (10)": 2883
+      },
+      "material_sources": {
+        "layer": 584,
+        "object": 2299
+      },
+      "groups": {
+        "0:群组01": {
+          "石膏 (10)": 191
+        },
+        "37:群组13": {
+          "石膏 (10)": 2505
+        }
+      },
+      "child_layers": [],
+      "instance_definition_objects": 378,
+      "bounds_source_units": [
+        -44.75,
+        -87.123322,
+        -0.0,
+        6074.158588,
+        4391.632208,
+        1005.018132
+      ],
+      "merge_risks": [
+        "contains-instance-definition-geometry"
+      ]
+    },
+    {
+      "index": 13,
+      "path": "C-PRKG",
+      "layer_material": "crosswalk",
+      "objects_total": 50,
+      "renderable_objects": 44,
+      "geometry_types": {
+        "InstanceReference": 32,
+        "Mesh": 12
+      },
+      "materials": {
+        "crosswalk": 44
+      },
+      "material_sources": {
+        "layer": 44
+      },
+      "groups": {
+        "4:群组07": {
+          "crosswalk": 32
+        }
+      },
+      "child_layers": [],
+      "instance_definition_objects": 12,
+      "bounds_source_units": [
+        -2.0,
+        -216.0,
+        0.0,
+        6015.77272,
+        4382.483869,
+        995.757153
+      ],
+      "merge_risks": [
+        "contains-instance-definition-geometry"
+      ]
+    },
+    {
+      "index": 14,
+      "path": "Crosswalk",
+      "layer_material": "crosswalk",
+      "objects_total": 101,
+      "renderable_objects": 101,
+      "geometry_types": {
+        "Mesh": 101
+      },
+      "materials": {
+        "crosswalk": 101
+      },
+      "material_sources": {
+        "layer": 101
+      },
+      "groups": {
+        "34:群组08": {
+          "crosswalk": 6
+        },
+        "35:群组09": {
+          "crosswalk": 6
+        }
+      },
+      "child_layers": [],
+      "instance_definition_objects": 89,
+      "bounds_source_units": [
+        -118.275032,
+        -182.172231,
+        0.0,
+        6015.762336,
+        4350.777765,
+        995.013012
+      ],
+      "merge_risks": [
+        "contains-instance-definition-geometry"
+      ]
+    },
+    {
+      "index": 15,
+      "path": "S-BEAM",
+      "layer_material": "石膏 (12)",
+      "objects_total": 32,
+      "renderable_objects": 32,
+      "geometry_types": {
+        "InstanceReference": 8,
+        "Mesh": 24
+      },
+      "materials": {
+        "石膏 (12)": 32
+      },
+      "material_sources": {
+        "layer": 32
+      },
+      "groups": {},
+      "child_layers": [
+        "S-BEAM::A-FLOR-HRAL"
+      ],
+      "instance_definition_objects": 24,
+      "bounds_source_units": [
+        -46.959754,
+        -0.95,
+        -0.926182,
+        6074.273795,
+        4388.42051,
+        998.658507
+      ],
+      "merge_risks": [
+        "contains-instance-definition-geometry"
+      ]
+    },
+    {
+      "index": 16,
+      "path": "S-BEAM::A-FLOR-HRAL",
+      "layer_material": "石膏 (12)",
+      "objects_total": 20,
+      "renderable_objects": 20,
+      "geometry_types": {
+        "InstanceReference": 2,
+        "Mesh": 18
+      },
+      "materials": {
+        "石膏 (12)": 20
+      },
+      "material_sources": {
+        "layer": 20
+      },
+      "groups": {},
+      "child_layers": [],
+      "instance_definition_objects": 18,
+      "bounds_source_units": [
+        -0.375,
+        -0.375,
+        0.0,
+        6074.733354,
+        5455.917845,
+        996.933132
+      ],
+      "merge_risks": [
+        "contains-instance-definition-geometry"
+      ]
+    },
+    {
+      "index": 17,
+      "path": "S-STRS",
+      "layer_material": "Concrete 01",
+      "objects_total": 392,
+      "renderable_objects": 392,
+      "geometry_types": {
+        "InstanceReference": 4,
+        "Mesh": 388
+      },
+      "materials": {
+        "Concrete 01": 392
+      },
+      "material_sources": {
+        "layer": 392
+      },
+      "groups": {},
+      "child_layers": [],
+      "instance_definition_objects": 374,
+      "bounds_source_units": [
+        4997.238209,
+        4369.905325,
+        702.0,
+        6070.572305,
+        5611.917233,
+        996.244299
+      ],
+      "merge_risks": [
+        "contains-instance-definition-geometry"
+      ]
+    },
+    {
+      "index": 18,
+      "path": "楼梯上的石头",
+      "layer_material": "石膏 (7)",
+      "objects_total": 49,
+      "renderable_objects": 41,
+      "geometry_types": {
+        "Brep": 5,
+        "Mesh": 36
+      },
+      "materials": {
+        "Concrete 01": 36,
+        "石膏 (7)": 5
+      },
+      "material_sources": {
+        "layer": 5,
+        "object": 36
+      },
+      "groups": {
+        "2:群组04": {
+          "Concrete 01": 36
+        },
+        "38:群组14": {
+          "Concrete 01": 36
+        },
+        "39:群组36": {
+          "Concrete 01": 36
+        },
+        "708:群组57": {
+          "石膏 (7)": 5
+        }
+      },
+      "child_layers": [],
+      "instance_definition_objects": 0,
+      "bounds_source_units": [
+        6051.430052,
+        4359.617838,
+        995.933132,
+        6070.892305,
+        4393.132208,
+        1001.853132
+      ],
+      "merge_risks": [
+        "multiple-object-materials",
+        "groups-retain-different-materials"
+      ]
+    },
+    {
+      "index": 19,
+      "path": "GLASS",
+      "layer_material": "glass",
+      "objects_total": 573,
+      "renderable_objects": 573,
+      "geometry_types": {
+        "InstanceReference": 189,
+        "Mesh": 384
+      },
+      "materials": {
+        "glass": 573
+      },
+      "material_sources": {
+        "layer": 573
+      },
+      "groups": {
+        "36:群组12": {
+          "glass": 60
+        }
+      },
+      "child_layers": [
+        "GLASS::A-DOOR-GLAZ",
+        "GLASS::A-DOOR-FRAM"
+      ],
+      "instance_definition_objects": 384,
+      "bounds_source_units": [
+        -42.0,
+        -4.75,
+        36.0,
+        6074.108588,
+        4389.75722,
+        1004.973132
+      ],
+      "merge_risks": [
+        "child-layers-retain-different-materials",
+        "contains-instance-definition-geometry"
+      ]
+    },
+    {
+      "index": 20,
+      "path": "GLASS::A-DOOR-GLAZ",
+      "layer_material": "glass",
+      "objects_total": 25,
+      "renderable_objects": 18,
+      "geometry_types": {
+        "Mesh": 18
+      },
+      "materials": {
+        "glass": 18
+      },
+      "material_sources": {
+        "layer": 18
+      },
+      "groups": {},
+      "child_layers": [],
+      "instance_definition_objects": 18,
+      "bounds_source_units": [
+        -12.0,
+        -2.5,
+        26.625,
+        12.0,
+        3.325,
+        78.0
+      ],
+      "merge_risks": [
+        "contains-instance-definition-geometry"
+      ]
+    },
+    {
+      "index": 21,
+      "path": "GLASS::A-DOOR-FRAM",
+      "layer_material": "石膏 (12)",
+      "objects_total": 94,
+      "renderable_objects": 74,
+      "geometry_types": {
+        "Brep": 28,
+        "Mesh": 46
+      },
+      "materials": {
+        "Grass 04": 21,
+        "Plastic 07, Hay": 6,
+        "Road 10": 1,
+        "石膏 (12)": 46
+      },
+      "material_sources": {
+        "layer": 46,
+        "object": 28
+      },
+      "groups": {
+        "5:群组17": {
+          "Grass 04": 20
+        },
+        "6:群组18": {
+          "Plastic 07, Hay": 5
+        },
+        "7:群组19": {
+          "Grass 04": 21
+        }
+      },
+      "child_layers": [],
+      "instance_definition_objects": 46,
+      "bounds_source_units": [
+        -20.0,
+        -4.125,
+        0.0,
+        6247.907456,
+        4485.797923,
+        995.013162
+      ],
+      "merge_risks": [
+        "multiple-object-materials",
+        "groups-retain-different-materials",
+        "contains-instance-definition-geometry"
+      ]
+    },
+    {
+      "index": 22,
+      "path": "外部地板",
+      "layer_material": "Plastic 07, Hay",
+      "objects_total": 33,
+      "renderable_objects": 33,
+      "geometry_types": {
+        "Mesh": 33
+      },
+      "materials": {
+        "Plastic 07, Hay": 33
+      },
+      "material_sources": {
+        "layer": 33
+      },
+      "groups": {},
+      "child_layers": [],
+      "instance_definition_objects": 0,
+      "bounds_source_units": [
+        6025.370145,
+        4341.492902,
+        995.013132,
+        6106.172028,
+        4395.441122,
+        995.253132
+      ],
+      "merge_risks": []
+    },
+    {
+      "index": 23,
+      "path": "PLANT",
+      "layer_material": "Grass 01",
+      "objects_total": 579,
+      "renderable_objects": 579,
+      "geometry_types": {
+        "InstanceReference": 514,
+        "Mesh": 65
+      },
+      "materials": {
+        "Grass 01": 579
+      },
+      "material_sources": {
+        "layer": 579
+      },
+      "groups": {},
+      "child_layers": [],
+      "instance_definition_objects": 65,
+      "bounds_source_units": [
+        -141.596134,
+        -134.434444,
+        -9.055118,
+        6158.939063,
+        4402.056499,
+        1008.163473
+      ],
+      "merge_risks": [
+        "contains-instance-definition-geometry"
+      ]
+    },
+    {
+      "index": 24,
+      "path": "Default",
+      "layer_material": "(unassigned)",
+      "objects_total": 1481,
+      "renderable_objects": 1426,
+      "geometry_types": {
+        "Brep": 1426
+      },
+      "materials": {
+        "(unassigned)": 1,
+        "Plaster": 1422,
+        "Plaster (3)": 2,
+        "Plaster pink": 1
+      },
+      "material_sources": {
+        "layer": 1,
+        "object": 1425
+      },
+      "groups": {
+        "45:Group08": {
+          "Plaster (3)": 2
+        }
+      },
+      "child_layers": [],
+      "instance_definition_objects": 0,
+      "bounds_source_units": [
+        6057.893159,
+        4359.097385,
+        995.980016,
+        6062.340724,
+        4365.152874,
+        996.020016
+      ],
+      "merge_risks": [
+        "multiple-object-materials"
+      ]
+    },
+    {
+      "index": 25,
+      "path": "model",
+      "layer_material": "(unassigned)",
+      "objects_total": 6,
+      "renderable_objects": 5,
+      "geometry_types": {
+        "Brep": 5
+      },
+      "materials": {
+        "(unassigned)": 4,
+        "Plaster": 1
+      },
+      "material_sources": {
+        "layer": 4,
+        "object": 1
+      },
+      "groups": {
+        "43:Group04": {
+          "(unassigned)": 4,
+          "Plaster": 1
+        }
+      },
+      "child_layers": [],
+      "instance_definition_objects": 0,
+      "bounds_source_units": [
+        6057.809036,
+        4359.212525,
+        995.013016,
+        6062.480778,
+        4365.377338,
+        995.859016
+      ],
+      "merge_risks": [
+        "multiple-object-materials",
+        "groups-retain-different-materials"
+      ]
+    },
+    {
+      "index": 26,
+      "path": "CFD",
+      "layer_material": "(unassigned)",
+      "objects_total": 2511,
+      "renderable_objects": 2506,
+      "geometry_types": {
+        "Brep": 1754,
+        "Extrusion": 752
+      },
+      "materials": {
+        "(unassigned)": 2444,
+        "Plaster": 6,
+        "Plaster pink": 56
+      },
+      "material_sources": {
+        "layer": 2444,
+        "object": 62
+      },
+      "groups": {
+        "100:Group62": {
+          "(unassigned)": 1
+        },
+        "101:Group63": {
+          "(unassigned)": 1
+        },
+        "102:Group64": {
+          "(unassigned)": 1
+        },
+        "103:Group65": {
+          "(unassigned)": 1
+        },
+        "104:Group66": {
+          "(unassigned)": 1
+        },
+        "105:Group67": {
+          "(unassigned)": 1
+        },
+        "106:Group68": {
+          "(unassigned)": 1
+        },
+        "107:Group69": {
+          "(unassigned)": 1
+        },
+        "108:Group70": {
+          "(unassigned)": 1
+        },
+        "109:Group71": {
+          "(unassigned)": 1
+        },
+        "110:Group72": {
+          "(unassigned)": 1
+        },
+        "111:Group73": {
+          "(unassigned)": 1
+        },
+        "112:Group74": {
+          "(unassigned)": 1
+        },
+        "113:Group75": {
+          "(unassigned)": 1
+        },
+        "114:Group76": {
+          "(unassigned)": 1
+        },
+        "115:Group77": {
+          "(unassigned)": 2
+        },
+        "116:Group78": {
+          "(unassigned)": 1
+        },
+        "117:Group79": {
+          "(unassigned)": 1
+        },
+        "118:Group80": {
+          "(unassigned)": 1
+        },
+        "119:Group81": {
+          "(unassigned)": 2
+        },
+        "120:Group82": {
+          "(unassigned)": 1
+        },
+        "121:Group83": {
+          "(unassigned)": 1
+        },
+        "122:Group84": {
+          "(unassigned)": 1
+        },
+        "123:Group85": {
+          "(unassigned)": 1
+        },
+        "124:Group86": {
+          "(unassigned)": 1
+        },
+        "125:Group87": {
+          "(unassigned)": 1
+        },
+        "126:Group88": {
+          "(unassigned)": 1
+        },
+        "127:Group89": {
+          "(unassigned)": 1
+        },
+        "128:Group90": {
+          "(unassigned)": 1
+        },
+        "129:Group91": {
+          "(unassigned)": 2
+        },
+        "130:Group92": {
+          "(unassigned)": 1
+        },
+        "131:Group93": {
+          "(unassigned)": 1
+        },
+        "132:Group94": {
+          "(unassigned)": 1
+        },
+        "133:Group95": {
+          "(unassigned)": 1
+        },
+        "134:Group96": {
+          "(unassigned)": 1
+        },
+        "135:Group97": {
+          "(unassigned)": 1
+        },
+        "136:Group98": {
+          "(unassigned)": 2
+        },
+        "137:Group99": {
+          "(unassigned)": 1
+        },
+        "138:Group100": {
+          "(unassigned)": 2
+        },
+        "139:Group101": {
+          "(unassigned)": 1
+        },
+        "140:Group102": {
+          "(unassigned)": 1
+        },
+        "141:Group103": {
+          "(unassigned)": 1
+        },
+        "142:Group104": {
+          "(unassigned)": 1
+        },
+        "143:Group105": {
+          "(unassigned)": 1
+        },
+        "144:Group106": {
+          "(unassigned)": 1
+        },
+        "145:Group107": {
+          "(unassigned)": 1
+        },
+        "146:Group108": {
+          "(unassigned)": 1
+        },
+        "147:Group109": {
+          "(unassigned)": 1
+        },
+        "148:Group110": {
+          "(unassigned)": 1
+        },
+        "149:Group111": {
+          "(unassigned)": 1
+        },
+        "150:Group112": {
+          "(unassigned)": 1
+        },
+        "151:Group113": {
+          "(unassigned)": 1
+        },
+        "152:Group114": {
+          "(unassigned)": 1
+        },
+        "153:Group115": {
+          "(unassigned)": 1
+        },
+        "154:Group116": {
+          "(unassigned)": 2
+        },
+        "155:Group117": {
+          "(unassigned)": 1
+        },
+        "156:Group118": {
+          "(unassigned)": 1
+        },
+        "157:Group119": {
+          "(unassigned)": 1
+        },
+        "158:Group120": {
+          "(unassigned)": 1
+        },
+        "159:Group121": {
+          "(unassigned)": 1
+        },
+        "160:Group122": {
+          "(unassigned)": 1
+        },
+        "161:Group123": {
+          "(unassigned)": 1
+        },
+        "162:Group124": {
+          "(unassigned)": 1
+        },
+        "163:Group125": {
+          "(unassigned)": 1
+        },
+        "164:Group126": {
+          "(unassigned)": 1
+        },
+        "165:Group127": {
+          "(unassigned)": 1
+        },
+        "166:Group128": {
+          "(unassigned)": 1
+        },
+        "167:Group129": {
+          "(unassigned)": 1
+        },
+        "168:Group130": {
+          "(unassigned)": 1
+        },
+        "169:Group131": {
+          "(unassigned)": 1
+        },
+        "170:Group132": {
+          "(unassigned)": 1
+        },
+        "171:Group133": {
+          "(unassigned)": 1
+        },
+        "172:Group134": {
+          "(unassigned)": 1
+        },
+        "173:Group135": {
+          "(unassigned)": 1
+        },
+        "174:Group136": {
+          "(unassigned)": 1
+        },
+        "175:Group137": {
+          "(unassigned)": 1
+        },
+        "176:Group138": {
+          "(unassigned)": 1
+        },
+        "177:Group139": {
+          "(unassigned)": 1
+        },
+        "178:Group140": {
+          "(unassigned)": 1
+        },
+        "179:Group141": {
+          "(unassigned)": 1
+        },
+        "180:Group142": {
+          "(unassigned)": 2
+        },
+        "181:Group143": {
+          "(unassigned)": 1
+        },
+        "182:Group144": {
+          "(unassigned)": 1
+        },
+        "183:Group145": {
+          "(unassigned)": 1
+        },
+        "184:Group146": {
+          "(unassigned)": 1
+        },
+        "185:Group147": {
+          "(unassigned)": 1
+        },
+        "186:Group148": {
+          "(unassigned)": 1
+        },
+        "187:Group149": {
+          "(unassigned)": 2
+        },
+        "188:Group150": {
+          "(unassigned)": 1
+        },
+        "189:Group151": {
+          "(unassigned)": 1
+        },
+        "190:Group152": {
+          "(unassigned)": 1
+        },
+        "191:Group153": {
+          "(unassigned)": 1
+        },
+        "192:Group154": {
+          "(unassigned)": 1
+        },
+        "193:Group155": {
+          "(unassigned)": 2
+        },
+        "194:Group156": {
+          "(unassigned)": 1
+        },
+        "195:Group157": {
+          "(unassigned)": 1
+        },
+        "196:Group158": {
+          "(unassigned)": 1
+        },
+        "197:Group159": {
+          "(unassigned)": 1
+        },
+        "198:Group160": {
+          "(unassigned)": 1
+        },
+        "199:Group161": {
+          "(unassigned)": 1
+        },
+        "200:Group162": {
+          "(unassigned)": 1
+        },
+        "201:Group163": {
+          "(unassigned)": 1
+        },
+        "202:Group164": {
+          "(unassigned)": 1
+        },
+        "203:Group165": {
+          "(unassigned)": 1
+        },
+        "204:Group166": {
+          "(unassigned)": 1
+        },
+        "205:Group167": {
+          "(unassigned)": 1
+        },
+        "206:Group168": {
+          "(unassigned)": 1
+        },
+        "207:Group169": {
+          "(unassigned)": 1
+        },
+        "208:Group170": {
+          "(unassigned)": 1
+        },
+        "209:Group171": {
+          "(unassigned)": 2
+        },
+        "210:Group172": {
+          "(unassigned)": 1
+        },
+        "211:Group173": {
+          "(unassigned)": 2
+        },
+        "212:Group174": {
+          "(unassigned)": 1
+        },
+        "213:Group175": {
+          "(unassigned)": 1
+        },
+        "214:Group176": {
+          "(unassigned)": 1
+        },
+        "215:Group177": {
+          "(unassigned)": 2
+        },
+        "216:Group178": {
+          "(unassigned)": 1
+        },
+        "217:Group179": {
+          "(unassigned)": 1
+        },
+        "218:Group180": {
+          "(unassigned)": 1
+        },
+        "219:Group181": {
+          "(unassigned)": 1
+        },
+        "220:Group182": {
+          "(unassigned)": 1
+        },
+        "221:Group183": {
+          "(unassigned)": 1
+        },
+        "222:Group184": {
+          "(unassigned)": 2
+        },
+        "223:Group185": {
+          "(unassigned)": 1
+        },
+        "224:Group186": {
+          "(unassigned)": 1
+        },
+        "225:Group187": {
+          "(unassigned)": 2
+        },
+        "226:Group188": {
+          "(unassigned)": 1
+        },
+        "227:Group189": {
+          "(unassigned)": 1
+        },
+        "228:Group190": {
+          "(unassigned)": 1
+        },
+        "229:Group191": {
+          "(unassigned)": 1
+        },
+        "230:Group192": {
+          "(unassigned)": 1
+        },
+        "231:Group193": {
+          "(unassigned)": 1
+        },
+        "232:Group194": {
+          "(unassigned)": 1
+        },
+        "233:Group195": {
+          "(unassigned)": 1
+        },
+        "234:Group196": {
+          "(unassigned)": 1
+        },
+        "235:Group197": {
+          "(unassigned)": 1
+        },
+        "236:Group198": {
+          "(unassigned)": 1
+        },
+        "237:Group199": {
+          "(unassigned)": 1
+        },
+        "238:Group200": {
+          "(unassigned)": 1
+        },
+        "239:Group201": {
+          "(unassigned)": 1
+        },
+        "240:Group202": {
+          "(unassigned)": 1
+        },
+        "241:Group203": {
+          "(unassigned)": 1
+        },
+        "242:Group204": {
+          "(unassigned)": 1
+        },
+        "243:Group205": {
+          "(unassigned)": 1
+        },
+        "244:Group206": {
+          "(unassigned)": 1
+        },
+        "245:Group207": {
+          "(unassigned)": 1
+        },
+        "246:Group208": {
+          "(unassigned)": 2
+        },
+        "247:Group209": {
+          "(unassigned)": 1
+        },
+        "248:Group210": {
+          "(unassigned)": 1
+        },
+        "249:Group211": {
+          "(unassigned)": 1
+        },
+        "250:Group212": {
+          "(unassigned)": 1
+        },
+        "251:Group213": {
+          "(unassigned)": 1
+        },
+        "252:Group214": {
+          "(unassigned)": 1
+        },
+        "253:Group215": {
+          "(unassigned)": 1
+        },
+        "254:Group216": {
+          "(unassigned)": 1
+        },
+        "255:Group217": {
+          "(unassigned)": 1
+        },
+        "256:Group218": {
+          "(unassigned)": 2
+        },
+        "257:Group219": {
+          "(unassigned)": 1
+        },
+        "258:Group220": {
+          "(unassigned)": 1
+        },
+        "259:Group221": {
+          "(unassigned)": 1
+        },
+        "260:Group222": {
+          "(unassigned)": 1
+        },
+        "261:Group223": {
+          "(unassigned)": 1
+        },
+        "262:Group224": {
+          "(unassigned)": 1
+        },
+        "263:Group225": {
+          "(unassigned)": 1
+        },
+        "264:Group226": {
+          "(unassigned)": 1
+        },
+        "265:Group227": {
+          "(unassigned)": 1
+        },
+        "266:Group228": {
+          "(unassigned)": 1
+        },
+        "267:Group229": {
+          "(unassigned)": 1
+        },
+        "268:Group230": {
+          "(unassigned)": 1
+        },
+        "269:Group231": {
+          "(unassigned)": 1
+        },
+        "270:Group232": {
+          "(unassigned)": 1
+        },
+        "271:Group233": {
+          "(unassigned)": 1
+        },
+        "272:Group234": {
+          "(unassigned)": 1
+        },
+        "273:Group235": {
+          "(unassigned)": 1
+        },
+        "274:Group236": {
+          "(unassigned)": 1
+        },
+        "275:Group237": {
+          "(unassigned)": 1
+        },
+        "276:Group238": {
+          "(unassigned)": 1
+        },
+        "277:Group239": {
+          "(unassigned)": 2
+        },
+        "278:Group240": {
+          "(unassigned)": 1
+        },
+        "279:Group241": {
+          "(unassigned)": 1
+        },
+        "280:Group242": {
+          "(unassigned)": 2
+        },
+        "281:Group243": {
+          "(unassigned)": 1
+        },
+        "282:Group244": {
+          "(unassigned)": 1
+        },
+        "283:Group245": {
+          "(unassigned)": 1
+        },
+        "284:Group246": {
+          "(unassigned)": 1
+        },
+        "285:Group247": {
+          "(unassigned)": 1
+        },
+        "286:Group248": {
+          "(unassigned)": 1
+        },
+        "287:Group249": {
+          "(unassigned)": 1
+        },
+        "288:Group250": {
+          "(unassigned)": 1
+        },
+        "289:Group251": {
+          "(unassigned)": 2
+        },
+        "290:Group252": {
+          "(unassigned)": 1
+        },
+        "291:Group253": {
+          "(unassigned)": 1
+        },
+        "292:Group254": {
+          "(unassigned)": 1
+        },
+        "293:Group255": {
+          "(unassigned)": 1
+        },
+        "294:Group256": {
+          "(unassigned)": 1
+        },
+        "295:Group257": {
+          "(unassigned)": 2
+        },
+        "296:Group258": {
+          "(unassigned)": 1
+        },
+        "297:Group259": {
+          "(unassigned)": 1
+        },
+        "298:Group260": {
+          "(unassigned)": 1
+        },
+        "299:Group261": {
+          "(unassigned)": 1
+        },
+        "300:Group262": {
+          "(unassigned)": 1
+        },
+        "301:Group263": {
+          "(unassigned)": 2
+        },
+        "302:Group264": {
+          "(unassigned)": 1
+        },
+        "303:Group265": {
+          "(unassigned)": 1
+        },
+        "304:Group266": {
+          "(unassigned)": 1
+        },
+        "305:Group267": {
+          "(unassigned)": 1
+        },
+        "306:Group268": {
+          "(unassigned)": 1
+        },
+        "307:Group269": {
+          "(unassigned)": 2
+        },
+        "308:Group270": {
+          "(unassigned)": 1
+        },
+        "309:Group271": {
+          "(unassigned)": 1
+        },
+        "310:Group272": {
+          "(unassigned)": 1
+        },
+        "311:Group273": {
+          "(unassigned)": 1
+        },
+        "312:Group274": {
+          "(unassigned)": 1
+        },
+        "313:Group275": {
+          "(unassigned)": 1
+        },
+        "314:Group276": {
+          "(unassigned)": 1
+        },
+        "315:Group277": {
+          "(unassigned)": 1
+        },
+        "316:Group278": {
+          "(unassigned)": 1
+        },
+        "317:Group279": {
+          "(unassigned)": 2
+        },
+        "318:Group280": {
+          "(unassigned)": 1
+        },
+        "319:Group281": {
+          "(unassigned)": 1
+        },
+        "320:Group282": {
+          "(unassigned)": 1
+        },
+        "321:Group283": {
+          "(unassigned)": 1
+        },
+        "322:Group284": {
+          "(unassigned)": 1
+        },
+        "323:Group285": {
+          "(unassigned)": 1
+        },
+        "324:Group286": {
+          "(unassigned)": 1
+        },
+        "325:Group287": {
+          "(unassigned)": 1
+        },
+        "326:Group288": {
+          "(unassigned)": 1
+        },
+        "327:Group289": {
+          "(unassigned)": 1
+        },
+        "328:Group290": {
+          "(unassigned)": 1
+        },
+        "329:Group291": {
+          "(unassigned)": 1
+        },
+        "330:Group292": {
+          "(unassigned)": 1
+        },
+        "331:Group293": {
+          "(unassigned)": 1
+        },
+        "332:Group294": {
+          "(unassigned)": 2
+        },
+        "333:Group295": {
+          "(unassigned)": 1
+        },
+        "334:Group296": {
+          "(unassigned)": 1
+        },
+        "335:Group297": {
+          "(unassigned)": 1
+        },
+        "336:Group298": {
+          "(unassigned)": 1
+        },
+        "337:Group299": {
+          "(unassigned)": 1
+        },
+        "338:Group300": {
+          "(unassigned)": 1
+        },
+        "339:Group301": {
+          "(unassigned)": 1
+        },
+        "340:Group302": {
+          "(unassigned)": 2
+        },
+        "341:Group303": {
+          "(unassigned)": 1
+        },
+        "342:Group304": {
+          "(unassigned)": 1
+        },
+        "343:Group305": {
+          "(unassigned)": 1
+        },
+        "344:Group306": {
+          "(unassigned)": 1
+        },
+        "345:Group307": {
+          "(unassigned)": 1
+        },
+        "346:Group308": {
+          "(unassigned)": 1
+        },
+        "347:Group309": {
+          "(unassigned)": 2
+        },
+        "348:Group310": {
+          "(unassigned)": 1
+        },
+        "349:Group311": {
+          "(unassigned)": 1
+        },
+        "350:Group312": {
+          "(unassigned)": 1
+        },
+        "351:Group313": {
+          "(unassigned)": 1
+        },
+        "352:Group314": {
+          "(unassigned)": 1
+        },
+        "353:Group315": {
+          "(unassigned)": 1
+        },
+        "354:Group316": {
+          "(unassigned)": 1
+        },
+        "355:Group317": {
+          "(unassigned)": 1
+        },
+        "356:Group318": {
+          "(unassigned)": 1
+        },
+        "357:Group319": {
+          "(unassigned)": 1
+        },
+        "358:Group320": {
+          "(unassigned)": 2
+        },
+        "359:Group321": {
+          "(unassigned)": 1
+        },
+        "360:Group322": {
+          "(unassigned)": 1
+        },
+        "361:Group323": {
+          "(unassigned)": 1
+        },
+        "362:Group324": {
+          "(unassigned)": 1
+        },
+        "363:Group325": {
+          "(unassigned)": 1
+        },
+        "364:Group326": {
+          "(unassigned)": 1
+        },
+        "365:Group327": {
+          "(unassigned)": 1
+        },
+        "366:Group328": {
+          "(unassigned)": 1
+        },
+        "367:Group329": {
+          "(unassigned)": 1
+        },
+        "368:Group330": {
+          "(unassigned)": 2
+        },
+        "369:Group331": {
+          "(unassigned)": 1
+        },
+        "370:Group332": {
+          "(unassigned)": 1
+        },
+        "371:Group333": {
+          "(unassigned)": 1
+        },
+        "372:Group334": {
+          "(unassigned)": 1
+        },
+        "373:Group335": {
+          "(unassigned)": 1
+        },
+        "374:Group336": {
+          "(unassigned)": 1
+        },
+        "375:Group337": {
+          "(unassigned)": 1
+        },
+        "376:Group338": {
+          "(unassigned)": 1
+        },
+        "377:Group339": {
+          "(unassigned)": 1
+        },
+        "378:Group340": {
+          "(unassigned)": 1
+        },
+        "379:Group341": {
+          "(unassigned)": 1
+        },
+        "380:Group342": {
+          "(unassigned)": 1
+        },
+        "381:Group343": {
+          "(unassigned)": 1
+        },
+        "382:Group344": {
+          "(unassigned)": 1
+        },
+        "383:Group345": {
+          "(unassigned)": 1
+        },
+        "384:Group346": {
+          "(unassigned)": 1
+        },
+        "385:Group347": {
+          "(unassigned)": 1
+        },
+        "386:Group348": {
+          "(unassigned)": 1
+        },
+        "387:Group349": {
+          "(unassigned)": 1
+        },
+        "388:Group350": {
+          "(unassigned)": 1
+        },
+        "389:Group351": {
+          "(unassigned)": 1
+        },
+        "390:Group352": {
+          "(unassigned)": 1
+        },
+        "391:Group353": {
+          "(unassigned)": 1
+        },
+        "392:Group354": {
+          "(unassigned)": 2
+        },
+        "393:Group355": {
+          "(unassigned)": 1
+        },
+        "394:Group356": {
+          "(unassigned)": 1
+        },
+        "395:Group357": {
+          "(unassigned)": 1
+        },
+        "396:Group358": {
+          "(unassigned)": 1
+        },
+        "397:Group359": {
+          "(unassigned)": 1
+        },
+        "398:Group360": {
+          "(unassigned)": 1
+        },
+        "399:Group361": {
+          "(unassigned)": 1
+        },
+        "400:Group362": {
+          "(unassigned)": 1
+        },
+        "401:Group363": {
+          "(unassigned)": 1
+        },
+        "402:Group364": {
+          "(unassigned)": 1
+        },
+        "403:Group365": {
+          "(unassigned)": 1
+        },
+        "404:Group366": {
+          "(unassigned)": 1
+        },
+        "405:Group367": {
+          "(unassigned)": 1
+        },
+        "406:Group368": {
+          "(unassigned)": 1
+        },
+        "407:Group369": {
+          "(unassigned)": 1
+        },
+        "408:Group370": {
+          "(unassigned)": 1
+        },
+        "409:Group371": {
+          "(unassigned)": 1
+        },
+        "410:Group372": {
+          "(unassigned)": 1
+        },
+        "411:Group373": {
+          "(unassigned)": 1
+        },
+        "412:Group374": {
+          "(unassigned)": 1
+        },
+        "413:Group375": {
+          "(unassigned)": 1
+        },
+        "414:Group376": {
+          "(unassigned)": 1
+        },
+        "415:Group377": {
+          "(unassigned)": 1
+        },
+        "416:Group378": {
+          "(unassigned)": 1
+        },
+        "417:Group379": {
+          "(unassigned)": 1
+        },
+        "418:Group380": {
+          "(unassigned)": 1
+        },
+        "419:Group381": {
+          "(unassigned)": 1
+        },
+        "420:Group382": {
+          "(unassigned)": 1
+        },
+        "421:Group383": {
+          "(unassigned)": 1
+        },
+        "422:Group384": {
+          "(unassigned)": 1
+        },
+        "423:Group385": {
+          "(unassigned)": 1
+        },
+        "424:Group386": {
+          "(unassigned)": 1
+        },
+        "425:Group387": {
+          "(unassigned)": 1
+        },
+        "426:Group388": {
+          "(unassigned)": 1
+        },
+        "427:Group389": {
+          "(unassigned)": 2
+        },
+        "428:Group390": {
+          "(unassigned)": 1
+        },
+        "429:Group391": {
+          "(unassigned)": 2
+        },
+        "430:Group392": {
+          "(unassigned)": 1
+        },
+        "431:Group393": {
+          "(unassigned)": 1
+        },
+        "432:Group394": {
+          "(unassigned)": 1
+        },
+        "433:Group395": {
+          "(unassigned)": 1
+        },
+        "434:Group396": {
+          "(unassigned)": 2
+        },
+        "435:Group397": {
+          "(unassigned)": 1
+        },
+        "436:Group398": {
+          "(unassigned)": 1
+        },
+        "437:Group399": {
+          "(unassigned)": 1
+        },
+        "438:Group400": {
+          "(unassigned)": 1
+        },
+        "439:Group401": {
+          "(unassigned)": 1
+        },
+        "440:Group402": {
+          "(unassigned)": 1
+        },
+        "441:Group403": {
+          "(unassigned)": 1
+        },
+        "442:Group404": {
+          "(unassigned)": 1
+        },
+        "443:Group405": {
+          "(unassigned)": 1
+        },
+        "444:Group406": {
+          "(unassigned)": 1
+        },
+        "445:Group407": {
+          "(unassigned)": 1
+        },
+        "446:Group408": {
+          "(unassigned)": 1
+        },
+        "447:Group409": {
+          "(unassigned)": 1
+        },
+        "448:Group410": {
+          "(unassigned)": 1
+        },
+        "449:Group411": {
+          "(unassigned)": 1
+        },
+        "450:Group412": {
+          "(unassigned)": 1
+        },
+        "451:Group413": {
+          "(unassigned)": 1
+        },
+        "452:Group414": {
+          "(unassigned)": 1
+        },
+        "453:Group415": {
+          "(unassigned)": 2
+        },
+        "454:Group416": {
+          "(unassigned)": 1
+        },
+        "455:Group417": {
+          "(unassigned)": 2
+        },
+        "456:Group418": {
+          "(unassigned)": 1
+        },
+        "457:Group419": {
+          "(unassigned)": 1
+        },
+        "458:Group420": {
+          "(unassigned)": 1
+        },
+        "459:Group421": {
+          "(unassigned)": 1
+        },
+        "460:Group422": {
+          "(unassigned)": 1
+        },
+        "461:Group423": {
+          "(unassigned)": 1
+        },
+        "462:Group424": {
+          "(unassigned)": 1
+        },
+        "463:Group425": {
+          "(unassigned)": 1
+        },
+        "464:Group426": {
+          "(unassigned)": 2
+        },
+        "465:Group427": {
+          "(unassigned)": 1
+        },
+        "466:Group428": {
+          "(unassigned)": 1
+        },
+        "467:Group429": {
+          "(unassigned)": 1
+        },
+        "468:Group430": {
+          "(unassigned)": 1
+        },
+        "469:Group431": {
+          "(unassigned)": 1
+        },
+        "46:Group06": {
+          "Plaster pink": 28
+        },
+        "470:Group432": {
+          "(unassigned)": 1
+        },
+        "471:Group433": {
+          "(unassigned)": 1
+        },
+        "472:Group434": {
+          "(unassigned)": 1
+        },
+        "473:Group435": {
+          "(unassigned)": 1
+        },
+        "474:Group436": {
+          "(unassigned)": 1
+        },
+        "475:Group437": {
+          "(unassigned)": 1
+        },
+        "476:Group438": {
+          "(unassigned)": 1
+        },
+        "477:Group439": {
+          "(unassigned)": 1
+        },
+        "478:Group440": {
+          "(unassigned)": 1
+        },
+        "479:Group441": {
+          "(unassigned)": 1
+        },
+        "47:Group09": {
+          "(unassigned)": 696
+        },
+        "480:Group442": {
+          "(unassigned)": 1
+        },
+        "481:Group443": {
+          "(unassigned)": 1
+        },
+        "482:Group444": {
+          "(unassigned)": 2
+        },
+        "483:Group445": {
+          "(unassigned)": 1
+        },
+        "484:Group446": {
+          "(unassigned)": 1
+        },
+        "485:Group447": {
+          "(unassigned)": 1
+        },
+        "486:Group448": {
+          "(unassigned)": 1
+        },
+        "487:Group449": {
+          "(unassigned)": 1
+        },
+        "488:Group450": {
+          "(unassigned)": 1
+        },
+        "489:Group451": {
+          "(unassigned)": 1
+        },
+        "48:Group10": {
+          "(unassigned)": 1
+        },
+        "490:Group452": {
+          "(unassigned)": 1
+        },
+        "491:Group453": {
+          "(unassigned)": 1
+        },
+        "492:Group454": {
+          "(unassigned)": 1
+        },
+        "493:Group455": {
+          "(unassigned)": 1
+        },
+        "494:Group456": {
+          "(unassigned)": 1
+        },
+        "495:Group457": {
+          "(unassigned)": 1
+        },
+        "496:Group458": {
+          "(unassigned)": 1
+        },
+        "497:Group459": {
+          "(unassigned)": 1
+        },
+        "498:Group460": {
+          "(unassigned)": 1
+        },
+        "499:Group461": {
+          "(unassigned)": 1
+        },
+        "49:Group11": {
+          "(unassigned)": 1
+        },
+        "500:Group462": {
+          "(unassigned)": 1
+        },
+        "501:Group463": {
+          "(unassigned)": 1
+        },
+        "502:Group464": {
+          "(unassigned)": 1
+        },
+        "503:Group465": {
+          "(unassigned)": 1
+        },
+        "504:Group466": {
+          "(unassigned)": 1
+        },
+        "505:Group467": {
+          "(unassigned)": 1
+        },
+        "506:Group468": {
+          "(unassigned)": 1
+        },
+        "507:Group469": {
+          "(unassigned)": 1
+        },
+        "508:Group470": {
+          "(unassigned)": 1
+        },
+        "509:Group471": {
+          "(unassigned)": 1
+        },
+        "50:Group12": {
+          "(unassigned)": 1
+        },
+        "510:Group472": {
+          "(unassigned)": 1
+        },
+        "511:Group473": {
+          "(unassigned)": 2
+        },
+        "512:Group474": {
+          "(unassigned)": 1
+        },
+        "513:Group475": {
+          "(unassigned)": 1
+        },
+        "514:Group476": {
+          "(unassigned)": 1
+        },
+        "515:Group477": {
+          "(unassigned)": 1
+        },
+        "516:Group478": {
+          "(unassigned)": 1
+        },
+        "517:Group479": {
+          "(unassigned)": 1
+        },
+        "518:Group480": {
+          "(unassigned)": 1
+        },
+        "519:Group481": {
+          "(unassigned)": 1
+        },
+        "51:Group13": {
+          "(unassigned)": 1
+        },
+        "520:Group482": {
+          "(unassigned)": 1
+        },
+        "521:Group483": {
+          "(unassigned)": 1
+        },
+        "522:Group484": {
+          "(unassigned)": 1
+        },
+        "523:Group485": {
+          "(unassigned)": 1
+        },
+        "524:Group486": {
+          "(unassigned)": 1
+        },
+        "525:Group487": {
+          "(unassigned)": 2
+        },
+        "526:Group488": {
+          "(unassigned)": 1
+        },
+        "527:Group489": {
+          "(unassigned)": 1
+        },
+        "528:Group490": {
+          "(unassigned)": 1
+        },
+        "529:Group491": {
+          "(unassigned)": 1
+        },
+        "52:Group14": {
+          "(unassigned)": 1
+        },
+        "530:Group492": {
+          "(unassigned)": 1
+        },
+        "531:Group493": {
+          "(unassigned)": 1
+        },
+        "532:Group494": {
+          "(unassigned)": 1
+        },
+        "533:Group495": {
+          "(unassigned)": 1
+        },
+        "534:Group496": {
+          "(unassigned)": 1
+        },
+        "535:Group497": {
+          "(unassigned)": 1
+        },
+        "536:Group498": {
+          "(unassigned)": 2
+        },
+        "537:Group499": {
+          "(unassigned)": 1
+        },
+        "538:Group500": {
+          "(unassigned)": 1
+        },
+        "539:Group501": {
+          "(unassigned)": 1
+        },
+        "53:Group15": {
+          "(unassigned)": 1
+        },
+        "540:Group502": {
+          "(unassigned)": 1
+        },
+        "541:Group503": {
+          "(unassigned)": 1
+        },
+        "542:Group504": {
+          "(unassigned)": 1
+        },
+        "543:Group505": {
+          "(unassigned)": 1
+        },
+        "544:Group506": {
+          "(unassigned)": 1
+        },
+        "545:Group507": {
+          "(unassigned)": 1
+        },
+        "546:Group508": {
+          "(unassigned)": 1
+        },
+        "547:Group509": {
+          "(unassigned)": 1
+        },
+        "548:Group510": {
+          "(unassigned)": 1
+        },
+        "549:Group511": {
+          "(unassigned)": 1
+        },
+        "54:Group16": {
+          "(unassigned)": 1
+        },
+        "550:Group512": {
+          "(unassigned)": 1
+        },
+        "551:Group513": {
+          "(unassigned)": 1
+        },
+        "552:Group514": {
+          "(unassigned)": 1
+        },
+        "553:Group515": {
+          "(unassigned)": 2
+        },
+        "554:Group516": {
+          "(unassigned)": 1
+        },
+        "555:Group517": {
+          "(unassigned)": 2
+        },
+        "556:Group518": {
+          "(unassigned)": 1
+        },
+        "557:Group519": {
+          "(unassigned)": 1
+        },
+        "558:Group520": {
+          "(unassigned)": 1
+        },
+        "559:Group521": {
+          "(unassigned)": 1
+        },
+        "55:Group17": {
+          "(unassigned)": 2
+        },
+        "560:Group522": {
+          "(unassigned)": 1
+        },
+        "561:Group523": {
+          "(unassigned)": 1
+        },
+        "562:Group524": {
+          "(unassigned)": 1
+        },
+        "563:Group525": {
+          "(unassigned)": 1
+        },
+        "564:Group526": {
+          "(unassigned)": 1
+        },
+        "565:Group527": {
+          "(unassigned)": 1
+        },
+        "566:Group528": {
+          "(unassigned)": 1
+        },
+        "567:Group529": {
+          "(unassigned)": 1
+        },
+        "568:Group530": {
+          "(unassigned)": 1
+        },
+        "569:Group531": {
+          "(unassigned)": 1
+        },
+        "56:Group18": {
+          "(unassigned)": 1
+        },
+        "570:Group532": {
+          "(unassigned)": 1
+        },
+        "571:Group533": {
+          "(unassigned)": 2
+        },
+        "572:Group534": {
+          "(unassigned)": 1
+        },
+        "573:Group535": {
+          "(unassigned)": 1
+        },
+        "574:Group536": {
+          "(unassigned)": 1
+        },
+        "575:Group537": {
+          "(unassigned)": 1
+        },
+        "576:Group538": {
+          "(unassigned)": 1
+        },
+        "577:Group539": {
+          "(unassigned)": 1
+        },
+        "578:Group540": {
+          "(unassigned)": 1
+        },
+        "579:Group541": {
+          "(unassigned)": 1
+        },
+        "57:Group19": {
+          "(unassigned)": 1
+        },
+        "580:Group542": {
+          "(unassigned)": 1
+        },
+        "581:Group543": {
+          "(unassigned)": 1
+        },
+        "582:Group544": {
+          "(unassigned)": 1
+        },
+        "583:Group545": {
+          "(unassigned)": 1
+        },
+        "584:Group546": {
+          "(unassigned)": 1
+        },
+        "585:Group547": {
+          "(unassigned)": 1
+        },
+        "586:Group548": {
+          "(unassigned)": 1
+        },
+        "587:Group549": {
+          "(unassigned)": 1
+        },
+        "588:Group550": {
+          "(unassigned)": 1
+        },
+        "589:Group551": {
+          "(unassigned)": 1
+        },
+        "58:Group20": {
+          "(unassigned)": 1
+        },
+        "590:Group552": {
+          "(unassigned)": 1
+        },
+        "591:Group553": {
+          "(unassigned)": 1
+        },
+        "592:Group554": {
+          "(unassigned)": 1
+        },
+        "593:Group555": {
+          "(unassigned)": 1
+        },
+        "594:Group556": {
+          "(unassigned)": 1
+        },
+        "595:Group557": {
+          "(unassigned)": 1
+        },
+        "596:Group558": {
+          "(unassigned)": 1
+        },
+        "597:Group559": {
+          "(unassigned)": 1
+        },
+        "598:Group560": {
+          "(unassigned)": 1
+        },
+        "599:Group561": {
+          "(unassigned)": 1
+        },
+        "59:Group21": {
+          "(unassigned)": 1
+        },
+        "600:Group562": {
+          "(unassigned)": 1
+        },
+        "601:Group563": {
+          "(unassigned)": 1
+        },
+        "602:Group564": {
+          "(unassigned)": 1
+        },
+        "603:Group565": {
+          "(unassigned)": 1
+        },
+        "604:Group566": {
+          "(unassigned)": 1
+        },
+        "605:Group567": {
+          "(unassigned)": 1
+        },
+        "606:Group568": {
+          "(unassigned)": 1
+        },
+        "607:Group569": {
+          "(unassigned)": 1
+        },
+        "608:Group570": {
+          "(unassigned)": 2
+        },
+        "609:Group571": {
+          "(unassigned)": 1
+        },
+        "60:Group22": {
+          "(unassigned)": 1
+        },
+        "610:Group572": {
+          "(unassigned)": 1
+        },
+        "611:Group573": {
+          "(unassigned)": 1
+        },
+        "612:Group574": {
+          "(unassigned)": 1
+        },
+        "613:Group575": {
+          "(unassigned)": 1
+        },
+        "614:Group576": {
+          "(unassigned)": 1
+        },
+        "615:Group577": {
+          "(unassigned)": 1
+        },
+        "616:Group578": {
+          "(unassigned)": 1
+        },
+        "617:Group579": {
+          "(unassigned)": 1
+        },
+        "618:Group580": {
+          "(unassigned)": 1
+        },
+        "619:Group581": {
+          "(unassigned)": 1
+        },
+        "61:Group23": {
+          "(unassigned)": 1
+        },
+        "620:Group582": {
+          "(unassigned)": 1
+        },
+        "621:Group583": {
+          "(unassigned)": 1
+        },
+        "622:Group584": {
+          "(unassigned)": 1
+        },
+        "623:Group585": {
+          "(unassigned)": 1
+        },
+        "624:Group586": {
+          "(unassigned)": 1
+        },
+        "625:Group587": {
+          "(unassigned)": 1
+        },
+        "626:Group588": {
+          "(unassigned)": 1
+        },
+        "627:Group589": {
+          "(unassigned)": 1
+        },
+        "628:Group590": {
+          "(unassigned)": 1
+        },
+        "629:Group591": {
+          "(unassigned)": 1
+        },
+        "62:Group24": {
+          "(unassigned)": 1
+        },
+        "630:Group592": {
+          "(unassigned)": 1
+        },
+        "631:Group593": {
+          "(unassigned)": 1
+        },
+        "632:Group594": {
+          "(unassigned)": 1
+        },
+        "633:Group595": {
+          "(unassigned)": 1
+        },
+        "634:Group596": {
+          "(unassigned)": 2
+        },
+        "635:Group597": {
+          "(unassigned)": 1
+        },
+        "636:Group598": {
+          "(unassigned)": 2
+        },
+        "637:Group599": {
+          "(unassigned)": 1
+        },
+        "638:Group600": {
+          "(unassigned)": 1
+        },
+        "639:Group601": {
+          "(unassigned)": 1
+        },
+        "63:Group25": {
+          "(unassigned)": 1
+        },
+        "640:Group602": {
+          "(unassigned)": 1
+        },
+        "641:Group603": {
+          "(unassigned)": 1
+        },
+        "642:Group604": {
+          "(unassigned)": 1
+        },
+        "643:Group605": {
+          "(unassigned)": 1
+        },
+        "644:Group606": {
+          "(unassigned)": 1
+        },
+        "645:Group607": {
+          "(unassigned)": 1
+        },
+        "646:Group608": {
+          "(unassigned)": 1
+        },
+        "647:Group609": {
+          "(unassigned)": 1
+        },
+        "648:Group610": {
+          "(unassigned)": 1
+        },
+        "649:Group611": {
+          "(unassigned)": 1
+        },
+        "64:Group26": {
+          "(unassigned)": 1
+        },
+        "650:Group612": {
+          "(unassigned)": 1
+        },
+        "651:Group613": {
+          "(unassigned)": 1
+        },
+        "652:Group614": {
+          "(unassigned)": 1
+        },
+        "653:Group615": {
+          "(unassigned)": 1
+        },
+        "654:Group616": {
+          "(unassigned)": 1
+        },
+        "655:Group617": {
+          "(unassigned)": 1
+        },
+        "656:Group618": {
+          "(unassigned)": 1
+        },
+        "657:Group619": {
+          "(unassigned)": 2
+        },
+        "658:Group620": {
+          "(unassigned)": 1
+        },
+        "659:Group621": {
+          "(unassigned)": 1
+        },
+        "65:Group27": {
+          "(unassigned)": 1
+        },
+        "660:Group622": {
+          "(unassigned)": 1
+        },
+        "661:Group623": {
+          "(unassigned)": 1
+        },
+        "662:Group624": {
+          "(unassigned)": 1
+        },
+        "663:Group625": {
+          "(unassigned)": 1
+        },
+        "664:Group626": {
+          "(unassigned)": 1
+        },
+        "665:Group627": {
+          "(unassigned)": 1
+        },
+        "666:Group628": {
+          "(unassigned)": 1
+        },
+        "667:Group629": {
+          "(unassigned)": 1
+        },
+        "668:Group630": {
+          "(unassigned)": 1
+        },
+        "669:Group631": {
+          "(unassigned)": 1
+        },
+        "66:Group28": {
+          "(unassigned)": 2
+        },
+        "670:Group632": {
+          "(unassigned)": 1
+        },
+        "671:Group633": {
+          "(unassigned)": 1
+        },
+        "672:Group634": {
+          "(unassigned)": 2
+        },
+        "673:Group635": {
+          "(unassigned)": 1
+        },
+        "674:Group636": {
+          "(unassigned)": 1
+        },
+        "675:Group637": {
+          "(unassigned)": 1
+        },
+        "676:Group638": {
+          "(unassigned)": 1
+        },
+        "677:Group639": {
+          "(unassigned)": 1
+        },
+        "678:Group640": {
+          "(unassigned)": 1
+        },
+        "679:Group641": {
+          "(unassigned)": 1
+        },
+        "67:Group29": {
+          "(unassigned)": 1
+        },
+        "680:Group642": {
+          "(unassigned)": 1
+        },
+        "681:Group643": {
+          "(unassigned)": 1
+        },
+        "682:Group644": {
+          "(unassigned)": 1
+        },
+        "683:Group645": {
+          "(unassigned)": 1
+        },
+        "684:Group646": {
+          "(unassigned)": 1
+        },
+        "685:Group647": {
+          "(unassigned)": 2
+        },
+        "686:Group648": {
+          "(unassigned)": 1
+        },
+        "687:Group649": {
+          "(unassigned)": 1
+        },
+        "688:Group650": {
+          "(unassigned)": 1
+        },
+        "689:Group651": {
+          "(unassigned)": 1
+        },
+        "68:Group30": {
+          "(unassigned)": 1
+        },
+        "690:Group652": {
+          "Plaster pink": 28
+        },
+        "691:Duwamish River People's Park": {
+          "(unassigned)": 27
+        },
+        "692:群组40": {
+          "(unassigned)": 476
+        },
+        "693:群组41": {
+          "(unassigned)": 27
+        },
+        "694:The Seattle Public Library": {
+          "(unassigned)": 25
+        },
+        "695:群组47": {
+          "(unassigned)": 256
+        },
+        "696:群组48": {
+          "(unassigned)": 25
+        },
+        "697:South Park Community Center": {
+          "(unassigned)": 25
+        },
+        "698:群组49": {
+          "(unassigned)": 25
+        },
+        "699:群组50": {
+          "(unassigned)": 295
+        },
+        "69:Group31": {
+          "(unassigned)": 1
+        },
+        "700:Duwamish Waterway Park": {
+          "(unassigned)": 21
+        },
+        "701:群组51": {
+          "(unassigned)": 21
+        },
+        "702:群组52": {
+          "(unassigned)": 237
+        },
+        "703:South Park Plaza": {
+          "(unassigned)": 14
+        },
+        "704:South Park Plaza10": {
+          "(unassigned)": 14
+        },
+        "705:群组53": {
+          "(unassigned)": 258
+        },
+        "70:Group32": {
+          "(unassigned)": 1
+        },
+        "71:Group33": {
+          "(unassigned)": 2
+        },
+        "72:Group34": {
+          "(unassigned)": 1
+        },
+        "73:Group35": {
+          "(unassigned)": 1
+        },
+        "74:Group36": {
+          "(unassigned)": 2
+        },
+        "75:Group37": {
+          "(unassigned)": 1
+        },
+        "76:Group38": {
+          "(unassigned)": 2
+        },
+        "77:Group39": {
+          "(unassigned)": 1
+        },
+        "78:Group40": {
+          "(unassigned)": 1
+        },
+        "79:Group41": {
+          "(unassigned)": 1
+        },
+        "80:Group42": {
+          "(unassigned)": 1
+        },
+        "81:Group43": {
+          "(unassigned)": 1
+        },
+        "82:Group44": {
+          "(unassigned)": 1
+        },
+        "83:Group45": {
+          "(unassigned)": 1
+        },
+        "84:Group46": {
+          "(unassigned)": 1
+        },
+        "85:Group47": {
+          "(unassigned)": 1
+        },
+        "86:Group48": {
+          "(unassigned)": 1
+        },
+        "87:Group49": {
+          "(unassigned)": 1
+        },
+        "88:Group50": {
+          "(unassigned)": 1
+        },
+        "89:Group51": {
+          "(unassigned)": 1
+        },
+        "90:Group52": {
+          "(unassigned)": 1
+        },
+        "91:Group53": {
+          "(unassigned)": 1
+        },
+        "92:Group54": {
+          "(unassigned)": 1
+        },
+        "93:Group55": {
+          "(unassigned)": 1
+        },
+        "94:Group56": {
+          "(unassigned)": 1
+        },
+        "95:Group57": {
+          "(unassigned)": 1
+        },
+        "96:Group58": {
+          "(unassigned)": 1
+        },
+        "97:Group59": {
+          "(unassigned)": 1
+        },
+        "98:Group60": {
+          "(unassigned)": 2
+        },
+        "99:Group61": {
+          "(unassigned)": 1
+        }
+      },
+      "child_layers": [],
+      "instance_definition_objects": 0,
+      "bounds_source_units": [
+        6058.097894,
+        4359.563898,
+        995.859016,
+        6062.2763,
+        4365.065778,
+        995.983216
+      ],
+      "merge_risks": [
+        "multiple-object-materials",
+        "groups-retain-different-materials"
+      ]
+    }
+  ]
+}

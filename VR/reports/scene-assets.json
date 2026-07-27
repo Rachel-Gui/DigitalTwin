@@ -1,0 +1,142 @@
+{
+  "schema_version": "1.0.0",
+  "generated_on": "2026-07-20",
+  "scenes": [
+    {
+      "scene_id": "concord-school-webxr-mvp",
+      "manifest": "/assets/scene-manifest.json",
+      "particle_boundary": "concord-populate-regions",
+      "totals": {
+        "download_bytes": 13270108,
+        "render_triangles": 165701,
+        "render_primitives_approx_draw_calls": 27,
+        "render_material_slots": 27
+      },
+      "chunks": [
+        {
+          "id": "school_core",
+          "role": "visual",
+          "bytes": 8091876,
+          "meshes": 1,
+          "primitives": 16,
+          "triangles": 67417,
+          "materials": 16,
+          "textures": 6,
+          "images": 6
+        },
+        {
+          "id": "school_buildings",
+          "role": "visual",
+          "bytes": 714384,
+          "meshes": 1,
+          "primitives": 2,
+          "triangles": 4816,
+          "materials": 2,
+          "textures": 3,
+          "images": 3
+        },
+        {
+          "id": "school_context",
+          "role": "visual",
+          "bytes": 1440504,
+          "meshes": 1,
+          "primitives": 7,
+          "triangles": 43866,
+          "materials": 7,
+          "textures": 9,
+          "images": 9
+        },
+        {
+          "id": "school_plants",
+          "role": "visual",
+          "bytes": 2027120,
+          "meshes": 1,
+          "primitives": 1,
+          "triangles": 30492,
+          "materials": 1,
+          "textures": 0,
+          "images": 0
+        },
+        {
+          "id": "school_vehicles",
+          "role": "visual",
+          "bytes": 993880,
+          "meshes": 1,
+          "primitives": 1,
+          "triangles": 19110,
+          "materials": 1,
+          "textures": 0,
+          "images": 0
+        },
+        {
+          "id": "school_colliders",
+          "role": "collider",
+          "bytes": 2344,
+          "meshes": 1,
+          "primitives": 1,
+          "triangles": 12,
+          "materials": 1,
+          "textures": 0,
+          "images": 0
+        }
+      ]
+    },
+    {
+      "scene_id": "south-park-webxr",
+      "manifest": "/assets/south-park-scene-manifest.json",
+      "particle_boundary": "south-park-road-air-volume",
+      "totals": {
+        "download_bytes": 4457452,
+        "render_triangles": 70488,
+        "render_primitives_approx_draw_calls": 4,
+        "render_material_slots": 4
+      },
+      "chunks": [
+        {
+          "id": "south_park_ground",
+          "role": "visual",
+          "bytes": 78116,
+          "meshes": 1,
+          "primitives": 1,
+          "triangles": 1894,
+          "materials": 1,
+          "textures": 0,
+          "images": 0
+        },
+        {
+          "id": "south_park_roads",
+          "role": "visual",
+          "bytes": 69504,
+          "meshes": 1,
+          "primitives": 1,
+          "triangles": 1406,
+          "materials": 1,
+          "textures": 0,
+          "images": 0
+        },
+        {
+          "id": "south_park_buildings",
+          "role": "visual",
+          "bytes": 4307760,
+          "meshes": 1,
+          "primitives": 2,
+          "triangles": 67188,
+          "materials": 2,
+          "textures": 0,
+          "images": 0
+        },
+        {
+          "id": "south_park_colliders",
+          "role": "collider",
+          "bytes": 2072,
+          "meshes": 1,
+          "primitives": 1,
+          "triangles": 12,
+          "materials": 1,
+          "textures": 0,
+          "images": 0
+        }
+      ]
+    }
+  ]
+}
