@@ -3,7 +3,6 @@ import { Link, NavLink } from "react-router-dom";
 import silLogo from "./assets/brand/sustainable-intelligence-lab-logo.png";
 import uwWhite from "./assets/brand/uw-signature-white.png";
 import { modules } from "./data/modules";
-import { buildingDemo, modeResults } from "./data/buildingDemo";
 
 export function Navbar() {
   const [open,setOpen]=useState(false), [drop,setDrop]=useState(false);
@@ -30,7 +29,7 @@ export function Navbar() {
 }
 
 export function Footer(){
-  return <footer className="site-footer"><div><img src={silLogo} alt="Sustainable Intelligence Lab"/><h2>DecarbCityTwin 2.0</h2></div><div><span>RESEARCH PLATFORM</span><p>South Park · Duwamish Valley · Seattle</p><p>Figures and statuses are labeled by source and development stage.</p></div><div><img src={uwWhite} alt="University of Washington"/><p>© 2026 Sustainable Intelligence Lab</p></div></footer>
+  return <footer className="site-footer"><div><img src={silLogo} alt="Sustainable Intelligence Lab"/><h2>DecarbCityTwin</h2></div><div><span>RESEARCH PLATFORM</span><p>South Park · Duwamish Valley · Seattle</p><p>Figures and statuses are labeled by source and development stage.</p></div><div><img src={uwWhite} alt="University of Washington"/><p>© 2026 Sustainable Intelligence Lab</p></div></footer>
 }
 
 export function SectionHeader({eyebrow,title,text,action}){return <div className="section-header"><div><span className="eyebrow">{eyebrow}</span><h2>{title}</h2>{text&&<p>{text}</p>}</div>{action}</div>}
@@ -64,5 +63,3 @@ export function LayerToggle({label,defaultOn,active,onActivate}){
   return <label className={`layer-toggle ${active?"active-layer":""}`}><input type="checkbox" checked={on} onChange={toggle}/><span className="toggle-ui"/><span>{label}</span>{active&&<small>Legend</small>}</label>
 }
 export function ViewerPanel(){return <div className="viewer-wrap"><div className="viewer-label"><span><i/> SOUTH PARK ARCGIS SCENE</span><span>Embedded external viewer ↗</span></div><div className="viewer-container"><iframe src="https://uw.maps.arcgis.com/apps/instant/3dviewer/index.html?appid=9d99a4a0c2e2482b912608249bf3248f" title="South Park 3D Digital Twin" loading="lazy" allowFullScreen/></div></div>}
-export function BuildingInfoPanel({mode}){return <aside className="panel building-panel"><div className="panel-title"><div><span className="eyebrow">Map connection not implemented</span><h2>Selected Building</h2></div><StatusLabel>ILLUSTRATIVE PANEL</StatusLabel></div><div className="building-id"><span>Building ID</span><strong>{buildingDemo.id}</strong></div><dl className="building-basics"><div><dt>Archetype</dt><dd>{buildingDemo.archetype}</dd></div><div><dt>Height</dt><dd>{buildingDemo.height}</dd></div><div><dt>Footprint</dt><dd>{buildingDemo.footprintArea}</dd></div></dl><div className="result-list">{modeResults[mode].map(([k,v])=><div key={k}><span>{k}</span><strong>{v}</strong></div>)}</div><p className="data-note">Illustrative interface only. ArcGIS selection is not connected to React state.</p></aside>}
-export function ScenarioCard({scenario}){return <article className="scenario-card"><h3>{scenario.name}</h3><dl><div><dt>Energy use</dt><dd>{scenario.energy}</dd></div><div><dt>Carbon</dt><dd>{scenario.carbon}</dd></div><div><dt>Renewable</dt><dd>{scenario.renewable}</dd></div><div><dt>Comfort / resilience</dt><dd>{scenario.comfort}</dd></div></dl></article>}
