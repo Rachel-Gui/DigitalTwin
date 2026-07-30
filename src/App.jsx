@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import ModulePage from "./pages/ModulePage";
 import Research from "./pages/Research";
+import Analytics from "./pages/Analytics";
 import { modules } from "./data/modules";
 
 export default function App() {
@@ -19,6 +20,7 @@ export default function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           {modules.map((module) => <Route key={module.key} path={module.path} element={<ModulePage type={module.key} />} />)}
           <Route path="/research" element={<Research />} />
+          <Route path="/analytics" element={<Analytics />} />
           <Route path="/about" element={<Navigate to="/research" replace />} />
           <Route path="*" element={<Home />} />
         </Routes>

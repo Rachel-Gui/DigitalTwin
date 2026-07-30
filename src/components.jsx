@@ -23,13 +23,13 @@ export function Navbar() {
     <nav ref={navRef} id="primary-navigation" className={open?"nav-links open":"nav-links"} aria-label="Primary navigation">
       <NavLink to="/" onClick={close}>Home</NavLink>
       <NavLink to="/dashboard" onClick={close}>Digital Twin</NavLink>
-      <div className="dropdown"><button onClick={()=>setDrop(!drop)} aria-controls="modules-menu" aria-haspopup="true" aria-expanded={drop}>Modules <span aria-hidden="true">⌄</span></button>
+      <div className="dropdown"><button className="dropdown-trigger" onClick={()=>setDrop(!drop)} aria-controls="modules-menu" aria-haspopup="true" aria-expanded={drop}><span>Modules</span><i className="dropdown-chevron" aria-hidden="true"/></button>
         <div id="modules-menu" className={drop?"dropdown-menu show":"dropdown-menu"} aria-hidden={!drop}>
-          {modules.map(m=><Link key={m.key} to={m.path} onClick={close}><small>{m.icon}</small><span>{m.title}</span></Link>)}
+          {modules.map((m,index)=><Link key={m.key} to={m.path} onClick={close}><small>{String(index+1).padStart(2,"0")}</small><span><strong>{m.title}</strong><em>{m.tag}</em></span><b aria-hidden="true">↗</b></Link>)}
         </div>
       </div>
       <NavLink to="/research" onClick={close}>Research</NavLink>
-      <Link className="live-link" to="/dashboard" onClick={close}>Open Live Viewer ↗</Link>
+      <NavLink to="/analytics" onClick={close}>Live Air Data</NavLink>
       <img className="mobile-uw" src={uwWhite} alt="University of Washington"/>
     </nav>
     <span className="header-rule right"/>
@@ -38,7 +38,7 @@ export function Navbar() {
 }
 
 export function Footer(){
-  return <footer className="site-footer"><div><img src={silLogo} alt="Sustainable Intelligence Lab"/><h2>DecarbCityTwin 2.0</h2></div><div><span>RESEARCH PLATFORM</span><p>South Park · Duwamish Valley · Seattle</p><p>Figures and statuses are labeled by source and development stage.</p></div><div><img src={uwWhite} alt="University of Washington"/><p>© 2026 Sustainable Intelligence Lab</p></div></footer>
+  return <footer className="site-footer"><div><img src={silLogo} alt="Sustainable Intelligence Lab"/><div><h2>DecarbCityTwin 2.0</h2><p>Urban intelligence for equitable climate action.</p></div></div><div><span>RESEARCH PLATFORM</span><p>South Park · Duwamish Valley · Seattle</p><p>Figures and statuses are labeled by source and development stage.</p></div><nav aria-label="Footer navigation"><Link to="/">Home</Link><Link to="/dashboard">Digital Twin</Link><Link to="/research">Research</Link><Link to="/analytics">Live Air Data</Link><a href="mailto:info@silab.org">Contact</a></nav><div><img src={uwWhite} alt="University of Washington"/><p>© 2026 Sustainable Intelligence Lab</p></div></footer>
 }
 
 export function SectionHeader({eyebrow,title,text,action}){return <div className="section-header"><div><span className="eyebrow">{eyebrow}</span><h2>{title}</h2>{text&&<p>{text}</p>}</div>{action}</div>}
@@ -57,7 +57,11 @@ export function PublicationRecord({image}){
 }
 
 export function ViewerPreview({src}){
-  return <Link className="viewer-preview" to="/dashboard"><div className="browser-bar"><i/><i/><i/><span>SOUTH PARK LIVE SCENE</span><b>Open live viewer ↗</b></div><img src={src} alt="South Park ArcGIS scene preview"/><div className="preview-fade"/></Link>
+  return <Link className="viewer-preview" to="/dashboard" aria-label="Open the South Park live digital twin">
+    <img src={src} alt="South Park ArcGIS scene preview"/>
+    <span className="viewer-preview-status"><i/> Live spatial model</span>
+    <span className="viewer-preview-action">Open digital twin <b>↗</b></span>
+  </Link>
 }
 
 export function SolarDiagram(){

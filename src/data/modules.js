@@ -1,5 +1,5 @@
 export const modules = [
-  { key: "air", title: "Air Quality", short: "Air Quality", path: "/air-quality", icon: "≈", tag: "Model integration", description: "Sensor and geospatial data support neighborhood-scale PM2.5 prediction and visualization." },
+  { key: "air", title: "Air Quality", short: "Air Quality", path: "/air-quality", icon: "≈", tag: "Live data connected", description: "Clarity Air measurements and geospatial models support neighborhood-scale PM2.5 analysis." },
   { key: "energy", title: "Energy Modeling", short: "Energy", path: "/energy", icon: "▥", tag: "Published research", description: "Four residential archetypes support parametric building-energy simulation." },
   { key: "retrofit", title: "Health-Driven Retrofit", short: "Retrofit", path: "/retrofit", icon: "⌂", tag: "Published research", description: "Compare envelope, heat-pump, ventilation, filtration, and combined interventions." },
   { key: "renewable", title: "Renewable Energy", short: "Renewable", path: "/renewable", icon: "☼", tag: "In development", description: "Connect building geometry, energy demand, and renewable scenario records." },
@@ -54,5 +54,5 @@ export const legendConfig = {
 
 export const externalPlatforms = {
   airQuality: "https://example.com/air-quality-platform",
-  vr: "https://example.com/vr-experience"
+  vr: import.meta.env.VITE_VR_URL || "http://localhost:3000"
 };
