@@ -1,4 +1,5 @@
 import { cp, mkdir, rm } from "node:fs/promises";
+import { existsSync } from "node:fs";
 import { resolve } from "node:path";
 import type { Plugin } from "vite";
 
@@ -15,6 +16,8 @@ export function sites(): Plugin {
     async closeBundle() {
       const outputDirectory = resolve(root, "dist", ".openai");
       const hostingConfig = resolve(root, ".openai", "hosting.json");
+
+      if (!existsSync(hostingConfig)) return;
 
       await rm(outputDirectory, { recursive: true, force: true });
       await mkdir(outputDirectory, { recursive: true });
