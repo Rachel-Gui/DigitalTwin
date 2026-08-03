@@ -1,26 +1,38 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import silLogo from "./assets/brand/sustainable-intelligence-lab-logo.png";
 import uwWhite from "./assets/brand/uw-signature-white.png";
 import { modules } from "./data/modules";
+import { buildingDemo, modeResults } from "./data/buildingDemo";
+import { useLanguage } from "./i18n";
 
 export function Navbar() {
+  const { language, setLanguage, t } = useLanguage();
   const [open,setOpen]=useState(false), [drop,setDrop]=useState(false);
+  const navRef=useRef(null);
   const close=()=>{setOpen(false);setDrop(false)};
+  useEffect(()=>{
+    const onPointerDown=(event)=>{if(!navRef.current?.contains(event.target))close()};
+    const onKeyDown=(event)=>{if(event.key==="Escape")close()};
+    document.addEventListener("pointerdown",onPointerDown);
+    document.addEventListener("keydown",onKeyDown);
+    return()=>{document.removeEventListener("pointerdown",onPointerDown);document.removeEventListener("keydown",onKeyDown)};
+  },[]);
   return <header className="institutional-header">
     <Link className="lab-brand" to="/" onClick={close}><img src={silLogo} alt="Sustainable Intelligence Lab"/><span>Sustainable<br/>Intelligence Lab</span></Link>
     <span className="header-rule"/>
-    <button className="menu-button" aria-label="Toggle navigation" aria-expanded={open} onClick={()=>setOpen(!open)}><span/><span/><span/></button>
-    <nav className={open?"nav-links open":"nav-links"} aria-label="Primary navigation">
-      <NavLink to="/" onClick={close}>Home</NavLink>
-      <NavLink to="/dashboard" onClick={close}>Digital Twin</NavLink>
-      <div className="dropdown"><button onClick={()=>setDrop(!drop)} aria-expanded={drop}>Modules <span>⌄</span></button>
-        <div className={drop?"dropdown-menu show":"dropdown-menu"}>
-          {modules.map(m=><Link key={m.key} to={m.path} onClick={close}><small>{m.icon}</small><span>{m.title}</span></Link>)}
+    <button className="menu-button" aria-label={open?"Close navigation":"Open navigation"} aria-controls="primary-navigation" aria-expanded={open} onClick={()=>setOpen(!open)}><span/><span/><span/></button>
+    <nav ref={navRef} id="primary-navigation" className={open?"nav-links open":"nav-links"} aria-label="Primary navigation">
+      <NavLink to="/" onClick={close}>{t("Home")}</NavLink>
+      <NavLink to="/dashboard" onClick={close}>{t("Digital Twin")}</NavLink>
+      <div className="dropdown"><button className="dropdown-trigger" onClick={()=>setDrop(!drop)} aria-controls="modules-menu" aria-haspopup="true" aria-expanded={drop}><span>{t("Modules")}</span><i className="dropdown-chevron" aria-hidden="true"/></button>
+        <div id="modules-menu" className={drop?"dropdown-menu show":"dropdown-menu"} aria-hidden={!drop}>
+          {modules.map((m,index)=><Link key={m.key} to={m.path} onClick={close}><small>{String(index+1).padStart(2,"0")}</small><span><strong>{m.title}</strong><em>{m.tag}</em></span><b aria-hidden="true">↗</b></Link>)}
         </div>
       </div>
-      <NavLink to="/research" onClick={close}>Research</NavLink>
-      <Link className="live-link" to="/dashboard" onClick={close}>Open Live Viewer ↗</Link>
+      <NavLink to="/research" onClick={close}>{t("Research")}</NavLink>
+      <NavLink to="/analytics" onClick={close}>{t("Live Air Data")}</NavLink>
+      <div className="language-switch" role="group" aria-label="Language / Idioma"><button type="button" className={language==="en"?"active":""} onClick={()=>setLanguage("en")} aria-pressed={language==="en"}>EN</button><span>/</span><button type="button" className={language==="es"?"active":""} onClick={()=>setLanguage("es")} aria-pressed={language==="es"}>ES</button></div>
       <img className="mobile-uw" src={uwWhite} alt="University of Washington"/>
     </nav>
     <span className="header-rule right"/>
@@ -29,7 +41,8 @@ export function Navbar() {
 }
 
 export function Footer(){
-  return <footer className="site-footer"><div><img src={silLogo} alt="Sustainable Intelligence Lab"/><h2>DecarbCityTwin</h2></div><div><span>RESEARCH PLATFORM</span><p>South Park · Duwamish Valley · Seattle</p><p>Figures and statuses are labeled by source and development stage.</p></div><div><img src={uwWhite} alt="University of Washington"/><p>© 2026 Sustainable Intelligence Lab</p></div></footer>
+  const {t}=useLanguage();
+  return <footer className="site-footer"><div><img src={silLogo} alt="Sustainable Intelligence Lab"/><div><h2>DecarbCityTwin</h2><p>{t("Urban intelligence for equitable climate action.")}</p></div></div><div><span>{t("RESEARCH PLATFORM")}</span><p>South Park · Duwamish Valley · Seattle</p><p>{t("Figures and statuses are labeled by source and development stage.")}</p></div><nav aria-label="Footer navigation"><Link to="/">{t("Home")}</Link><Link to="/dashboard">{t("Digital Twin")}</Link><Link to="/research">{t("Research")}</Link><Link to="/analytics">{t("Live Air Data")}</Link><a href="mailto:info@silab.org">{t("Contact")}</a></nav><div><img src={uwWhite} alt="University of Washington"/><p>© 2026 Sustainable Intelligence Lab</p></div></footer>
 }
 
 export function SectionHeader({eyebrow,title,text,action}){return <div className="section-header"><div><span className="eyebrow">{eyebrow}</span><h2>{title}</h2>{text&&<p>{text}</p>}</div>{action}</div>}
@@ -48,18 +61,24 @@ export function PublicationRecord({image}){
 }
 
 export function ViewerPreview({src}){
-  return <Link className="viewer-preview" to="/dashboard"><div className="browser-bar"><i/><i/><i/><span>SOUTH PARK LIVE SCENE</span><b>Open live viewer ↗</b></div><img src={src} alt="South Park ArcGIS scene preview"/><div className="preview-fade"/></Link>
+  return <Link className="viewer-preview" to="/dashboard" aria-label="Open the South Park live digital twin">
+    <img src={src} alt="South Park ArcGIS scene preview"/>
+    <span className="viewer-preview-status"><i/> Live spatial model</span>
+    <span className="viewer-preview-action">Open digital twin <b>↗</b></span>
+  </Link>
 }
 
 export function SolarDiagram(){
   return <div className="solar-diagram" role="img" aria-label="Non-quantitative building to renewable electricity diagram"><div>BUILDING</div><span>→</span><div>ROOF / FAÇADE</div><span>→</span><div className="sun">SUNLIGHT</div><span>→</span><div>ELECTRICITY</div></div>
 }
 export function ComparisonMatrix(){
-  return <div className="mini-matrix" aria-label="Scenario comparison structure"><span/><b>Base</b><b>Envelope</b><b>Electric</b><b>PV</b>{["Energy","Exposure","Cost"].map(r=><><strong key={r}>{r}</strong>{[1,2,3,4].map(c=><i key={`${r}${c}`}/>)}</>)}</div>
+  return <div className="mini-matrix" aria-label="Scenario comparison structure"><span/><b>Base</b><b>Envelope</b><b>Electric</b><b>PV</b>{["Energy","Exposure","Cost"].map(r=><div className="contents" key={r}><strong>{r}</strong>{[1,2,3,4].map(c=><i key={`${r}${c}`}/>)}</div>)}</div>
 }
 
 export function LayerToggle({label,defaultOn,active,onActivate}){
   const [on,setOn]=useState(defaultOn); const toggle=()=>{const next=!on;setOn(next);if(next)onActivate?.(label)};
   return <label className={`layer-toggle ${active?"active-layer":""}`}><input type="checkbox" checked={on} onChange={toggle}/><span className="toggle-ui"/><span>{label}</span>{active&&<small>Legend</small>}</label>
 }
-export function ViewerPanel(){return <div className="viewer-wrap"><div className="viewer-label"><span><i/> SOUTH PARK ARCGIS SCENE</span><span>Embedded external viewer ↗</span></div><div className="viewer-container"><iframe src="https://uw.maps.arcgis.com/apps/instant/3dviewer/index.html?appid=9d99a4a0c2e2482b912608249bf3248f" title="South Park 3D Digital Twin" loading="lazy" allowFullScreen/></div></div>}
+export function ViewerPanel(){return <div className="viewer-wrap"><div className="viewer-label"><span><i/> SOUTH PARK ARCGIS SCENE</span><a href="https://uw.maps.arcgis.com/apps/instant/3dviewer/index.html?appid=9d99a4a0c2e2482b912608249bf3248f" target="_blank" rel="noreferrer">Open full viewer ↗</a></div><div className="viewer-container"><iframe src="https://uw.maps.arcgis.com/apps/instant/3dviewer/index.html?appid=9d99a4a0c2e2482b912608249bf3248f" title="South Park 3D Digital Twin" loading="lazy" allowFullScreen/></div></div>}
+export function BuildingInfoPanel({mode}){return <aside className="panel building-panel"><div className="panel-title"><div><span className="eyebrow">Map connection not implemented</span><h2>Selected Building</h2></div><StatusLabel>ILLUSTRATIVE PANEL</StatusLabel></div><div className="building-id"><span>Building ID</span><strong>{buildingDemo.id}</strong></div><dl className="building-basics"><div><dt>Archetype</dt><dd>{buildingDemo.archetype}</dd></div><div><dt>Height</dt><dd>{buildingDemo.height}</dd></div><div><dt>Footprint</dt><dd>{buildingDemo.footprintArea}</dd></div></dl><div className="result-list">{modeResults[mode].map(([k,v])=><div key={k}><span>{k}</span><strong>{v}</strong></div>)}</div><p className="data-note">Illustrative interface only. ArcGIS selection is not connected to React state.</p></aside>}
+export function ScenarioCard({scenario}){return <article className="scenario-card"><h3>{scenario.name}</h3><dl><div><dt>Energy use</dt><dd>{scenario.energy}</dd></div><div><dt>Carbon</dt><dd>{scenario.carbon}</dd></div><div><dt>Renewable</dt><dd>{scenario.renewable}</dd></div><div><dt>Comfort / resilience</dt><dd>{scenario.comfort}</dd></div></dl></article>}

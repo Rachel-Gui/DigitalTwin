@@ -25,9 +25,21 @@ function pmBand(value: number) {
   return "ELEVATED";
 }
 
-function timeLabel(seconds: number) {
-  const whole = Math.max(0, Math.floor(seconds));
-  return `${Math.floor(whole / 60)}:${String(whole % 60).padStart(2, "0")}`;
+const PM25_AQI_BREAKPOINTS = [
+  [0, 9, 0, 50],
+  [9.1, 35.4, 51, 100],
+  [35.5, 55.4, 101, 150],
+  [55.5, 125.4, 151, 200],
+  [125.5, 225.4, 201, 300],
+  [225.5, 325.4, 301, 500],
+] as const;
+
+function pm25Aqi(value: number) {
+  const concentration = Math.round(Math.max(0, value) * 10) / 10;
+  const breakpoint = PM25_AQI_BREAKPOINTS.find(([low, high]) => concentration >= low && concentration <= high);
+  if (!breakpoint) return concentration > 325.4 ? 500 : 0;
+  const [low, high, lowAqi, highAqi] = breakpoint;
+  return Math.round(((highAqi - lowAqi) / (high - low)) * (concentration - low) + lowAqi);
 }
 
 function experienceSeed() {
@@ -83,9 +95,40 @@ export function PhiExperience() {
       label: group.label,
       pm25: group.pmSeries[concordHour % group.pmSeries.length],
     })), [concordHour]);
+  const dashboardStats = useMemo(() => {
+    const values = sceneId === "concord"
+      ? Array.from({ length: 24 }, (_, index) => concordPmAt(index))
+      : Array.from({ length: activeDay.count }, (_, index) => airRecordAt(activeDay.start + index).pm25_ug_m3);
+    const average = values.reduce((sum, value) => sum + value, 0) / Math.max(values.length, 1);
+    const peak = Math.max(...values);
+    const min = Math.min(...values);
+    const range = Math.max(peak - min, 0.01);
+    const points = values.map((value, index) => {
+      const x = values.length === 1 ? 0 : (index / (values.length - 1)) * 240;
+      const y = 58 - ((value - min) / range) * 48;
+      return `${x.toFixed(1)},${y.toFixed(1)}`;
+    }).join(" ");
+    return { average, peak, aqi: pm25Aqi(average), points };
+  }, [activeDay.count, activeDay.start, sceneId]);
+  const replayProgress = sceneId === "concord"
+    ? concordHour / 23
+    : activeDayOffset / Math.max(activeDay.count - 1, 1);
+  const sunHeight = Math.sin(Math.PI * replayProgress) * 48;
 
   useEffect(() => {
     if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(() => undefined);
+  }, []);
+
+  useEffect(() => {
+    const openSceneFromHash = () => {
+      const requestedScene = window.location.hash.slice(1);
+      if (requestedScene === "concord" || requestedScene === "south-park") {
+        setSceneId(requestedScene);
+      }
+    };
+    openSceneFromHash();
+    window.addEventListener("hashchange", openSceneFromHash);
+    return () => window.removeEventListener("hashchange", openSceneFromHash);
   }, []);
 
   useEffect(() => {
@@ -199,12 +242,6 @@ export function PhiExperience() {
             onSceneStatus={setSceneStatus}
           />
         </Suspense>
-        <header className="scene-topbar">
-          <span className="brand-mark">PHI</span>
-        </header>
-        <div className="scene-caption">
-          <strong>{sceneConfig.caption}</strong>
-        </div>
         <button className="mobile-panel-launcher" onClick={() => setMobilePanelOpen(true)} aria-expanded={mobilePanelOpen} aria-controls="experience-controls">
           Controls
         </button>
@@ -216,60 +253,20 @@ export function PhiExperience() {
         inert={mobileLayout && !mobilePanelOpen}
         aria-hidden={mobileLayout && !mobilePanelOpen}
       >
-        <header className="panel-header">
-          <h1>Air Pollution</h1>
-          <div className="panel-header-actions">
-            <span className={`status-dot ${guideFollowing ? "active" : ""}`} aria-label={guideFollowing ? "Guided tour following" : "Manual mode"} />
-            <button className="mobile-panel-close" onClick={() => setMobilePanelOpen(false)} aria-label="Collapse controls">×</button>
-          </div>
-        </header>
-
-        <label className="field-control">
-          <span>SCENE</span>
-          <select value={sceneId} onChange={(event) => chooseScene(event.target.value as SceneId)}>
-            {Object.values(SCENE_CONFIGS).map((scene) => <option key={scene.id} value={scene.id}>{scene.label}</option>)}
-          </select>
-        </label>
-
-        {sceneId === "south-park" && (
-          <label className="field-control">
-            <span>DATE</span>
-            <select value={activeDay.date} onChange={(event) => { detachGuide(); setSouthParkRecordIndex(recordIndexFor(event.target.value)); }}>
-              {AIR_QUALITY_DAYS.map((day) => <option key={day.date} value={day.date}>{day.date}</option>)}
-            </select>
-          </label>
-        )}
-
-        <section className="primary-reading">
-          <div className="section-line"><span>PM2.5</span><span>{pmBand(record.pm25_ug_m3)}</span></div>
-          <div className="pm-value"><strong>{record.pm25_ug_m3.toFixed(1)}</strong><span>µg/m³</span></div>
-          <div className="reading-meta">{sceneId === "south-park" && <span>{activeDay.date}</span>}<strong>{String(hour).padStart(2, "0")}:00</strong></div>
-        </section>
-
-        {sceneId === "concord" ? (
-          <section className="station-readings" aria-label="Concord monitoring stations">
-            <div className="section-line"><span>LOCAL STATIONS</span></div>
-            <div className="station-grid">
-              {concordStations.map((station) => (
-                <div key={station.id}>
-                  <span>{station.label}</span>
-                  <strong>{station.pm25.toFixed(2)}</strong>
-                </div>
-              ))}
-            </div>
-          </section>
-        ) : (
-          <div className="wind-grid">
-            <div><span>WIND</span><strong>{record.wind_speed_m_s?.toFixed(1) ?? "—"}</strong><small>m/s</small></div>
-            <div><span>DIRECTION</span><strong>{record.wind_direction_deg?.toFixed(0) ?? "—"}</strong><small>degrees</small></div>
-          </div>
-        )}
-
         <section className="replay-control">
-          <div className="section-line"><span>TIME</span><span>{replayPlaying ? "PLAYING" : "PAUSED"}</span></div>
-          <div className="replay-row">
-            <button onClick={() => { detachGuide(); setReplayPlaying((value) => !value); }} aria-label={replayPlaying ? "Pause replay" : "Play replay"}>{replayPlaying ? "Ⅱ" : "▶"}</button>
+          <div className="sun-time-header">
+            <span>TIME</span>
+            <strong>{String(hour).padStart(2, "0")}:00</strong>
+            <span>{replayPlaying ? "PLAYING" : "PAUSED"}</span>
+          </div>
+          <div className="sun-dial" aria-label={`Sun position at ${String(hour).padStart(2, "0")}:00`}>
+            <div className="sun-arc" />
+            <div className="sun-icon" style={{ left: `${replayProgress * 100}%`, bottom: `${sunHeight + 3}px` }}><i /></div>
+            <span className="sunrise-label">SUNRISE</span>
+            <span className="noon-label">NOON</span>
+            <span className="sunset-label">SUNSET</span>
             <input
+              className="sun-range"
               type="range"
               min="0"
               max={sceneId === "concord" ? 23 : activeDay.count - 1}
@@ -280,24 +277,26 @@ export function PhiExperience() {
                 if (sceneId === "concord") setConcordHour(value);
                 else setSouthParkRecordIndex(activeDay.start + value);
               }}
-              aria-label="Historical hour"
+              aria-label="Set time by moving the sun"
             />
+          </div>
+          <div className="replay-row">
+            <button onClick={() => { detachGuide(); setReplayPlaying((value) => !value); }} aria-label={replayPlaying ? "Pause replay" : "Play replay"}>{replayPlaying ? "Ⅱ" : "▶"}</button>
           </div>
         </section>
 
         <section className="narration-control">
-          <div className="section-line"><span>GUIDED NARRATION</span><span>{timeLabel(audioTime)} / 6:46</span></div>
           {!tourStarted ? (
-            <button className="start-tour" onClick={startTour}>Start Guided Tour</button>
+            <button className="start-tour" onClick={startTour}><span aria-hidden="true">▶</span> Start Guided Tour</button>
           ) : (
             <>
               <div className="audio-buttons">
-                <button onClick={toggleNarration}>{audioPlaying ? "Pause" : "Play"}</button>
-                <button onClick={restartTour}>Restart</button>
-                <button onClick={jumpToSceneChapter}>Scene Chapter</button>
+                <button className="audio-primary" onClick={toggleNarration}><span aria-hidden="true">{audioPlaying ? "Ⅱ" : "▶"}</span>{audioPlaying ? "Pause" : "Play"}</button>
+                <button onClick={restartTour}><span aria-hidden="true">↻</span>Restart</button>
+                <button onClick={jumpToSceneChapter}><span aria-hidden="true">◇</span>Scene Chapter</button>
               </div>
               <input type="range" min="0" max={TOUR_DURATION_SECONDS} step="0.1" value={audioTime} onChange={(event) => seekNarration(Number(event.target.value))} aria-label="Narration progress" />
-              {!guideFollowing && <button className="resume-guide" onClick={resumeGuide}>Resume Guide</button>}
+              {!guideFollowing && <button className="resume-guide" onClick={resumeGuide}><span aria-hidden="true">◎</span>Resume Guide</button>}
             </>
           )}
           <audio
@@ -320,9 +319,77 @@ export function PhiExperience() {
           />
         </section>
 
-        <section className="system-status">
-          <div id={VR_BUTTON_HOST_ID} className="vr-button-host" />
-        </section>
+        <div className="panel-column panel-right">
+          <header className="panel-header data-header">
+            <div><span className="panel-kicker">LIVE ENVIRONMENT</span><h2>City Data</h2></div>
+            <div className="panel-header-actions">
+              <span className="live-indicator">LIVE</span>
+              <button className="mobile-panel-close" onClick={() => setMobilePanelOpen(false)} aria-label="Collapse controls">×</button>
+            </div>
+          </header>
+
+          <label className="field-control">
+            <span>SCENE</span>
+            <select value={sceneId} onChange={(event) => chooseScene(event.target.value as SceneId)}>
+              {Object.values(SCENE_CONFIGS).map((scene) => <option key={scene.id} value={scene.id}>{scene.label}</option>)}
+            </select>
+          </label>
+
+          {sceneId === "south-park" && (
+            <label className="field-control">
+              <span>DATE</span>
+              <select value={activeDay.date} onChange={(event) => { detachGuide(); setSouthParkRecordIndex(recordIndexFor(event.target.value)); }}>
+                {AIR_QUALITY_DAYS.map((day) => <option key={day.date} value={day.date}>{day.date}</option>)}
+              </select>
+            </label>
+          )}
+
+          <section className="primary-reading">
+            <div className="section-line"><span>PM2.5</span><span>{pmBand(record.pm25_ug_m3)}</span></div>
+            <div className="pm-value"><strong>{record.pm25_ug_m3.toFixed(1)}</strong><span>µg/m³</span></div>
+            <div className="reading-meta">{sceneId === "south-park" && <span>{activeDay.date}</span>}<strong>{String(hour).padStart(2, "0")}:00</strong></div>
+          </section>
+
+          <section className="air-dashboard" aria-label="Air quality summary">
+            <div className="dashboard-metrics">
+              <div><span>24H AQI</span><strong>{dashboardStats.aqi}</strong><small>US EPA</small></div>
+              <div><span>DAILY AVG</span><strong>{dashboardStats.average.toFixed(1)}</strong><small>µg/m³</small></div>
+              <div><span>DAILY PEAK</span><strong>{dashboardStats.peak.toFixed(1)}</strong><small>µg/m³</small></div>
+            </div>
+            <div className="trend-chart">
+              <div className="section-line"><span>24 HOUR TREND</span><span>{sceneId === "concord" ? "PROFILE" : "OBSERVED"}</span></div>
+              <svg viewBox="0 0 240 64" role="img" aria-label="PM2.5 24-hour trend">
+                <path d="M0 12H240M0 35H240M0 58H240" />
+                <polyline points={dashboardStats.points} />
+              </svg>
+            </div>
+            <div className="last-update"><span>LAST UPDATE</span><strong>{sceneId === "concord" ? `${String(hour).padStart(2, "0")}:00 profile` : record.local_time.replace("T", " ")}</strong></div>
+          </section>
+
+          {sceneId === "concord" ? (
+            <section className="station-readings" aria-label="Concord monitoring stations">
+              <div className="section-line"><span>LOCAL STATIONS</span></div>
+              <div className="station-grid">
+                {concordStations.map((station) => (
+                  <div key={station.id}>
+                    <span>{station.label}</span>
+                    <strong>{station.pm25.toFixed(2)}</strong>
+                  </div>
+                ))}
+              </div>
+            </section>
+          ) : (
+            <div className="wind-grid">
+              <div><span>WIND</span><strong>{record.wind_speed_m_s?.toFixed(1) ?? "—"}</strong><small>m/s</small></div>
+              <div><span>DIRECTION</span><strong>{record.wind_direction_deg?.toFixed(0) ?? "—"}</strong><small>degrees</small></div>
+            </div>
+          )}
+
+          <section className="system-status">
+            <div className="section-line"><span>IMMERSIVE MODE</span><span>WEBXR</span></div>
+            <div id={VR_BUTTON_HOST_ID} className="vr-button-host" />
+          </section>
+        </div>
       </aside>
     </main>
   );

@@ -5,54 +5,12 @@ import energyWorkflow from "../assets/research/energy-method-workflow.png";
 import retrofitFigure from "../assets/retrofit/health-driven-retrofit-strategies.png";
 
 export const modulePanels = [
-  {
-    number:"01",
-    key:"air",
-    label:"Environmental Sensing",
-    title:"Air Quality",
-    path:"/air-quality",
-    description:"Sensor records, geospatial variables, and prediction models are used to examine neighborhood-scale PM2.5 patterns across Seattle and the South Park testbed."
-  },
-  {
-    number:"02",
-    key:"energy",
-    label:"Building Performance",
-    title:"Energy Modeling",
-    path:"/energy",
-    description:"Four residential archetypes and EnergyPlus simulations characterize energy use under different envelope, HVAC, ventilation, and hot-water conditions."
-  },
-  {
-    number:"03",
-    key:"retrofit",
-    label:"Building Intervention",
-    title:"Health-Driven Retrofit",
-    path:"/retrofit",
-    description:"Compare envelope upgrades, heat pumps, ventilation, filtration, and combined retrofit packages in relation to energy use, indoor conditions, and decarbonization."
-  },
-  {
-    number:"04",
-    key:"renewable",
-    label:"Distributed Generation",
-    title:"Renewable Energy",
-    path:"/renewable",
-    description:"Monthly and annual roof and façade solar-potential results are linked to building footprints for building- and neighborhood-scale renewable-energy analysis."
-  },
-  {
-    number:"05",
-    key:"scenario",
-    label:"Decision Support",
-    title:"Agentic AI",
-    path:"/scenario-analysis",
-    description:"Guided queries connect building, environmental, and scenario records to support comparison, interpretation, and evidence-grounded explanation."
-  },
-  {
-    number:"06",
-    key:"vr",
-    label:"Immersive Engagement",
-    title:"VR & Community Engagement",
-    path:"/vr",
-    description:"An immersive interface translates PM2.5 data into time-based spatial experiences for community exploration around Concord International School and South Park."
-  }
+  { number:"01", key:"air", title:"Air Quality", path:"/air-quality", description:"Sensor and geospatial data support neighborhood-scale PM2.5 prediction and visualization. The platform distinguishes measured observations from modeled and estimated conditions." },
+  { number:"02", key:"energy", title:"Energy Modeling", path:"/energy", description:"Four residential archetypes support parametric simulation across envelope, HVAC, ventilation, and hot-water conditions. Model records connect defined inputs to building-energy outputs." },
+  { number:"03", key:"retrofit", title:"Health-Driven Retrofit", path:"/retrofit", description:"The research compares envelope improvements, heat pumps, ventilation, filtration, and combined intervention packages. Energy and indoor-environment considerations are recorded together." },
+  { number:"04", key:"renewable", title:"Renewable Energy", path:"/renewable", description:"This module links building geometry and energy demand with renewable-energy scenario records. Approved public outputs will be added with their source and status." },
+  { number:"05", key:"scenario", title:"Agentic AI", path:"/scenario-analysis", description:"Guided querying, scenario comparison, and grounded explanation using project data, scenario records, and the knowledge graph." },
+  { number:"06", key:"vr", title:"VR & Community Engagement", path:"/vr", description:"The immersive interface represents PM2.5 through a 24-hour cycle around Concord International School. Ground-level and bird’s-eye views support environmental communication." }
 ];
 
 export const figures = {
