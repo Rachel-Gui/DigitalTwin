@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import arcgisPreview from "../assets/home/south-park-arcgis-preview.png";
+import studyAreaMap from "../assets/south-park-study-area-map.png";
 import airMap from "../assets/air-quality/pm25-prediction-map.png";
 import vrCity from "../assets/vr/city-scale-pollution-view.png";
 import paperCover from "../assets/research/energy-paper-cover.png";
@@ -12,21 +13,13 @@ export default function Home(){
   const {t}=useLanguage();
   return <div className="home-page">
     <section className="home-hero page-container">
-      <div className="hero-title">
-        <span className="hero-kicker"><i/> {t("South Park · Seattle / Urban research platform")}</span>
-        <h1>DecarbCity<span>Twin</span></h1>
-      </div>
+      <div className="hero-title"><h1>DecarbCityTwin</h1></div>
       <div className="hero-statement"><h2>{t("A Platform for Health-Driven")}<br/>{t("& Equitable Decarbonization")}</h2><p>{t("DecarbCityTwin connects neighborhood air-quality data, building-energy simulation, health-driven retrofit analysis, renewable-energy scenarios, agentic decision support, and immersive VR for the South Park testbed.")}</p></div>
-      <div className="hero-platform-meta">
-        <div className="hero-capability-list"><span>{t("Neighborhood scale")}</span><span>{t("Real-time insight")}</span><span>{t("Scenario ready")}</span></div>
-        <div className="hero-platform-actions"><Link className="button light-button" to="/dashboard">{t("Explore the twin ↗")}</Link><Link className="text-link dark-link" to="/vr">{t("Enter VR")}</Link></div>
-        <div className="hero-location"><small>{t("LIVE MODEL")}</small><strong>47.61° N</strong><span>Seattle, Washington</span></div>
-      </div>
       <div className="hero-preview"><ViewerPreview src={arcgisPreview}/></div>
     </section>
     <ModuleExpandingPanels/>
+    <StudyAreaSection/>
     <SharedView/>
-    <ImpactTargets/>
     <ResearchInPractice/>
     <ExpertiseGroups/>
     <MediaShowcase/>
@@ -36,17 +29,65 @@ export default function Home(){
 
 function ModuleExpandingPanels(){
   const {language,t}=useLanguage();
-  const [active,setActive]=useState(0);
+  const [activeModule,setActiveModule]=useState(null);
   const esPanels={air:["Calidad del aire","Los sensores y datos geoespaciales apoyan la predicción y visualización de PM2.5 a escala barrial."],energy:["Modelado energético","Cuatro tipologías residenciales permiten simular envolvente, climatización, ventilación y agua caliente."],retrofit:["Rehabilitación saludable","Compara mejoras de envolvente, bombas de calor, ventilación, filtración y paquetes combinados."],renewable:["Energía renovable","Vincula la geometría y demanda de los edificios con escenarios de energía renovable."],scenario:["IA agéntica","Consultas guiadas, comparación de escenarios y explicaciones basadas en los datos del proyecto."],vr:["VR y participación comunitaria","Una interfaz inmersiva representa el PM2.5 durante un ciclo de 24 horas."]};
   return <section className="study-section"><div className="study-inner page-container">
     <SectionHeader eyebrow={t("02 / Modules")} title={t("What we study")}/>
-    <div className="expanding-panels">
-      {modulePanels.map((m,i)=><article key={m.key} className={active===i?"module-panel active":"module-panel"} onMouseEnter={()=>setActive(i)} onFocus={()=>setActive(i)}>
-        <button aria-controls={`module-panel-${m.key}`} aria-expanded={active===i} onClick={()=>setActive(i)}><span>{m.number}</span><h3>{language==="es"?esPanels[m.key][0]:m.title}</h3></button>
-        <div id={`module-panel-${m.key}`} className="module-reveal" aria-hidden={active!==i}><p>{language==="es"?esPanels[m.key][1]:m.description}</p><Link tabIndex={active===i?0:-1} to={m.path}>{t("View module ↗")}</Link></div>
+    <div className="editorial-modules">
+      {modulePanels.map((m)=><article
+        key={m.key}
+        className={`editorial-module${activeModule===m.key?" active":""}`}
+        onMouseEnter={()=>setActiveModule(m.key)}
+        onMouseLeave={()=>setActiveModule(null)}
+        onFocus={()=>setActiveModule(m.key)}
+        onBlur={(event)=>{
+          if(!event.currentTarget.contains(event.relatedTarget)){
+            setActiveModule(null);
+          }
+        }}
+      >
+        <button
+          type="button"
+          aria-expanded={activeModule===m.key}
+          aria-controls={`module-details-${m.key}`}
+          onClick={()=>setActiveModule(activeModule===m.key?null:m.key)}
+        >
+          <span className="module-kicker">{m.label}</span>
+          <span className="module-background-number" aria-hidden="true">{m.number}</span>
+          <div className="module-copy">
+            <h3>{language==="es"?esPanels[m.key][0]:m.title}</h3>
+          </div>
+        </button>
+        <div className="module-details" id={`module-details-${m.key}`}>
+          <p>{language==="es"?esPanels[m.key][1]:m.description}</p>
+          <Link className="module-link" to={m.path}>{t("View module ↗")}</Link>
+        </div>
       </article>)}
     </div>
   </div></section>
+}
+
+function StudyAreaSection(){
+  return <section className="home-study-area">
+    <div className="home-study-area-inner page-container">
+      <div className="study-area-copy">
+        <span className="eyebrow">03 / Where we study</span>
+        <h2>South Park,<br/>Duwamish Valley,<br/>Seattle.</h2>
+        <div className="study-area-body">
+          <p>South Park is the initial DecarbCityTwin study area within Seattle’s Duwamish Valley. The neighborhood is shaped by industrial land uses, pollution exposure, older residential buildings, and long-standing environmental and health inequities.</p>
+          <p>Many homes lack modern ventilation, cooling, and high-performance envelope systems, making residents more vulnerable to poor indoor air quality, overheating, and inefficient energy performance. These conditions make South Park a critical testbed for health-driven retrofit, air-quality analysis, renewable-energy assessment, and community-centered decarbonization.</p>
+        </div>
+        <ul className="study-area-keywords" aria-label="Study area focus">
+          <li>Air quality</li>
+          <li>Housing vulnerability</li>
+          <li>Heat risk</li>
+        </ul>
+      </div>
+      <figure className="study-area-map">
+        <img src={studyAreaMap} alt="South Park study area in Seattle’s Duwamish Valley"/>
+      </figure>
+    </div>
+  </section>
 }
 
 function SharedView(){
@@ -55,21 +96,9 @@ function SharedView(){
     ["02","Lower carbon","Compare building performance, retrofit pathways, and renewable-energy opportunities."],
     ["03","Healthier communities","Translate technical evidence into understandable, place-based decisions."]
   ];
-  return <section className="home-light-section"><div className="page-container">
-    <SectionHeader eyebrow="03 / Shared View" title={<>From fragmented data to<br/>collective insight.</>} text="One research platform connects environmental conditions, building systems, scenarios, and community-facing interfaces."/>
+  return <section className="home-shared-section"><div className="page-container">
+    <SectionHeader eyebrow="04 / Shared View" title={<>From fragmented data to<br/>collective insight.</>} text="One research platform connects environmental conditions, building systems, scenarios, and community-facing interfaces."/>
     <div className="home-outcome-grid">{outcomes.map(([number,title,text])=><article key={title}><span>{number}</span><h3>{title}</h3><p>{text}</p></article>)}</div>
-  </div></section>
-}
-
-function ImpactTargets(){
-  const targets=[
-    ["42","%","Potential operational carbon reduction"],
-    ["150","×","Faster comparative scenario analysis"],
-    ["24","/7","Accessible spatial decision support"]
-  ];
-  return <section className="home-impact-section"><div className="page-container">
-    <SectionHeader eyebrow="04 / Intended Impact" title={<>Model outcomes that<br/>matter to people.</>} text="Compare carbon, health, and community outcomes block by block."/>
-    <div className="impact-target-grid">{targets.map(([value,suffix,label],index)=><article key={label}><span>{String(index+1).padStart(2,"0")}</span><div><strong>{value}</strong><b>{suffix}</b></div><p>{label}</p><small>Original dashboard target · validation pending</small></article>)}</div>
   </div></section>
 }
 
@@ -93,11 +122,7 @@ function ExpertiseGroups(){
   ];
   return <section className="home-expertise-section"><div className="page-container">
     <SectionHeader eyebrow="06 / Shared Expertise" title={<>Research built through<br/>shared expertise.</>} text="Environmental data, building science, renewable-energy analysis, and immersive visualization contribute to one platform."/>
-    <div className="expertise-group-grid">{groups.map((group,index)=><article key={group.title}>
-      <div className="expertise-group-top"><span>{group.initials}</span><small>{String(index+1).padStart(2,"0")}</small></div>
-      <h3>{group.title}</h3><strong>{group.role}</strong><p>{group.text}</p>
-      <div>{group.tags.map(tag=><span key={tag}>{tag}</span>)}</div>
-    </article>)}</div>
+    <div className="expertise-group-grid">{groups.map((group,index)=><article key={group.title}><div className="expertise-group-top"><span>{group.initials}</span><small>{String(index+1).padStart(2,"0")}</small></div><h3>{group.title}</h3><strong>{group.role}</strong><p>{group.text}</p><div>{group.tags.map(tag=><span key={tag}>{tag}</span>)}</div></article>)}</div>
     <Link className="text-link" to="/research#team">View team structure ↗</Link>
   </div></section>
 }
