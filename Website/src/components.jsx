@@ -24,9 +24,9 @@ export function Navbar() {
     <nav ref={navRef} id="primary-navigation" className={open?"nav-links open":"nav-links"} aria-label="Primary navigation">
       <NavLink to="/" onClick={close}>{t("Home")}</NavLink>
       <NavLink to="/dashboard" onClick={close}>{t("Digital Twin")}</NavLink>
-      <div className="dropdown"><button onClick={()=>setDrop(!drop)} aria-expanded={drop}>{t("Modules")} <span>⌄</span></button>
-        <div className={drop?"dropdown-menu show":"dropdown-menu"}>
-          {modules.map(m=><Link key={m.key} to={m.path} onClick={close}><small>{m.icon}</small><span>{m.title}</span></Link>)}
+      <div className="dropdown"><button className="dropdown-trigger" onClick={()=>setDrop(!drop)} aria-controls="modules-menu" aria-haspopup="true" aria-expanded={drop}><span>{t("Modules")}</span><i className="dropdown-chevron" aria-hidden="true"/></button>
+        <div id="modules-menu" className={drop?"dropdown-menu show":"dropdown-menu"} aria-hidden={!drop}>
+          {modules.map((m,index)=><Link key={m.key} to={m.path} onClick={close}><small>{String(index+1).padStart(2,"0")}</small><span><strong>{m.title}</strong><em>{m.tag}</em></span><b aria-hidden="true">↗</b></Link>)}
         </div>
       </div>
       <NavLink to="/research" onClick={close}>{t("Research")}</NavLink>
