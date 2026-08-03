@@ -14,8 +14,8 @@ export const modulePanels = [
 ];
 
 export const figures = {
-  airMap: { src:airMap, title:"PM2.5 prediction visualization", detail:"Neighborhood and grid-scale model output", source:"DecarbCityTwin 2.0 project materials", status:"Model integration in progress" },
-  airDashboard: { src:airDashboard, title:"PM2.5 temporal dashboard", detail:"Interface view for examining time variation", source:"DecarbCityTwin 2.0 project materials", status:"Project visualization" },
+  airMap: { src:airMap, title:"PM2.5 prediction visualization", detail:"Neighborhood and grid-scale model output", source:"DecarbCityTwin project materials", status:"Model integration in progress" },
+  airDashboard: { src:airDashboard, title:"PM2.5 temporal dashboard", detail:"Interface view for examining time variation", source:"DecarbCityTwin project materials", status:"Project visualization" },
   energyArchetypes: { src:energyArchetypes, title:"Four residential archetypes", detail:"Single Family, Duplex, Quadplex, and Ten-Unit Apartment", source:"Abbasabadi et al., Architecture 2026, 6, 84", status:"Published research" },
   energyWorkflow: { src:energyWorkflow, title:"Energy modeling method workflow", detail:"Archetype definition, parametric simulation, and model-development sequence", source:"Abbasabadi et al., Architecture 2026, 6, 84", status:"Published research" },
   retrofit: { src:retrofitFigure, title:"Health-driven retrofit strategies", detail:"Modeled intervention sequence and indoor-environment considerations", source:"Abbasabadi et al., Architecture 2026, 6, 84", status:"Published research" }

@@ -4,8 +4,10 @@ import silLogo from "./assets/brand/sustainable-intelligence-lab-logo.png";
 import uwWhite from "./assets/brand/uw-signature-white.png";
 import { modules } from "./data/modules";
 import { buildingDemo, modeResults } from "./data/buildingDemo";
+import { useLanguage } from "./i18n";
 
 export function Navbar() {
+  const { language, setLanguage, t } = useLanguage();
   const [open,setOpen]=useState(false), [drop,setDrop]=useState(false);
   const navRef=useRef(null);
   const close=()=>{setOpen(false);setDrop(false)};
@@ -21,15 +23,16 @@ export function Navbar() {
     <span className="header-rule"/>
     <button className="menu-button" aria-label={open?"Close navigation":"Open navigation"} aria-controls="primary-navigation" aria-expanded={open} onClick={()=>setOpen(!open)}><span/><span/><span/></button>
     <nav ref={navRef} id="primary-navigation" className={open?"nav-links open":"nav-links"} aria-label="Primary navigation">
-      <NavLink to="/" onClick={close}>Home</NavLink>
-      <NavLink to="/dashboard" onClick={close}>Digital Twin</NavLink>
-      <div className="dropdown"><button className="dropdown-trigger" onClick={()=>setDrop(!drop)} aria-controls="modules-menu" aria-haspopup="true" aria-expanded={drop}><span>Modules</span><i className="dropdown-chevron" aria-hidden="true"/></button>
+      <NavLink to="/" onClick={close}>{t("Home")}</NavLink>
+      <NavLink to="/dashboard" onClick={close}>{t("Digital Twin")}</NavLink>
+      <div className="dropdown"><button className="dropdown-trigger" onClick={()=>setDrop(!drop)} aria-controls="modules-menu" aria-haspopup="true" aria-expanded={drop}><span>{t("Modules")}</span><i className="dropdown-chevron" aria-hidden="true"/></button>
         <div id="modules-menu" className={drop?"dropdown-menu show":"dropdown-menu"} aria-hidden={!drop}>
           {modules.map((m,index)=><Link key={m.key} to={m.path} onClick={close}><small>{String(index+1).padStart(2,"0")}</small><span><strong>{m.title}</strong><em>{m.tag}</em></span><b aria-hidden="true">↗</b></Link>)}
         </div>
       </div>
-      <NavLink to="/research" onClick={close}>Research</NavLink>
-      <NavLink to="/analytics" onClick={close}>Live Air Data</NavLink>
+      <NavLink to="/research" onClick={close}>{t("Research")}</NavLink>
+      <NavLink to="/analytics" onClick={close}>{t("Live Air Data")}</NavLink>
+      <div className="language-switch" role="group" aria-label="Language / Idioma"><button type="button" className={language==="en"?"active":""} onClick={()=>setLanguage("en")} aria-pressed={language==="en"}>EN</button><span>/</span><button type="button" className={language==="es"?"active":""} onClick={()=>setLanguage("es")} aria-pressed={language==="es"}>ES</button></div>
       <img className="mobile-uw" src={uwWhite} alt="University of Washington"/>
     </nav>
     <span className="header-rule right"/>
@@ -38,7 +41,8 @@ export function Navbar() {
 }
 
 export function Footer(){
-  return <footer className="site-footer"><div><img src={silLogo} alt="Sustainable Intelligence Lab"/><div><h2>DecarbCityTwin 2.0</h2><p>Urban intelligence for equitable climate action.</p></div></div><div><span>RESEARCH PLATFORM</span><p>South Park · Duwamish Valley · Seattle</p><p>Figures and statuses are labeled by source and development stage.</p></div><nav aria-label="Footer navigation"><Link to="/">Home</Link><Link to="/dashboard">Digital Twin</Link><Link to="/research">Research</Link><Link to="/analytics">Live Air Data</Link><a href="mailto:info@silab.org">Contact</a></nav><div><img src={uwWhite} alt="University of Washington"/><p>© 2026 Sustainable Intelligence Lab</p></div></footer>
+  const {t}=useLanguage();
+  return <footer className="site-footer"><div><img src={silLogo} alt="Sustainable Intelligence Lab"/><div><h2>DecarbCityTwin</h2><p>{t("Urban intelligence for equitable climate action.")}</p></div></div><div><span>{t("RESEARCH PLATFORM")}</span><p>South Park · Duwamish Valley · Seattle</p><p>{t("Figures and statuses are labeled by source and development stage.")}</p></div><nav aria-label="Footer navigation"><Link to="/">{t("Home")}</Link><Link to="/dashboard">{t("Digital Twin")}</Link><Link to="/research">{t("Research")}</Link><Link to="/analytics">{t("Live Air Data")}</Link><a href="mailto:info@silab.org">{t("Contact")}</a></nav><div><img src={uwWhite} alt="University of Washington"/><p>© 2026 Sustainable Intelligence Lab</p></div></footer>
 }
 
 export function SectionHeader({eyebrow,title,text,action}){return <div className="section-header"><div><span className="eyebrow">{eyebrow}</span><h2>{title}</h2>{text&&<p>{text}</p>}</div>{action}</div>}

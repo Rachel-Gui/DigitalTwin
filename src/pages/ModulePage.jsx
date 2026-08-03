@@ -17,7 +17,7 @@ function ModuleHero({index,status,title,subtitle,children}){
   return <section className="module-editorial-hero"><div><span>{index} / MODULE</span><StatusLabel>{status}</StatusLabel></div><h1>{title}</h1><p>{subtitle}</p>{children}</section>
 }
 function NumberedRecords({items}){return <div className="numbered-records">{items.map((x,i)=><article key={x[0]}><span>{String(i+1).padStart(2,"0")}</span><h3>{x[0]}</h3><p>{x[1]}</p></article>)}</div>}
-function Figure({src,title,detail,source,status}){return <figure className="research-figure"><div className="figure-image"><img src={src} alt={title}/></div><SourceCaption title={title} detail={detail} source={source} status={status}/></figure>}
+function Figure({src,title,detail,source,status}){return <figure className="research-figure"><div className="figure-image"><img src={src} alt={title}/></div><SourceCaption title={title} detail={detail} source={source?.replace(" 2.0","")} status={status}/></figure>}
 
 function EnergyPage(){
   return <div className="module-page editorial-page"><ModuleHero index="02" status="PUBLISHED RESEARCH · DATA AVAILABLE" title={<>Four housing types.<br/><em>5,832 simulated conditions.</em></>} subtitle="Physics-based energy simulation and machine-learning surrogate modeling for health-driven retrofit analysis."><Figure src={energyArchetypes} title="Four residential archetypes" detail="Single Family, Duplex, Quadplex, and Ten-Unit Apartment" source="Abbasabadi et al., Architecture 2026, 6, 84" status="Published research"/></ModuleHero>

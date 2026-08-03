@@ -935,3 +935,5 @@ body{background:var(--paper);color:var(--ink)}
   .analytics-page.is-syncing .air-kpi-grid article,
   .analytics-page.is-live .air-bar-row>div i{animation:none}
 }
+.language-switch{display:flex;align-items:center;gap:5px;margin-left:4px;color:#777;font-size:11px;letter-spacing:.08em}.language-switch button{border:0;background:transparent;color:#8d8d8d;padding:8px 3px;cursor:pointer;font:700 11px/1 inherit;letter-spacing:.08em}.language-switch button.active{color:#fff;text-decoration:underline;text-decoration-color:#b8e55b;text-underline-offset:5px}.language-switch button:hover{color:#b8e55b}
+.lab-brand,.site-footer>div:first-child,.site-footer>div:last-child{border:0!important;background:transparent!important;box-shadow:none!important}.lab-brand img,.site-footer>div:first-child img,.site-footer>div:last-child img{border:0!important;background:transparent!important;box-shadow:none!important}.lab-brand img,.site-footer>div:first-child img{clip-path:inset(7px);filter:none}

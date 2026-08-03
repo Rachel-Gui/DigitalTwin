@@ -1,11 +1,6 @@
+node_modules/
+dist/
 .DS_Store
-**/node_modules/
-**/dist/
-**/.next/
-**/*.tsbuildinfo
-**/.env
-**/.env.*
-!**/.env.example
-**/.auth/
-**/.wrangler/
-*.log
+.env
+.env.*
+!.env.example

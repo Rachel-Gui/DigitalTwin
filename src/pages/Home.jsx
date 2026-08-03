@@ -6,19 +6,21 @@ import vrCity from "../assets/vr/city-scale-pollution-view.png";
 import paperCover from "../assets/research/energy-paper-cover.png";
 import { SectionHeader, ViewerPreview } from "../components";
 import { modulePanels } from "../data/projectContent";
+import { useLanguage } from "../i18n";
 
 export default function Home(){
+  const {t}=useLanguage();
   return <div className="home-page">
     <section className="home-hero page-container">
       <div className="hero-title">
-        <span className="hero-kicker"><i/> South Park · Seattle / Urban research platform</span>
+        <span className="hero-kicker"><i/> {t("South Park · Seattle / Urban research platform")}</span>
         <h1>DecarbCity<span>Twin</span></h1>
       </div>
-      <div className="hero-statement"><h2>A Platform for Health-Driven<br/>&amp; Equitable Decarbonization</h2><p>DecarbCityTwin connects neighborhood air-quality data, building-energy simulation, health-driven retrofit analysis, renewable-energy scenarios, agentic decision support, and immersive VR for the South Park testbed.</p></div>
+      <div className="hero-statement"><h2>{t("A Platform for Health-Driven")}<br/>{t("& Equitable Decarbonization")}</h2><p>{t("DecarbCityTwin connects neighborhood air-quality data, building-energy simulation, health-driven retrofit analysis, renewable-energy scenarios, agentic decision support, and immersive VR for the South Park testbed.")}</p></div>
       <div className="hero-platform-meta">
-        <div className="hero-capability-list"><span>Neighborhood scale</span><span>Real-time insight</span><span>Scenario ready</span></div>
-        <div className="hero-platform-actions"><Link className="button light-button" to="/dashboard">Explore the twin ↗</Link><Link className="text-link dark-link" to="/vr">Enter VR</Link></div>
-        <div className="hero-location"><small>LIVE MODEL</small><strong>47.61° N</strong><span>Seattle, Washington</span></div>
+        <div className="hero-capability-list"><span>{t("Neighborhood scale")}</span><span>{t("Real-time insight")}</span><span>{t("Scenario ready")}</span></div>
+        <div className="hero-platform-actions"><Link className="button light-button" to="/dashboard">{t("Explore the twin ↗")}</Link><Link className="text-link dark-link" to="/vr">{t("Enter VR")}</Link></div>
+        <div className="hero-location"><small>{t("LIVE MODEL")}</small><strong>47.61° N</strong><span>Seattle, Washington</span></div>
       </div>
       <div className="hero-preview"><ViewerPreview src={arcgisPreview}/></div>
     </section>
@@ -33,13 +35,15 @@ export default function Home(){
 }
 
 function ModuleExpandingPanels(){
+  const {language,t}=useLanguage();
   const [active,setActive]=useState(0);
+  const esPanels={air:["Calidad del aire","Los sensores y datos geoespaciales apoyan la predicción y visualización de PM2.5 a escala barrial."],energy:["Modelado energético","Cuatro tipologías residenciales permiten simular envolvente, climatización, ventilación y agua caliente."],retrofit:["Rehabilitación saludable","Compara mejoras de envolvente, bombas de calor, ventilación, filtración y paquetes combinados."],renewable:["Energía renovable","Vincula la geometría y demanda de los edificios con escenarios de energía renovable."],scenario:["IA agéntica","Consultas guiadas, comparación de escenarios y explicaciones basadas en los datos del proyecto."],vr:["VR y participación comunitaria","Una interfaz inmersiva representa el PM2.5 durante un ciclo de 24 horas."]};
   return <section className="study-section"><div className="study-inner page-container">
-    <SectionHeader eyebrow="02 / Modules" title="What we study"/>
+    <SectionHeader eyebrow={t("02 / Modules")} title={t("What we study")}/>
     <div className="expanding-panels">
       {modulePanels.map((m,i)=><article key={m.key} className={active===i?"module-panel active":"module-panel"} onMouseEnter={()=>setActive(i)} onFocus={()=>setActive(i)}>
-        <button aria-controls={`module-panel-${m.key}`} aria-expanded={active===i} onClick={()=>setActive(i)}><span>{m.number}</span><h3>{m.title}</h3></button>
-        <div id={`module-panel-${m.key}`} className="module-reveal" aria-hidden={active!==i}><p>{m.description}</p><Link tabIndex={active===i?0:-1} to={m.path}>View module ↗</Link></div>
+        <button aria-controls={`module-panel-${m.key}`} aria-expanded={active===i} onClick={()=>setActive(i)}><span>{m.number}</span><h3>{language==="es"?esPanels[m.key][0]:m.title}</h3></button>
+        <div id={`module-panel-${m.key}`} className="module-reveal" aria-hidden={active!==i}><p>{language==="es"?esPanels[m.key][1]:m.description}</p><Link tabIndex={active===i?0:-1} to={m.path}>{t("View module ↗")}</Link></div>
       </article>)}
     </div>
   </div></section>

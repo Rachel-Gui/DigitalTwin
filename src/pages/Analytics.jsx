@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import "leaflet/dist/leaflet.css";
+import { useLanguage } from "../i18n";
 
 const metrics = {
   pm25: { label: "PM2.5", unit: "µg/m³", summary: "pm25Average" },
@@ -130,6 +131,7 @@ function ClaritySensorMap({ sources }) {
 }
 
 export default function Analytics() {
+  const {language,t}=useLanguage();
   const [state, setState] = useState({ loading: true, data: null, error: null });
   const [metric, setMetric] = useState("pm25");
 
@@ -163,7 +165,7 @@ export default function Analytics() {
   const currentLevel = pm25Level(summary.pm25Average);
   const updated = state.data?.newestMeasurementAt
     ? new Date(state.data.newestMeasurementAt).toLocaleString([], { dateStyle: "medium", timeStyle: "short" })
-    : "Waiting for data";
+    : t("Waiting for data");
   const reportingRate = summary.monitoringLocations
     ? Math.round((summary.reportingLocations / summary.monitoringLocations) * 100)
     : 0;
@@ -178,31 +180,31 @@ export default function Analytics() {
         <div className="page-container">
           <div className="air-dashboard-toolbar">
             <div>
-              <span className="eyebrow">DAISY monitoring network / South Park</span>
-              <h1>Live Air Quality</h1>
+              <span className="eyebrow">{t("DAISY monitoring network / South Park")}</span>
+              <h1>{t("Live Air Quality")}</h1>
             </div>
             <div className="air-dashboard-connection">
-              <span className={`analytics-health ${state.error ? "error" : ""}`}><i />{state.error ? "Connection error" : state.loading ? "Syncing data" : "Network online"}</span>
-              <button type="button" onClick={load} disabled={state.loading}>{state.loading ? "Syncing…" : "Refresh data"}</button>
+              <span className={`analytics-health ${state.error ? "error" : ""}`}><i />{t(state.error ? "Connection error" : state.loading ? "Syncing data" : "Network online")}</span>
+              <button type="button" onClick={load} disabled={state.loading}>{t(state.loading ? "Syncing…" : "Refresh data")}</button>
             </div>
           </div>
           <div className="air-dashboard-context">
-            <p>Latest minute-level observations from Clarity air sensors across the DAISY network.</p>
-            <dl><div><dt>Last updated</dt><dd>{updated}</dd></div><div><dt>Reporting</dt><dd>{reportingRate}% of network</dd></div></dl>
+            <p>{t("Latest minute-level observations from Clarity air sensors across the DAISY network.")}</p>
+            <dl><div><dt>{t("Last updated")}</dt><dd>{updated}</dd></div><div><dt>{t("Reporting")}</dt><dd>{reportingRate}% {language==="es"?"de la red":"of network"}</dd></div></dl>
           </div>
         </div>
       </section>
 
       <main className="air-dashboard-main">
         <div className="page-container">
-          {state.error && <div className="analytics-notice" role="alert"><strong>Live data is unavailable.</strong><p>{state.error}</p></div>}
+          {state.error && <div className="analytics-notice" role="alert"><strong>{t("Live data is unavailable.")}</strong><p>{state.error}</p></div>}
 
           <section className="air-kpi-grid" aria-busy={state.loading}>
             <article className="air-kpi-primary">
-              <div><span>Network average</span><b className={`air-status ${currentLevel.tone}`}>{currentLevel.label}</b></div>
+              <div><span>{t("Network average")}</span><b className={`air-status ${currentLevel.tone}`}>{t(currentLevel.label)}</b></div>
               <strong>{state.loading ? "···" : <AnimatedNumber value={summary.pm25Average}/>}</strong>
               <small>µg/m³ PM2.5</small>
-              <p>Average of the latest reporting locations.</p>
+              <p>{t("Average of the latest reporting locations.")}</p>
             </article>
             <article><span>Peak reading</span><strong>{state.loading ? "···" : <AnimatedNumber value={summary.pm25Maximum}/>}</strong><small>µg/m³ PM2.5</small><div className="kpi-rule"><i style={{ width: `${Math.min(100, (summary.pm25Maximum || 0) / 55 * 100)}%` }}/></div></article>
             <article><span>Active locations</span><strong>{state.loading ? "···" : <AnimatedNumber value={summary.reportingLocations} decimals={0}/>}</strong><small>of {summary.monitoringLocations ?? "—"} sensors</small><div className="kpi-rule"><i style={{ width: `${reportingRate}%` }}/></div></article>

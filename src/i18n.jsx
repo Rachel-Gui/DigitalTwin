@@ -1,0 +1,20 @@
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
+
+const Context = createContext(null);
+const es = {
+  "Skip to main content":"Saltar al contenido principal", Home:"Inicio", "Digital Twin":"Gemelo digital", Modules:"Módulos", Research:"Investigación", "Live Air Data":"Datos del aire en vivo", Contact:"Contacto",
+  "Urban intelligence for equitable climate action.":"Inteligencia urbana para una acción climática equitativa.", "RESEARCH PLATFORM":"PLATAFORMA DE INVESTIGACIÓN", "Figures and statuses are labeled by source and development stage.":"Las figuras y los estados indican su fuente y etapa de desarrollo.",
+  "South Park · Seattle / Urban research platform":"South Park · Seattle / Plataforma de investigación urbana", "A Platform for Health-Driven":"Una plataforma para la descarbonización", "& Equitable Decarbonization":"equitativa y orientada a la salud", "DecarbCityTwin connects neighborhood air-quality data, building-energy simulation, health-driven retrofit analysis, renewable-energy scenarios, agentic decision support, and immersive VR for the South Park testbed.":"DecarbCityTwin conecta datos de calidad del aire, simulación energética, rehabilitación orientada a la salud, energías renovables, asistencia mediante IA y realidad virtual inmersiva en South Park.",
+  "Neighborhood scale":"Escala barrial", "Real-time insight":"Información en tiempo real", "Scenario ready":"Preparado para escenarios", "Explore the twin ↗":"Explorar el gemelo ↗", "Enter VR":"Entrar en VR", "LIVE MODEL":"MODELO EN VIVO", "02 / Modules":"02 / Módulos", "What we study":"Qué estudiamos", "View module ↗":"Ver módulo ↗",
+  "DAISY monitoring network / South Park":"Red de monitoreo DAISY / South Park", "Live Air Quality":"Calidad del aire en vivo", "Connection error":"Error de conexión", "Syncing data":"Sincronizando datos", "Network online":"Red conectada", "Syncing…":"Sincronizando…", "Refresh data":"Actualizar datos", "Latest minute-level observations from Clarity air sensors across the DAISY network.":"Observaciones más recientes de los sensores Clarity de la red DAISY.", "Last updated":"Última actualización", Reporting:"Reportando", "Waiting for data":"Esperando datos", "Live data is unavailable.":"Los datos en vivo no están disponibles.",
+  "Network average":"Promedio de la red", Good:"Buena", Moderate:"Moderada", Elevated:"Elevada", "No data":"Sin datos", "Peak reading":"Lectura máxima", "Active locations":"Ubicaciones activas", "Sensor conditions":"Condiciones del sensor", "Average of the latest reporting locations.":"Promedio de las últimas ubicaciones que reportan.", "DAISY live sensor network":"Red de sensores DAISY en vivo", "Clarity monitoring map":"Mapa de monitoreo Clarity", "locations mapped":"ubicaciones en el mapa", "Compare with Clarity ↗":"Comparar con Clarity ↗", "Live monitoring locations":"Ubicaciones de monitoreo en vivo", "Open source dashboard ↗":"Abrir panel de origen ↗", "Latest network profile":"Perfil más reciente de la red", "Measurements by location":"Mediciones por ubicación", "Network status":"Estado de la red", "No recent data":"Sin datos recientes", "Sensor detail":"Detalle de sensores", "Monitoring locations":"Ubicaciones de monitoreo", Location:"Ubicación", Status:"Estado", "Reading time":"Hora de lectura", "Open Clarity Live Data ↗":"Abrir datos en vivo de Clarity ↗"
+};
+
+export function LanguageProvider({children}) {
+  const [language,setState]=useState(()=>{const q=new URLSearchParams(location.search).get("lang");return ["en","es"].includes(q)?q:localStorage.getItem("dct-language")||"en"});
+  const setLanguage=(next)=>{setState(next);localStorage.setItem("dct-language",next);const url=new URL(location.href);next==="es"?url.searchParams.set("lang","es"):url.searchParams.delete("lang");history.replaceState({},"",url)};
+  useEffect(()=>{document.documentElement.lang=language},[language]);
+  const value=useMemo(()=>({language,setLanguage,t:(text)=>language==="es"?(es[text]||text):text}),[language]);
+  return <Context.Provider value={value}>{children}</Context.Provider>;
+}
+export const useLanguage=()=>useContext(Context);
