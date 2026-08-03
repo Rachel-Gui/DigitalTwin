@@ -29,39 +29,14 @@ export default function Home(){
 
 function ModuleExpandingPanels(){
   const {language,t}=useLanguage();
-  const [activeModule,setActiveModule]=useState(null);
+  const [active,setActive]=useState(0);
   const esPanels={air:["Calidad del aire","Los sensores y datos geoespaciales apoyan la predicción y visualización de PM2.5 a escala barrial."],energy:["Modelado energético","Cuatro tipologías residenciales permiten simular envolvente, climatización, ventilación y agua caliente."],retrofit:["Rehabilitación saludable","Compara mejoras de envolvente, bombas de calor, ventilación, filtración y paquetes combinados."],renewable:["Energía renovable","Vincula la geometría y demanda de los edificios con escenarios de energía renovable."],scenario:["IA agéntica","Consultas guiadas, comparación de escenarios y explicaciones basadas en los datos del proyecto."],vr:["VR y participación comunitaria","Una interfaz inmersiva representa el PM2.5 durante un ciclo de 24 horas."]};
   return <section className="study-section"><div className="study-inner page-container">
     <SectionHeader eyebrow={t("02 / Modules")} title={t("What we study")}/>
-    <div className="editorial-modules">
-      {modulePanels.map((m)=><article
-        key={m.key}
-        className={`editorial-module${activeModule===m.key?" active":""}`}
-        onMouseEnter={()=>setActiveModule(m.key)}
-        onMouseLeave={()=>setActiveModule(null)}
-        onFocus={()=>setActiveModule(m.key)}
-        onBlur={(event)=>{
-          if(!event.currentTarget.contains(event.relatedTarget)){
-            setActiveModule(null);
-          }
-        }}
-      >
-        <button
-          type="button"
-          aria-expanded={activeModule===m.key}
-          aria-controls={`module-details-${m.key}`}
-          onClick={()=>setActiveModule(activeModule===m.key?null:m.key)}
-        >
-          <span className="module-kicker">{m.label}</span>
-          <span className="module-background-number" aria-hidden="true">{m.number}</span>
-          <div className="module-copy">
-            <h3>{language==="es"?esPanels[m.key][0]:m.title}</h3>
-          </div>
-        </button>
-        <div className="module-details" id={`module-details-${m.key}`}>
-          <p>{language==="es"?esPanels[m.key][1]:m.description}</p>
-          <Link className="module-link" to={m.path}>{t("View module ↗")}</Link>
-        </div>
+    <div className="expanding-panels">
+      {modulePanels.map((m,i)=><article key={m.key} className={active===i?"module-panel active":"module-panel"} onMouseEnter={()=>setActive(i)} onFocus={()=>setActive(i)}>
+        <button type="button" aria-controls={`module-panel-${m.key}`} aria-expanded={active===i} onClick={()=>setActive(i)}><span>{m.number}</span><h3>{language==="es"?esPanels[m.key][0]:m.title}</h3></button>
+        <div id={`module-panel-${m.key}`} className="module-reveal" aria-hidden={active!==i}><p>{language==="es"?esPanels[m.key][1]:m.description}</p><Link tabIndex={active===i?0:-1} to={m.path}>{t("View module ↗")}</Link></div>
       </article>)}
     </div>
   </div></section>
