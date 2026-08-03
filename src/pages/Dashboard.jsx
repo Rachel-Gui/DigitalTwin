@@ -1,56 +1,151 @@
-import { useState } from "react";
-import { BuildingInfoPanel, LayerToggle, ScenarioCard, ViewerPanel } from "../components";
-import { modules, layers, legendConfig, externalPlatforms } from "../data/modules";
-import { scenarios } from "../data/scenarios";
+import { lazy, Suspense, useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
+import vrPreview from "../assets/vr/concord-pm25-particle-view.png";
+import { ViewerPanel } from "../components";
+import { modules, layers, externalPlatforms } from "../data/modules";
+
+const AirQualityTableau = lazy(() => import("../components/AirQualityTableau"));
+const spatialModes = new Set(["energy", "retrofit", "renewable"]);
+const digitalTwinModules = modules.filter((module) => spatialModes.has(module.key));
 
 export default function Dashboard() {
-  const [mode, setMode] = useState("energy");
-  const [layersOpen, setLayersOpen] = useState(true);
-  const [infoOpen, setInfoOpen] = useState(true);
-  const [activeLayer, setActiveLayer] = useState(layers.energy[0]);
-  const [notice, setNotice] = useState("");
-  const active = modules.find(m => m.key === mode);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const requestedMode = searchParams.get("module");
+  const initialMode = digitalTwinModules.some((module) => module.key === requestedMode)
+    ? requestedMode
+    : "energy";
+  const [mode, setMode] = useState(initialMode);
+
   const changeMode = (nextMode) => {
     setMode(nextMode);
-    if (nextMode !== "vr") setActiveLayer(layers[nextMode][0]);
+    setSearchParams({ module: nextMode }, { replace: true });
   };
-  const legend = mode === "vr" ? null : legendConfig[mode][activeLayer];
-  const resetView = () => {
-    if (mode !== "vr") setActiveLayer(layers[mode][0]);
-    setNotice("Prototype controls reset. The embedded ArcGIS camera is unchanged.");
-  };
+
   return <div className="dashboard-page">
-    <div className="dashboard-heading"><div><span className="eyebrow">Interactive research environment</span><h1>South Park Digital Twin</h1></div><div className="prototype-badge"><i/> Frontend prototype</div></div>
-    <div className="module-switcher" role="tablist" aria-label="Dashboard module">
-      {modules.map(m=><button key={m.key} id={`tab-${m.key}`} role="tab" aria-controls="dashboard-workspace" aria-selected={mode===m.key} tabIndex={mode===m.key?0:-1} className={mode===m.key?"active":""} onClick={()=>changeMode(m.key)}><span aria-hidden="true">{m.icon}</span>{m.short}</button>)}
+    <div className="dashboard-heading">
+      <div><span className="eyebrow">Interactive research environment</span><h1>South Park Digital Twin</h1></div>
+      <div className="prototype-badge"><i/> Frontend prototype</div>
     </div>
-    <div className="mobile-panel-controls"><button aria-controls="layer-panel" aria-expanded={layersOpen} onClick={()=>setLayersOpen(!layersOpen)}>{mode === "vr" ? "VR Gateway" : "Data Layers"} {layersOpen ? "−" : "+"}</button><button aria-controls="building-information" aria-expanded={infoOpen} onClick={()=>setInfoOpen(!infoOpen)}>Building Info {infoOpen ? "−" : "+"}</button></div>
-    <div id="dashboard-workspace" className="dashboard-grid" role="tabpanel" aria-labelledby={`tab-${mode}`}>
-      <aside id="layer-panel" className={`panel layer-panel ${layersOpen?"":"collapsed"}`}>
-        {mode === "vr" ? <VRGateway /> : <>
-          <div className="panel-title"><div><span className="eyebrow">{active.title}</span><h2>Data Layers</h2></div><span className="status">Prototype controls</span></div>
-          <p>Planned layers are shown for interface testing. They do not yet control the ArcGIS viewer.</p>
-          <div className="layer-list">{layers[mode].map((l,i)=><LayerToggle key={`${mode}-${l}`} label={l} defaultOn={i < 2} active={activeLayer===l} onActivate={setActiveLayer}/>)}</div>
-          <div className="legend"><span>Map Legend</span><strong>{legend[0]}</strong><div><i/><i/><i/><i/><i/></div><small>Lower <b>{legend[1]}</b><span>Higher</span></small></div>
-          <button className="outline-button" onClick={resetView}>Reset prototype controls</button>
-          <p className="sr-only" aria-live="polite">{notice}</p>
-        </>}
-      </aside>
-      <ViewerPanel />
-      <div id="building-information" className={infoOpen?"":"mobile-hidden"}><BuildingInfoPanel mode={mode}/></div>
+    <div className="module-switcher" role="tablist" aria-label="Digital Twin module">
+      {digitalTwinModules.map((module) => <button
+        key={module.key}
+        role="tab"
+        aria-selected={mode === module.key}
+        className={mode === module.key ? "active" : ""}
+        onClick={() => changeMode(module.key)}
+      ><span>{module.icon}</span>{module.short}</button>)}
     </div>
-    <section className="scenario-panel"><div className="scenario-heading"><div><span className="eyebrow">Comparative analysis</span><h2>Scenario workspace</h2></div><p>Values below are labels only; no project findings are represented.</p></div><div className="scenario-scroll">{scenarios.map(s=><ScenarioCard key={s.name} scenario={s}/>)}</div></section>
+
+    {mode === "air" && <AirQualityWorkspace />}
+    {spatialModes.has(mode) && <SpatialWorkspace mode={mode} />}
+    {mode === "scenario" && <AgenticWorkspace />}
+    {mode === "vr" && <VRWorkspace />}
   </div>;
 }
 
-function VRGateway() {
-  return <div className="vr-gateway">
-    <span className="module-icon">◉</span>
-    <span className="eyebrow">Connected experience</span>
-    <h2>VR Experience Gateway</h2>
-    <p>VR is an immersive mode connected to the same DecarbCityTwin research system. It does not use building-layer switches in this prototype.</p>
-    <ul><li>Neighborhood exploration</li><li>Community engagement</li><li>Environmental education</li></ul>
-    <a className="button" href={externalPlatforms.vr} target="_blank" rel="noreferrer">Open VR dashboard <span>↗</span></a>
-    <small>External URL placeholder</small>
-  </div>;
+function AirQualityWorkspace() {
+  return <section className="dashboard-special-workspace dashboard-tableau-workspace">
+    <header className="workspace-intro">
+      <span className="eyebrow">Air Quality analytics</span>
+      <h2>PM2.5 Prediction and Visualization</h2>
+      <p>The dashboard presents project air-quality model outputs and spatial patterns at neighborhood and grid scales.</p>
+      <Link to="/air-quality">Open full Air Quality Dashboard ↗</Link>
+    </header>
+    <Suspense fallback={<div className="tableau-route-loading" role="status">Preparing the interactive dashboard…</div>}>
+      <AirQualityTableau compact />
+    </Suspense>
+  </section>;
+}
+
+function SpatialWorkspace({ mode }) {
+  const module = modules.find((item) => item.key === mode);
+  return <>
+    <div className="dashboard-grid spatial-workspace">
+      <aside className="panel layer-panel">
+        <div className="panel-title">
+          <div><span className="eyebrow">{module.title}</span><h2>Planned layers</h2></div>
+          <span className="status">Pending</span>
+        </div>
+        <p>These dataset fields are planned for the interface. They do not yet control the embedded ArcGIS Web Scene.</p>
+        <div className="planned-layer-list">
+          {layers[mode].map((label) => <div key={label}><span>{label}</span><small>Pending</small></div>)}
+        </div>
+        {mode === "renewable" && <p className="renewable-legend-help">Open the Layers panel in the map controls, then select the Legend tab to interpret the solar-potential colors.</p>}
+      </aside>
+      <ViewerPanel />
+      <PendingBuildingPanel mode={mode} />
+    </div>
+  </>;
+}
+
+function PendingBuildingPanel({ mode }) {
+  const messages = {
+    energy: "Select a building in the map to view available energy and archetype records.",
+    retrofit: "Select a building in the map to view available retrofit scenario records.",
+    renewable: "Select a building in the map to view available roof and façade solar-potential records."
+  };
+  return <aside className="panel building-panel pending-building-panel">
+    <div className="panel-title">
+      <div><span className="eyebrow">Data connection pending</span><h2>Selected Building</h2></div>
+      <span className="status">Pending</span>
+    </div>
+    <p>{messages[mode]}</p>
+    <div className="pending-record">
+      <span>Map-to-interface connection</span>
+      <strong>Under development</strong>
+    </div>
+    <p className="data-note">No illustrative building values or scenario results are shown as connected project data.</p>
+  </aside>;
+}
+
+function AgenticWorkspace() {
+  const questions = [
+    "Compare baseline and retrofit conditions.",
+    "Explain which evidence supports a scenario.",
+    "Summarize available energy and air-quality records.",
+    "Identify missing data or uncertainty."
+  ];
+  return <section className="dashboard-special-workspace gateway-workspace">
+    <header className="workspace-intro">
+      <span className="eyebrow">Decision support</span>
+      <h2>Agentic AI</h2>
+      <p>Guided queries connect building, environmental, and scenario records to support comparison, interpretation, and evidence-grounded explanation.</p>
+    </header>
+    <div className="gateway-grid">
+      <div className="integration-gateway">
+        <span className="status">Integration gateway</span>
+        <h3>Project agent connection</h3>
+        <p>The working agent component has not yet been connected to this frontend. This gateway does not simulate a chat interface.</p>
+        <a className="button" href={externalPlatforms.agentic} target="_blank" rel="noreferrer">Open Agentic Model ↗</a>
+        <small>Configurable placeholder URL</small>
+      </div>
+      <div className="example-query-list">
+        <span className="eyebrow">Example questions</span>
+        {questions.map((question, index) => <div key={question}><b>{String(index + 1).padStart(2, "0")}</b><p>{question}</p></div>)}
+      </div>
+    </div>
+  </section>;
+}
+
+function VRWorkspace() {
+  return <section className="dashboard-special-workspace gateway-workspace vr-dashboard-workspace">
+    <header className="workspace-intro">
+      <span className="eyebrow">Immersive engagement</span>
+      <h2>VR &amp; Community Engagement</h2>
+      <p>The VR environment translates PM2.5 data into time-based spatial experiences for community exploration and education.</p>
+    </header>
+    <div className="vr-gateway-layout">
+      <img src={vrPreview} alt="Ground-level PM2.5 VR environment around Concord International School"/>
+      <div>
+        <ul>
+          <li>Ground-level exploration</li>
+          <li>Bird’s-eye neighborhood view</li>
+          <li>High- and low-pollution comparison</li>
+          <li>Community engagement</li>
+        </ul>
+        <a className="button" href={externalPlatforms.vr} target="_blank" rel="noreferrer">Enter VR Experience ↗</a>
+        <small>External experience URL pending confirmation</small>
+      </div>
+    </div>
+  </section>;
 }

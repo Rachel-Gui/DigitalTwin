@@ -5,12 +5,38 @@ import energyWorkflow from "../assets/research/energy-method-workflow.png";
 import retrofitFigure from "../assets/retrofit/health-driven-retrofit-strategies.png";
 
 export const modulePanels = [
-  { number:"01", key:"air", title:"Air Quality", path:"/air-quality", description:"Sensor and geospatial data support neighborhood-scale PM2.5 prediction and visualization. The platform distinguishes measured observations from modeled and estimated conditions." },
-  { number:"02", key:"energy", title:"Energy Modeling", path:"/energy", description:"Four residential archetypes support parametric simulation across envelope, HVAC, ventilation, and hot-water conditions. Model records connect defined inputs to building-energy outputs." },
-  { number:"03", key:"retrofit", title:"Health-Driven Retrofit", path:"/retrofit", description:"The research compares envelope improvements, heat pumps, ventilation, filtration, and combined intervention packages. Energy and indoor-environment considerations are recorded together." },
-  { number:"04", key:"renewable", title:"Renewable Energy", path:"/renewable", description:"This module links building geometry and energy demand with renewable-energy scenario records. Approved public outputs will be added with their source and status." },
-  { number:"05", key:"scenario", title:"Agentic AI", path:"/scenario-analysis", description:"Guided querying, scenario comparison, and grounded explanation using project data, scenario records, and the knowledge graph." },
-  { number:"06", key:"vr", title:"VR & Community Engagement", path:"/vr", description:"The immersive interface represents PM2.5 through a 24-hour cycle around Concord International School. Ground-level and bird’s-eye views support environmental communication." }
+  {
+    number:"01",
+    key:"energy",
+    label:"Building Performance",
+    title:"Urban Building Energy Modeling",
+    path:"/energy",
+    description:"Explore residential archetypes, building energy performance, and simulation-based energy records."
+  },
+  {
+    number:"02",
+    key:"air",
+    label:"Environmental Sensing",
+    title:"Air Quality & Exposure Assessment",
+    path:"/air-quality",
+    description:"Examine monitored and modeled air-quality conditions across time and space."
+  },
+  {
+    number:"03",
+    key:"retrofit",
+    label:"Building Intervention",
+    title:"Health-Driven Retrofit & Decarbonization Strategies",
+    path:"/retrofit",
+    description:"Compare retrofit interventions related to energy performance, indoor environmental quality, and heat resilience."
+  },
+  {
+    number:"04",
+    key:"renewable",
+    label:"Distributed Generation",
+    title:"Solar & Renewable Energy Assessment",
+    path:"/renewable",
+    description:"Explore rooftop and façade solar potential and future renewable-energy scenarios."
+  }
 ];
 
 export const figures = {

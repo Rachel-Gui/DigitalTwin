@@ -3,8 +3,9 @@ import { Link, NavLink } from "react-router-dom";
 import silLogo from "./assets/brand/sustainable-intelligence-lab-logo.png";
 import uwWhite from "./assets/brand/uw-signature-white.png";
 import { modules } from "./data/modules";
-import { buildingDemo, modeResults } from "./data/buildingDemo";
 import { useLanguage } from "./i18n";
+
+const dropdownModules = modules.filter((module) => ["air", "energy", "retrofit", "renewable"].includes(module.key));
 
 export function Navbar() {
   const { language, setLanguage, t } = useLanguage();
@@ -27,11 +28,11 @@ export function Navbar() {
       <NavLink to="/dashboard" onClick={close}>{t("Digital Twin")}</NavLink>
       <div className="dropdown"><button className="dropdown-trigger" onClick={()=>setDrop(!drop)} aria-controls="modules-menu" aria-haspopup="true" aria-expanded={drop}><span>{t("Modules")}</span><i className="dropdown-chevron" aria-hidden="true"/></button>
         <div id="modules-menu" className={drop?"dropdown-menu show":"dropdown-menu"} aria-hidden={!drop}>
-          {modules.map((m,index)=><Link key={m.key} to={m.path} onClick={close}><small>{String(index+1).padStart(2,"0")}</small><span><strong>{m.title}</strong><em>{m.tag}</em></span><b aria-hidden="true">↗</b></Link>)}
+          {dropdownModules.map((m,index)=><NavLink key={m.key} to={m.path} onClick={close}><small>{String(index+1).padStart(2,"0")}</small><span><strong>{m.title}</strong></span><b aria-hidden="true">↗</b></NavLink>)}
         </div>
       </div>
-      <NavLink to="/research" onClick={close}>{t("Research")}</NavLink>
       <NavLink to="/analytics" onClick={close}>{t("Live Air Data")}</NavLink>
+      <Link className="live-link" to="/dashboard" onClick={close}>Open Live Viewer ↗</Link>
       <div className="language-switch" role="group" aria-label="Language / Idioma"><button type="button" className={language==="en"?"active":""} onClick={()=>setLanguage("en")} aria-pressed={language==="en"}>EN</button><span>/</span><button type="button" className={language==="es"?"active":""} onClick={()=>setLanguage("es")} aria-pressed={language==="es"}>ES</button></div>
       <img className="mobile-uw" src={uwWhite} alt="University of Washington"/>
     </nav>
@@ -56,29 +57,23 @@ export function ResearchFigure({figure,className=""}){
   return <figure className={`research-figure ${className}`}><div className="figure-image"><img src={figure.src} alt={figure.title}/></div><SourceCaption {...figure}/></figure>
 }
 
-export function PublicationRecord({image}){
-  return <article className="publication-record"><img src={image} alt="Published paper cover"/><div><StatusLabel>PUBLISHED · 2026</StatusLabel><h3>AI-Enhanced Urban Building Energy Modeling for Health-Driven Decarbonization in Vulnerable Communities</h3><p>Source: <cite>Architecture</cite> 2026, 6, 84. CC BY 4.0.</p><span className="record-type">JOURNAL ARTICLE / RESEARCH OUTPUT</span></div></article>
+export function PublicationRecord({image,status="PUBLISHED · 2026",title="AI-Enhanced Urban Building Energy Modeling for Health-Driven Decarbonization in Vulnerable Communities",source="Architecture 2026, 6, 84 · CC BY 4.0",href,label="Read the published article ↗"}){
+  return <article className={`publication-record ${image?"":"publication-record-text"}`}>{image&&<img src={image} alt="Published paper cover"/>}<div><StatusLabel>{status}</StatusLabel><h3>{title}</h3><p>Source: <cite>{source}</cite></p>{href&&<a className="text-link" href={href} target="_blank" rel="noopener noreferrer">{label}</a>}<span className="record-type">JOURNAL ARTICLE / RESEARCH OUTPUT</span></div></article>
 }
 
 export function ViewerPreview({src}){
-  return <Link className="viewer-preview" to="/dashboard" aria-label="Open the South Park live digital twin">
-    <img src={src} alt="South Park ArcGIS scene preview"/>
-    <span className="viewer-preview-status"><i/> Live spatial model</span>
-    <span className="viewer-preview-action">Open digital twin <b>↗</b></span>
-  </Link>
+  return <Link className="viewer-preview" to="/dashboard"><div className="browser-bar"><i/><i/><i/><span>SOUTH PARK LIVE SCENE</span><b>Open live viewer ↗</b></div><img src={src} alt="South Park ArcGIS scene preview"/><div className="preview-fade"/></Link>
 }
 
 export function SolarDiagram(){
   return <div className="solar-diagram" role="img" aria-label="Non-quantitative building to renewable electricity diagram"><div>BUILDING</div><span>→</span><div>ROOF / FAÇADE</div><span>→</span><div className="sun">SUNLIGHT</div><span>→</span><div>ELECTRICITY</div></div>
 }
 export function ComparisonMatrix(){
-  return <div className="mini-matrix" aria-label="Scenario comparison structure"><span/><b>Base</b><b>Envelope</b><b>Electric</b><b>PV</b>{["Energy","Exposure","Cost"].map(r=><div className="contents" key={r}><strong>{r}</strong>{[1,2,3,4].map(c=><i key={`${r}${c}`}/>)}</div>)}</div>
+  return <div className="mini-matrix" aria-label="Scenario comparison structure"><span/><b>Base</b><b>Envelope</b><b>Electric</b><b>PV</b>{["Energy","Exposure","Cost"].map(r=><><strong key={r}>{r}</strong>{[1,2,3,4].map(c=><i key={`${r}${c}`}/>)}</>)}</div>
 }
 
 export function LayerToggle({label,defaultOn,active,onActivate}){
   const [on,setOn]=useState(defaultOn); const toggle=()=>{const next=!on;setOn(next);if(next)onActivate?.(label)};
   return <label className={`layer-toggle ${active?"active-layer":""}`}><input type="checkbox" checked={on} onChange={toggle}/><span className="toggle-ui"/><span>{label}</span>{active&&<small>Legend</small>}</label>
 }
-export function ViewerPanel(){return <div className="viewer-wrap"><div className="viewer-label"><span><i/> SOUTH PARK ARCGIS SCENE</span><a href="https://uw.maps.arcgis.com/apps/instant/3dviewer/index.html?appid=9d99a4a0c2e2482b912608249bf3248f" target="_blank" rel="noreferrer">Open full viewer ↗</a></div><div className="viewer-container"><iframe src="https://uw.maps.arcgis.com/apps/instant/3dviewer/index.html?appid=9d99a4a0c2e2482b912608249bf3248f" title="South Park 3D Digital Twin" loading="lazy" allowFullScreen/></div></div>}
-export function BuildingInfoPanel({mode}){return <aside className="panel building-panel"><div className="panel-title"><div><span className="eyebrow">Map connection not implemented</span><h2>Selected Building</h2></div><StatusLabel>ILLUSTRATIVE PANEL</StatusLabel></div><div className="building-id"><span>Building ID</span><strong>{buildingDemo.id}</strong></div><dl className="building-basics"><div><dt>Archetype</dt><dd>{buildingDemo.archetype}</dd></div><div><dt>Height</dt><dd>{buildingDemo.height}</dd></div><div><dt>Footprint</dt><dd>{buildingDemo.footprintArea}</dd></div></dl><div className="result-list">{modeResults[mode].map(([k,v])=><div key={k}><span>{k}</span><strong>{v}</strong></div>)}</div><p className="data-note">Illustrative interface only. ArcGIS selection is not connected to React state.</p></aside>}
-export function ScenarioCard({scenario}){return <article className="scenario-card"><h3>{scenario.name}</h3><dl><div><dt>Energy use</dt><dd>{scenario.energy}</dd></div><div><dt>Carbon</dt><dd>{scenario.carbon}</dd></div><div><dt>Renewable</dt><dd>{scenario.renewable}</dd></div><div><dt>Comfort / resilience</dt><dd>{scenario.comfort}</dd></div></dl></article>}
+export function ViewerPanel(){return <div className="viewer-wrap"><div className="viewer-label"><span><i/> SOUTH PARK ARCGIS SCENE</span><span>Embedded external viewer ↗</span></div><div className="viewer-container"><iframe src="https://uw.maps.arcgis.com/apps/instant/3dviewer/index.html?appid=9d99a4a0c2e2482b912608249bf3248f" title="South Park 3D Digital Twin" loading="lazy" allowFullScreen/></div></div>}
