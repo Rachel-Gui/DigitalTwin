@@ -26,13 +26,13 @@ export function Navbar() {
     <nav ref={navRef} id="primary-navigation" className={open?"nav-links open":"nav-links"} aria-label="Primary navigation">
       <NavLink to="/" onClick={close}>{t("Home")}</NavLink>
       <NavLink to="/dashboard" onClick={close}>{t("Digital Twin")}</NavLink>
+      <NavLink to="/vr" onClick={close}>{t("VR Experience")}</NavLink>
       <div className="dropdown"><button className="dropdown-trigger" onClick={()=>setDrop(!drop)} aria-controls="modules-menu" aria-haspopup="true" aria-expanded={drop}><span>{t("Modules")}</span><i className="dropdown-chevron" aria-hidden="true"/></button>
         <div id="modules-menu" className={drop?"dropdown-menu show":"dropdown-menu"} aria-hidden={!drop}>
           {dropdownModules.map((m,index)=><NavLink key={m.key} to={m.path} onClick={close}><small>{String(index+1).padStart(2,"0")}</small><span><strong>{m.title}</strong></span><b aria-hidden="true">↗</b></NavLink>)}
         </div>
       </div>
       <NavLink to="/analytics" onClick={close}>{t("Live Air Data")}</NavLink>
-      <Link className="live-link" to="/dashboard" onClick={close}>Open Live Viewer ↗</Link>
       <div className="language-switch" role="group" aria-label="Language / Idioma"><button type="button" className={language==="en"?"active":""} onClick={()=>setLanguage("en")} aria-pressed={language==="en"}>EN</button><span>/</span><button type="button" className={language==="es"?"active":""} onClick={()=>setLanguage("es")} aria-pressed={language==="es"}>ES</button></div>
       <img className="mobile-uw" src={uwWhite} alt="University of Washington"/>
     </nav>

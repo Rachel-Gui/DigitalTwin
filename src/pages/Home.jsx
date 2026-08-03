@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import studyAreaMap from "../assets/south-park-study-area-map.png";
-import homepageDemo from "../assets/home/homepage_demo.png";
+import homepageDemo from "../assets/home/south-park-arcgis-preview.png";
 import vrConcord from "../assets/vr/concord-pm25-particle-view.png";
 import paperCover from "../assets/research/energy-paper-cover.png";
 import { PublicationRecord, SectionHeader, StatusLabel } from "../components";
@@ -14,7 +14,7 @@ export default function Home(){
     <section className="home-hero page-container">
       {/* TODO: Replace with final exported VR walkthrough video. */}
       <div className="home-hero-media" aria-hidden="true"><img src={homepageDemo} alt=""/></div>
-      <div className="hero-title"><h1>DecarbCityTwin</h1></div>
+      <div className="hero-title"><h1>DecarbCity<span>Twin</span></h1></div>
       <div className="hero-statement"><h2>{t("A Platform for Health-Driven")}<br/>{t("& Equitable Decarbonization")}</h2><p>{t("DecarbCityTwin connects neighborhood air-quality data, building-energy simulation, health-driven retrofit analysis, renewable-energy scenarios, agentic decision support, and immersive VR for the South Park testbed.")}</p></div>
     </section>
     <ModuleExpandingPanels/>
