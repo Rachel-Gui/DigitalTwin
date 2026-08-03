@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import "leaflet/dist/leaflet.css";
+import "../analytics.css";
 import { useLanguage } from "../i18n";
 
 const metrics = {
