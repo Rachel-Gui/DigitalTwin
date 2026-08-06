@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import singleFamilyImage from "../assets/energy/single-family.jpg";
 import duplexImage from "../assets/energy/duplex.jpg";
 import quadplexImage from "../assets/energy/quadplex.jpg";
@@ -10,8 +10,9 @@ import vrCity from "../assets/vr/city-scale-pollution-view.png";
 import vrDashboard from "../assets/vr/1111.png";
 import renewableMap from "../assets/home/south-park-arcgis-preview.png";
 import { PublicationRecord, SectionHeader, SourceCaption, StatusLabel } from "../components";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { externalPlatforms } from "../data/modules";
+import { PrototypeSelector, RetrofitExplorer, SelectedPrototypeSummary, useEnergyRetrofitData } from "../components/energy/EnergyRetrofitExplorer";
 
 const AirQualityTableau = lazy(() => import("../components/AirQualityTableau"));
 
@@ -25,22 +26,23 @@ function ModuleHero({index,status,title,subtitle,children,className="",heroImage
 function Figure({src,title,detail,source,status}){return <figure className="research-figure"><div className="figure-image"><img src={src} alt={title}/></div><SourceCaption title={title} detail={detail} source={source} status={status}/></figure>}
 
 function EnergyPage(){
-  const [selectedArchetype,setSelectedArchetype]=useState("Single Family");
-  const archetypes=[
-    {number:"01",name:"Single Family",area:"1,200 ft²",image:singleFamilyImage},
-    {number:"02",name:"Duplex",area:"2,400 ft²",image:duplexImage},
-    {number:"03",name:"Quadplex",area:"3,400 ft²",image:quadplexImage},
-    {number:"04",name:"Ten-Unit Apartment",area:"8,100 ft²",image:tenUnitImage}
-  ];
+  const [searchParams]=useSearchParams();
+  const requestedArchetype=searchParams.get("archetype");
+  const buildingId=searchParams.get("building");
+  const {loading,error,prototypes,packagesByArchetype,report}=useEnergyRetrofitData();
+  const validRequested=prototypes.some(item=>item.id===requestedArchetype)?requestedArchetype:null;
+  const [selectedArchetype,setSelectedArchetype]=useState(requestedArchetype||"single-family");
+  const selectedPrototype=prototypes.find(item=>item.id===selectedArchetype)||prototypes.find(item=>item.id==="single-family")||null;
+  const packageData=selectedPrototype?packagesByArchetype[selectedPrototype.id]||null:null;
+  const prototypeImages={"single-family":singleFamilyImage,duplex:duplexImage,quadplex:quadplexImage,"ten-unit-apartment":tenUnitImage};
   const conditions=[
     ["Building Envelope","Windows, wall insulation, roof insulation, and air leakage."],
     ["Heating & Cooling","Existing systems and heat-pump alternatives."],
     ["Ventilation","Exhaust ventilation and energy-recovery ventilation."],
     ["Water Heating","Gas, electric, and heat-pump water-heating systems."]
   ];
-  const packages=["Baseline","Package 1","Package 2","Package 3"];
-  const results=["Annual energy use","Heating","Cooling","Hot water","Retrofit cost"];
   const connection=["Neighborhood Building","Assigned Archetype","Energy Scenario","Retrofit Comparison"];
+  useEffect(()=>{if(validRequested)setSelectedArchetype(validRequested);},[validRequested]);
   return <div className="module-page energy-page">
     <style>{`
       .energy-page section{padding:clamp(72px,9vw,132px) 0}.energy-page .energy-hero{padding-top:clamp(96px,12vw,170px)}
@@ -49,12 +51,11 @@ function EnergyPage(){
       .energy-choice{appearance:none;width:100%;padding:0;text-align:left;color:inherit;background:#0b0b0b;border:1px solid #2b2b2b;border-radius:14px;overflow:hidden;cursor:pointer;transition:border-color 220ms ease,background-color 220ms ease,transform 220ms ease}
       .energy-choice:hover,.energy-choice:focus-visible{background:#151515;border-color:#606060;transform:translateY(-3px);outline:none}.energy-choice.is-selected{border-color:#8fbfb3;background:#151515;box-shadow:inset 0 0 0 1px #8fbfb3}
       .energy-choice-image{display:flex;align-items:center;justify-content:center;height:230px;padding:18px;background:#111}.energy-choice-image img{display:block;width:100%;height:100%;object-fit:contain;object-position:center}
-      .energy-choice-copy{display:grid;grid-template-columns:auto 1fr;gap:16px;padding:20px}.energy-choice-copy>span{color:#707070;font-size:12px}.energy-choice-copy strong,.energy-choice-copy small{display:block}.energy-choice-copy strong{margin:0 0 6px;color:#f5f5f2;font-size:20px;font-weight:500;letter-spacing:-.02em}.energy-choice-copy small{color:#a3a3a3;font-size:14px}.energy-development-note{margin:24px 0 0;color:#707070;font-size:13px}
+      .energy-choice-copy{display:grid;grid-template-columns:auto 1fr;gap:16px;padding:20px}.energy-choice-copy>span{color:#707070;font-size:12px}.energy-choice-copy strong,.energy-choice-copy small,.energy-choice-copy em{display:block}.energy-choice-copy strong{margin:0 0 6px;color:#f5f5f2;font-size:20px;font-weight:500;letter-spacing:-.02em}.energy-choice-copy small{color:#a3a3a3;font-size:14px}.energy-choice-copy em{margin-top:14px;color:#8fbfb3;font-size:11px;font-style:normal;letter-spacing:.08em;text-transform:uppercase}.energy-development-note{margin:24px 0 0;color:#707070;font-size:13px}
       .energy-condition-card{min-height:190px;padding:24px;border:1px solid #2b2b2b;border-radius:14px;background:#0b0b0b}.energy-condition-card h3{margin:0 0 48px;font-size:15px;letter-spacing:.08em;text-transform:uppercase}.energy-condition-card p{margin:0;color:#a3a3a3;line-height:1.55}
-      .energy-scenario-layout{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(280px,.7fr);gap:56px;margin-top:44px}.energy-package-list{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.energy-package-list span,.energy-result-list li{border:1px solid #2b2b2b;border-radius:999px;padding:12px 16px;color:#d2d2cf;font-size:14px}.energy-result-list{display:grid;gap:10px;margin:0;padding:0;list-style:none}.energy-scenario-copy{max-width:720px;color:#a3a3a3;line-height:1.65}
       .energy-connection-flow{display:grid;grid-template-columns:repeat(7,auto);align-items:center;justify-content:start;gap:18px;margin:44px 0}.energy-connection-flow span{padding:18px 20px;border:1px solid #2b2b2b;border-radius:12px;background:#0b0b0b}.energy-connection-flow b{color:#707070;font-weight:400}.energy-source{margin-top:28px;color:#707070;font-size:13px}
-      @media(max-width:900px){.energy-choice-grid,.energy-condition-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.energy-scenario-layout{grid-template-columns:1fr}.energy-connection-flow{grid-template-columns:1fr;justify-items:stretch}.energy-connection-flow b{transform:rotate(90deg);justify-self:center}}
-      @media(max-width:560px){.energy-choice-grid,.energy-condition-grid,.energy-package-list{grid-template-columns:1fr}.energy-choice-image{height:210px}}
+      @media(max-width:900px){.energy-choice-grid,.energy-condition-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.energy-connection-flow{grid-template-columns:1fr;justify-items:stretch}.energy-connection-flow b{transform:rotate(90deg);justify-self:center}}
+      @media(max-width:560px){.energy-choice-grid,.energy-condition-grid{grid-template-columns:1fr}.energy-choice-image{height:210px}}
       @media(prefers-reduced-motion:reduce){.energy-choice{transition:none}.energy-choice:hover,.energy-choice:focus-visible{transform:none}}
     `}</style>
     <section className="energy-hero"><div className="page-container">
@@ -67,14 +68,14 @@ function EnergyPage(){
 
     <section className="energy-archetypes"><div className="page-container">
       <SectionHeader eyebrow="Select a Building Type" title="Choose the housing type closest to your building."/>
-      <div className="energy-choice-grid">{archetypes.map(({number,name,area,image})=><button type="button" className={`energy-choice${selectedArchetype===name?" is-selected":""}`} aria-pressed={selectedArchetype===name} onClick={()=>setSelectedArchetype(name)} key={name}><span className="energy-choice-image"><img src={image} alt={`${name} residential building archetype`}/></span><span className="energy-choice-copy"><span>{number}</span><span><strong>{name}</strong><small>{area}</small></span></span></button>)}</div>
-      <p className="energy-development-note">Selected: {selectedArchetype} · Scenario connection in development.</p>
+      {loading?<p className="energy-development-note" role="status">Loading converted workbook data…</p>:error?<p className="energy-data-error" role="alert">{error}</p>:<PrototypeSelector prototypes={prototypes} images={prototypeImages} selectedId={selectedPrototype?.id} onSelect={setSelectedArchetype}/>}
       <p className="energy-source">Source: Abbasabadi et al., Architecture 2026, 6, 84.</p>
+      {!loading&&!error&&selectedPrototype&&packageData?<SelectedPrototypeSummary prototype={selectedPrototype} baseline={packageData.baseline} buildingId={buildingId}/>:null}
     </div></section>
 
-    <section className="energy-conditions"><div className="page-container"><SectionHeader eyebrow="Modeled Conditions" title="What can change in the simulations."/><div className="energy-condition-grid">{conditions.map(([title,text])=><article className="energy-condition-card" key={title}><h3>{title}</h3><p>{text}</p></article>)}</div></div></section>
+    <section className="energy-scenarios"><div className="page-container"><SectionHeader eyebrow="Retrofit Explorer" title="Compare energy and retrofit packages."/>{loading?<p className="energy-development-note" role="status">Preparing the Retrofit Explorer…</p>:error||!selectedPrototype?<div className="energy-data-error" role="alert"><strong>Retrofit data is not available.</strong><span>{error||"The converted data files could not be loaded."}</span></div>:<RetrofitExplorer prototype={selectedPrototype} packageData={packageData} report={report} buildingId={buildingId}/>}</div></section>
 
-    <section className="energy-scenarios"><div className="page-container"><SectionHeader eyebrow="Scenario Comparison" title="Compare energy and retrofit packages."/><p className="energy-scenario-copy">Existing EnergyPlus records support comparisons among baseline conditions and user-defined efficiency packages for each residential archetype.</p><div className="energy-scenario-layout"><div><div className="energy-package-list" aria-label="Retrofit package states">{packages.map(item=><span key={item}>{item}</span>)}</div><p className="energy-development-note">Interactive web version in development.</p></div><ul className="energy-result-list">{results.map(item=><li key={item}>{item}</li>)}</ul></div></div></section>
+    <section className="energy-conditions"><div className="page-container"><SectionHeader eyebrow="Available Modeled Variables" title="What can change in the simulations."/><div className="energy-condition-grid">{conditions.map(([title,text])=><article className="energy-condition-card" key={title}><h3>{title}</h3><p>{text}</p></article>)}</div></div></section>
 
     <section className="energy-digital-twin"><div className="page-container"><SectionHeader eyebrow="Digital Twin Connection" title="From archetypes to neighborhood buildings." text="Buildings in the current prototype will be grouped by shared characteristics and connected to the closest residential archetype. Users will then be able to select a building and explore its available energy and retrofit scenarios."/><div className="energy-connection-flow">{connection.map((item,index)=><span key={item}>{item}{index<connection.length-1&&<b aria-hidden="true">→</b>}</span>)}</div><p className="energy-development-note">Connection in development.</p><Link className="button light-button" to="/dashboard?module=energy">Open Energy View ↗</Link></div></section>
 

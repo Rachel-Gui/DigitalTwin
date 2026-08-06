@@ -1,0 +1,814 @@
+{
+  "archetypeId": "ten-unit-apartment",
+  "euiTarget": {
+    "value": 32,
+    "unit": "kBtu/ft²/year",
+    "sourceCell": "Package1!E1",
+    "note": "Target value provided in the source workbook. It is used as a study reference and is not presented as a current building-code requirement."
+  },
+  "baseline": {
+    "id": "baseline",
+    "label": "Baseline",
+    "measure": null,
+    "chartLabel": "Baseline",
+    "measureDescription": null,
+    "inputs": {
+      "wallRValue": 10,
+      "roofRValue": 17,
+      "windowUFactor": 0.57,
+      "infiltrationRate": 0.00055,
+      "ventilation": "Exhaust Fan",
+      "hvacSystem": "Gas",
+      "waterHeatingSystem": "Gas Water"
+    },
+    "endUses": {
+      "heating": 335291.04000000004,
+      "cooling": null,
+      "interiorLighting": 8753.36,
+      "equipment": 98950.31999999999,
+      "fans": 7040.04,
+      "pumps": 324.8,
+      "hotWater": 116440.79999999999
+    },
+    "totalEui": 69.803,
+    "annualEnergyKBTU": 566800.36,
+    "annualEnergyCost": 8080.893063665924,
+    "incrementalCost": null,
+    "incrementalAnnualSavings": null,
+    "cumulativeAnnualSavings": null,
+    "simplePaybackYears": null,
+    "sourceIndex": "31111121",
+    "simulationId": 648,
+    "sourceIndices": {
+      "wallIndex": 1,
+      "roofIndex": 1,
+      "windowIndex": 1,
+      "infiltrationIndex": 1,
+      "ventilationIndex": 1,
+      "hvacIndex": 2,
+      "hotWaterIndex": 1
+    },
+    "sourceCells": {
+      "measure": "B5",
+      "eui": "B14",
+      "annualEnergy": "B39",
+      "annualCost": "B52"
+    }
+  },
+  "packages": [
+    {
+      "id": "package-1",
+      "archetypeId": "ten-unit-apartment",
+      "name": "Package 1",
+      "description": "Install ERVs, Replace Windows & Siding, Install Heat Pump For Heating/Cooling, Install Heat Pump Water Heater",
+      "measures": [
+        "Install ERVs",
+        "Replace Windows & Siding",
+        "Install Heat Pump For Heating/Cooling",
+        "Install Heat Pump Water Heater"
+      ],
+      "steps": [
+        {
+          "id": "baseline",
+          "label": "Baseline",
+          "measure": null,
+          "chartLabel": "Baseline",
+          "measureDescription": null,
+          "inputs": {
+            "wallRValue": 10,
+            "roofRValue": 17,
+            "windowUFactor": 0.57,
+            "infiltrationRate": 0.00055,
+            "ventilation": "Exhaust Fan",
+            "hvacSystem": "Gas",
+            "waterHeatingSystem": "Gas Water"
+          },
+          "endUses": {
+            "heating": 335291.04000000004,
+            "cooling": null,
+            "interiorLighting": 8753.36,
+            "equipment": 98950.31999999999,
+            "fans": 7040.04,
+            "pumps": 324.8,
+            "hotWater": 116440.79999999999
+          },
+          "totalEui": 69.803,
+          "annualEnergyKBTU": 566800.36,
+          "annualEnergyCost": 8080.893063665924,
+          "incrementalCost": null,
+          "incrementalAnnualSavings": null,
+          "cumulativeAnnualSavings": null,
+          "simplePaybackYears": null,
+          "sourceIndex": "31111121",
+          "simulationId": 648,
+          "sourceIndices": {
+            "wallIndex": 1,
+            "roofIndex": 1,
+            "windowIndex": 1,
+            "infiltrationIndex": 1,
+            "ventilationIndex": 1,
+            "hvacIndex": 2,
+            "hotWaterIndex": 1
+          },
+          "sourceCells": {
+            "measure": "B5",
+            "eui": "B14",
+            "annualEnergy": "B39",
+            "annualCost": "B52"
+          }
+        },
+        {
+          "id": "step-2",
+          "label": "Install ERVs",
+          "measure": "Install ERVs",
+          "chartLabel": "ERV",
+          "measureDescription": "- Replaces existing ventilation system with an energy recovery ventilator",
+          "inputs": {
+            "wallRValue": 10,
+            "roofRValue": 17,
+            "windowUFactor": 0.57,
+            "infiltrationRate": 0.00055,
+            "ventilation": "ERV",
+            "hvacSystem": "Gas",
+            "waterHeatingSystem": "Gas Water"
+          },
+          "endUses": {
+            "heating": 254886.80000000002,
+            "cooling": null,
+            "interiorLighting": 8753.36,
+            "equipment": 98950.31999999999,
+            "fans": 7040.04,
+            "pumps": 219.24,
+            "hotWater": 116440.79999999999
+          },
+          "totalEui": 59.888,
+          "annualEnergyKBTU": 486290.56,
+          "annualEnergyCost": 7065.366037938109,
+          "incrementalCost": 25000,
+          "incrementalAnnualSavings": 1015.5270257278153,
+          "cumulativeAnnualSavings": 1015.5270257278153,
+          "simplePaybackYears": 24.61775941618375,
+          "sourceIndex": "31111221",
+          "simulationId": 729,
+          "sourceIndices": {
+            "wallIndex": 1,
+            "roofIndex": 1,
+            "windowIndex": 1,
+            "infiltrationIndex": 1,
+            "ventilationIndex": 2,
+            "hvacIndex": 2,
+            "hotWaterIndex": 1
+          },
+          "sourceCells": {
+            "measure": "C5",
+            "eui": "C14",
+            "annualEnergy": "C39",
+            "annualCost": "C52"
+          }
+        },
+        {
+          "id": "step-3",
+          "label": "Replace Windows & Siding",
+          "measure": "Replace Windows & Siding",
+          "chartLabel": "Windows + Siding",
+          "measureDescription": "-Improves U-value of windows to 0.29 Btu/h-ft2-°F\n-Improves infiltration rate of the envelope by up to 35%",
+          "inputs": {
+            "wallRValue": 10,
+            "roofRValue": 17,
+            "windowUFactor": 0.29,
+            "infiltrationRate": 0.00035000000000000005,
+            "ventilation": "ERV",
+            "hvacSystem": "Gas",
+            "waterHeatingSystem": "Gas Water"
+          },
+          "endUses": {
+            "heating": 144617.19999999998,
+            "cooling": null,
+            "interiorLighting": 8753.36,
+            "equipment": 98950.31999999999,
+            "fans": 7040.04,
+            "pumps": 121.8,
+            "hotWater": 116440.79999999999
+          },
+          "totalEui": 46.296,
+          "annualEnergyKBTU": 375923.52,
+          "annualEnergyCost": 5673.613634061202,
+          "incrementalCost": 98330,
+          "incrementalAnnualSavings": 1391.752403876907,
+          "cumulativeAnnualSavings": 2407.2794296047223,
+          "simplePaybackYears": 70.65193473069564,
+          "sourceIndex": "31133221",
+          "simulationId": 801,
+          "sourceIndices": {
+            "wallIndex": 1,
+            "roofIndex": 1,
+            "windowIndex": 3,
+            "infiltrationIndex": 3,
+            "ventilationIndex": 2,
+            "hvacIndex": 2,
+            "hotWaterIndex": 1
+          },
+          "sourceCells": {
+            "measure": "D5",
+            "eui": "D14",
+            "annualEnergy": "D39",
+            "annualCost": "D52"
+          }
+        },
+        {
+          "id": "step-4",
+          "label": "Install Heat Pump For Heating/Cooling",
+          "measure": "Install Heat Pump For Heating/Cooling",
+          "chartLabel": "HVAC Heat Pump",
+          "measureDescription": "- Replaces existing heating system with a heat pump for heating and cooling",
+          "inputs": {
+            "wallRValue": 10,
+            "roofRValue": 17,
+            "windowUFactor": 0.29,
+            "infiltrationRate": 0.00035000000000000005,
+            "ventilation": "ERV",
+            "hvacSystem": "Heat Pump",
+            "waterHeatingSystem": "Gas Water"
+          },
+          "endUses": {
+            "heating": 51180.36,
+            "cooling": 5545.96,
+            "interiorLighting": 8753.36,
+            "equipment": 98950.31999999999,
+            "fans": 11278.68,
+            "pumps": null,
+            "hotWater": 116440.79999999999
+          },
+          "totalEui": 35.979,
+          "annualEnergyKBTU": 292149.48,
+          "annualEnergyCost": 5113.512888776026,
+          "incrementalCost": 177000,
+          "incrementalAnnualSavings": 560.1007452851763,
+          "cumulativeAnnualSavings": 2967.3801748898986,
+          "simplePaybackYears": 316.01457682381783,
+          "sourceIndex": "31133231",
+          "simulationId": 963,
+          "sourceIndices": {
+            "wallIndex": 1,
+            "roofIndex": 1,
+            "windowIndex": 3,
+            "infiltrationIndex": 3,
+            "ventilationIndex": 2,
+            "hvacIndex": 3,
+            "hotWaterIndex": 1
+          },
+          "sourceCells": {
+            "measure": "E5",
+            "eui": "E14",
+            "annualEnergy": "E39",
+            "annualCost": "E52"
+          }
+        },
+        {
+          "id": "step-5",
+          "label": "Install Heat Pump Water Heater",
+          "measure": "Install Heat Pump Water Heater",
+          "chartLabel": "HP Water Heater",
+          "measureDescription": "- Replaces existing hot water system with a heat pump water heater",
+          "inputs": {
+            "wallRValue": 10,
+            "roofRValue": 17,
+            "windowUFactor": 0.29,
+            "infiltrationRate": 0.00035000000000000005,
+            "ventilation": "ERV",
+            "hvacSystem": "Heat Pump",
+            "waterHeatingSystem": "Heat Pump Water"
+          },
+          "endUses": {
+            "heating": 51180.36,
+            "cooling": 5545.96,
+            "interiorLighting": 8753.36,
+            "equipment": 98950.31999999999,
+            "fans": 11278.68,
+            "pumps": null,
+            "hotWater": 31050.879999999997
+          },
+          "totalEui": 25.463,
+          "annualEnergyKBTU": 206759.56,
+          "annualEnergyCost": 4290.321467760843,
+          "incrementalCost": 15000,
+          "incrementalAnnualSavings": 823.1914210151826,
+          "cumulativeAnnualSavings": 3790.5715959050813,
+          "simplePaybackYears": 18.22176424227257,
+          "sourceIndex": "31133233",
+          "simulationId": 1449,
+          "sourceIndices": {
+            "wallIndex": 1,
+            "roofIndex": 1,
+            "windowIndex": 3,
+            "infiltrationIndex": 3,
+            "ventilationIndex": 2,
+            "hvacIndex": 3,
+            "hotWaterIndex": 3
+          },
+          "sourceCells": {
+            "measure": "F5",
+            "eui": "F14",
+            "annualEnergy": "F39",
+            "annualCost": "F52"
+          }
+        }
+      ],
+      "summary": {
+        "finalEui": 25.463,
+        "euiReductionPercent": 63.521625145051075,
+        "modeledAnnualEnergyCost": 4290.321467760843,
+        "totalPackageCost": 315330,
+        "annualSavings": 3790.5715959050813,
+        "simplePaybackYears": 83.18798155419304
+      },
+      "assumptions": {
+        "electricityPricePerKWh": 0.07079999999999999,
+        "gasPricePerTherm": 1.26
+      },
+      "units": {
+        "eui": "kBtu/ft²/year",
+        "annualEnergy": "kBtu/year",
+        "annualEnergyCost": "USD/year",
+        "cost": "USD",
+        "simplePayback": "years",
+        "electricityPrice": "USD/kWh",
+        "gasPrice": "USD/therm"
+      },
+      "evidenceType": "Modeled",
+      "sourceWorkbook": "energy-retrofit-ten-unit.xlsx",
+      "sourceWorksheet": "Package1",
+      "status": "prototype"
+    },
+    {
+      "id": "package-2",
+      "archetypeId": "ten-unit-apartment",
+      "name": "Package 2",
+      "description": "Install ERVs, Replace Windows & Siding, Install Heat Pump For Heating/Cooling, Install Heat Pump Water Heater",
+      "measures": [
+        "Install ERVs",
+        "Replace Windows & Siding",
+        "Install Heat Pump For Heating/Cooling",
+        "Install Heat Pump Water Heater"
+      ],
+      "steps": [
+        {
+          "id": "baseline",
+          "label": "Baseline",
+          "measure": null,
+          "chartLabel": "Baseline",
+          "measureDescription": null,
+          "inputs": {
+            "wallRValue": 10,
+            "roofRValue": 17,
+            "windowUFactor": 0.57,
+            "infiltrationRate": 0.00055,
+            "ventilation": "Exhaust Fan",
+            "hvacSystem": "Gas",
+            "waterHeatingSystem": "Gas Water"
+          },
+          "endUses": {
+            "heating": 335291.04000000004,
+            "cooling": null,
+            "interiorLighting": 8753.36,
+            "equipment": 98950.31999999999,
+            "fans": 7040.04,
+            "pumps": 324.8,
+            "hotWater": 116440.79999999999
+          },
+          "totalEui": 69.803,
+          "annualEnergyKBTU": 566800.36,
+          "annualEnergyCost": 8080.893063665924,
+          "incrementalCost": null,
+          "incrementalAnnualSavings": null,
+          "cumulativeAnnualSavings": null,
+          "simplePaybackYears": null,
+          "sourceIndex": "31111121",
+          "simulationId": 648,
+          "sourceIndices": {
+            "wallIndex": 1,
+            "roofIndex": 1,
+            "windowIndex": 1,
+            "infiltrationIndex": 1,
+            "ventilationIndex": 1,
+            "hvacIndex": 2,
+            "hotWaterIndex": 1
+          },
+          "sourceCells": {
+            "measure": "B5",
+            "eui": "B14",
+            "annualEnergy": "B39",
+            "annualCost": "B52"
+          }
+        },
+        {
+          "id": "step-2",
+          "label": "Install ERVs",
+          "measure": "Install ERVs",
+          "chartLabel": "ERV",
+          "measureDescription": "- Replaces existing ventilation system with an energy recovery ventilator",
+          "inputs": {
+            "wallRValue": 10,
+            "roofRValue": 17,
+            "windowUFactor": 0.57,
+            "infiltrationRate": 0.00055,
+            "ventilation": "ERV",
+            "hvacSystem": "Gas",
+            "waterHeatingSystem": "Gas Water"
+          },
+          "endUses": {
+            "heating": 254886.80000000002,
+            "cooling": null,
+            "interiorLighting": 8753.36,
+            "equipment": 98950.31999999999,
+            "fans": 7040.04,
+            "pumps": 219.24,
+            "hotWater": 116440.79999999999
+          },
+          "totalEui": 59.888,
+          "annualEnergyKBTU": 486290.56,
+          "annualEnergyCost": 7065.366037938109,
+          "incrementalCost": 25000,
+          "incrementalAnnualSavings": 1015.5270257278153,
+          "cumulativeAnnualSavings": 1015.5270257278153,
+          "simplePaybackYears": 24.61775941618375,
+          "sourceIndex": "31111221",
+          "simulationId": 729,
+          "sourceIndices": {
+            "wallIndex": 1,
+            "roofIndex": 1,
+            "windowIndex": 1,
+            "infiltrationIndex": 1,
+            "ventilationIndex": 2,
+            "hvacIndex": 2,
+            "hotWaterIndex": 1
+          },
+          "sourceCells": {
+            "measure": "C5",
+            "eui": "C14",
+            "annualEnergy": "C39",
+            "annualCost": "C52"
+          }
+        },
+        {
+          "id": "step-3",
+          "label": "Replace Windows & Siding",
+          "measure": "Replace Windows & Siding",
+          "chartLabel": "Windows + Siding",
+          "measureDescription": "-Improves U-value of windows to 0.29 Btu/h-ft2-°F\n-Improves infiltration rate of the envelope by up to 35%",
+          "inputs": {
+            "wallRValue": 10,
+            "roofRValue": 17,
+            "windowUFactor": 0.29,
+            "infiltrationRate": 0.00035000000000000005,
+            "ventilation": "ERV",
+            "hvacSystem": "Gas",
+            "waterHeatingSystem": "Gas Water"
+          },
+          "endUses": {
+            "heating": 144617.19999999998,
+            "cooling": null,
+            "interiorLighting": 8753.36,
+            "equipment": 98950.31999999999,
+            "fans": 7040.04,
+            "pumps": 121.8,
+            "hotWater": 116440.79999999999
+          },
+          "totalEui": 46.296,
+          "annualEnergyKBTU": 375923.52,
+          "annualEnergyCost": 5673.613634061202,
+          "incrementalCost": 98330,
+          "incrementalAnnualSavings": 1391.752403876907,
+          "cumulativeAnnualSavings": 2407.2794296047223,
+          "simplePaybackYears": 70.65193473069564,
+          "sourceIndex": "31133221",
+          "simulationId": 801,
+          "sourceIndices": {
+            "wallIndex": 1,
+            "roofIndex": 1,
+            "windowIndex": 3,
+            "infiltrationIndex": 3,
+            "ventilationIndex": 2,
+            "hvacIndex": 2,
+            "hotWaterIndex": 1
+          },
+          "sourceCells": {
+            "measure": "D5",
+            "eui": "D14",
+            "annualEnergy": "D39",
+            "annualCost": "D52"
+          }
+        },
+        {
+          "id": "step-4",
+          "label": "Install Heat Pump For Heating/Cooling",
+          "measure": "Install Heat Pump For Heating/Cooling",
+          "chartLabel": "HVAC Heat Pump",
+          "measureDescription": "- Replaces existing heating system with a heat pump for heating and cooling",
+          "inputs": {
+            "wallRValue": 10,
+            "roofRValue": 17,
+            "windowUFactor": 0.29,
+            "infiltrationRate": 0.00035000000000000005,
+            "ventilation": "ERV",
+            "hvacSystem": "Heat Pump",
+            "waterHeatingSystem": "Gas Water"
+          },
+          "endUses": {
+            "heating": 51180.36,
+            "cooling": 5545.96,
+            "interiorLighting": 8753.36,
+            "equipment": 98950.31999999999,
+            "fans": 11278.68,
+            "pumps": null,
+            "hotWater": 116440.79999999999
+          },
+          "totalEui": 35.979,
+          "annualEnergyKBTU": 292149.48,
+          "annualEnergyCost": 5113.512888776026,
+          "incrementalCost": 177000,
+          "incrementalAnnualSavings": 560.1007452851763,
+          "cumulativeAnnualSavings": 2967.3801748898986,
+          "simplePaybackYears": 316.01457682381783,
+          "sourceIndex": "31133231",
+          "simulationId": 963,
+          "sourceIndices": {
+            "wallIndex": 1,
+            "roofIndex": 1,
+            "windowIndex": 3,
+            "infiltrationIndex": 3,
+            "ventilationIndex": 2,
+            "hvacIndex": 3,
+            "hotWaterIndex": 1
+          },
+          "sourceCells": {
+            "measure": "E5",
+            "eui": "E14",
+            "annualEnergy": "E39",
+            "annualCost": "E52"
+          }
+        },
+        {
+          "id": "step-5",
+          "label": "Install Heat Pump Water Heater",
+          "measure": "Install Heat Pump Water Heater",
+          "chartLabel": "HP Water Heater",
+          "measureDescription": "- Replaces existing hot water system with a heat pump water heater",
+          "inputs": {
+            "wallRValue": 10,
+            "roofRValue": 17,
+            "windowUFactor": 0.29,
+            "infiltrationRate": 0.00035000000000000005,
+            "ventilation": "ERV",
+            "hvacSystem": "Heat Pump",
+            "waterHeatingSystem": "Heat Pump Water"
+          },
+          "endUses": {
+            "heating": 51180.36,
+            "cooling": 5545.96,
+            "interiorLighting": 8753.36,
+            "equipment": 98950.31999999999,
+            "fans": 11278.68,
+            "pumps": null,
+            "hotWater": 31050.879999999997
+          },
+          "totalEui": 25.463,
+          "annualEnergyKBTU": 206759.56,
+          "annualEnergyCost": 4290.321467760843,
+          "incrementalCost": 15000,
+          "incrementalAnnualSavings": 823.1914210151826,
+          "cumulativeAnnualSavings": 3790.5715959050813,
+          "simplePaybackYears": 18.22176424227257,
+          "sourceIndex": "31133233",
+          "simulationId": 1449,
+          "sourceIndices": {
+            "wallIndex": 1,
+            "roofIndex": 1,
+            "windowIndex": 3,
+            "infiltrationIndex": 3,
+            "ventilationIndex": 2,
+            "hvacIndex": 3,
+            "hotWaterIndex": 3
+          },
+          "sourceCells": {
+            "measure": "F5",
+            "eui": "F14",
+            "annualEnergy": "F39",
+            "annualCost": "F52"
+          }
+        }
+      ],
+      "summary": {
+        "finalEui": 25.463,
+        "euiReductionPercent": 63.521625145051075,
+        "modeledAnnualEnergyCost": 4290.321467760843,
+        "totalPackageCost": 315330,
+        "annualSavings": 3790.5715959050813,
+        "simplePaybackYears": 83.18798155419304
+      },
+      "assumptions": {
+        "electricityPricePerKWh": 0.07079999999999999,
+        "gasPricePerTherm": 1.26
+      },
+      "units": {
+        "eui": "kBtu/ft²/year",
+        "annualEnergy": "kBtu/year",
+        "annualEnergyCost": "USD/year",
+        "cost": "USD",
+        "simplePayback": "years",
+        "electricityPrice": "USD/kWh",
+        "gasPrice": "USD/therm"
+      },
+      "evidenceType": "Modeled",
+      "sourceWorkbook": "energy-retrofit-ten-unit.xlsx",
+      "sourceWorksheet": "Package2",
+      "status": "prototype"
+    },
+    {
+      "id": "package-3",
+      "archetypeId": "ten-unit-apartment",
+      "name": "Package 3",
+      "description": "Install Heat Pump Water Heater, Install ERV & Heat Pump Combo",
+      "measures": [
+        "Install Heat Pump Water Heater",
+        "Install ERV & Heat Pump Combo"
+      ],
+      "steps": [
+        {
+          "id": "baseline",
+          "label": "Baseline",
+          "measure": null,
+          "chartLabel": "Baseline",
+          "measureDescription": null,
+          "inputs": {
+            "wallRValue": 10,
+            "roofRValue": 17,
+            "windowUFactor": 0.57,
+            "infiltrationRate": 0.00055,
+            "ventilation": "Exhaust Fan",
+            "hvacSystem": "Gas",
+            "waterHeatingSystem": "Gas Water"
+          },
+          "endUses": {
+            "heating": 335291.04000000004,
+            "cooling": null,
+            "interiorLighting": 8753.36,
+            "equipment": 98950.31999999999,
+            "fans": 7040.04,
+            "pumps": 324.8,
+            "hotWater": 116440.79999999999
+          },
+          "totalEui": 69.803,
+          "annualEnergyKBTU": 566800.36,
+          "annualEnergyCost": 8080.893063665924,
+          "incrementalCost": null,
+          "incrementalAnnualSavings": null,
+          "cumulativeAnnualSavings": null,
+          "simplePaybackYears": null,
+          "sourceIndex": "31111121",
+          "simulationId": 648,
+          "sourceIndices": {
+            "wallIndex": 1,
+            "roofIndex": 1,
+            "windowIndex": 1,
+            "infiltrationIndex": 1,
+            "ventilationIndex": 1,
+            "hvacIndex": 2,
+            "hotWaterIndex": 1
+          },
+          "sourceCells": {
+            "measure": "B5",
+            "eui": "B14",
+            "annualEnergy": "B39",
+            "annualCost": "B52"
+          }
+        },
+        {
+          "id": "step-2",
+          "label": "Install Heat Pump Water Heater",
+          "measure": "Install Heat Pump Water Heater",
+          "chartLabel": "HP Water Heater",
+          "measureDescription": "- Replaces existing hot water system with a heat pump water heater",
+          "inputs": {
+            "wallRValue": 10,
+            "roofRValue": 17,
+            "windowUFactor": 0.57,
+            "infiltrationRate": 0.00055,
+            "ventilation": "Exhaust Fan",
+            "hvacSystem": "Gas",
+            "waterHeatingSystem": "Heat Pump Water"
+          },
+          "endUses": {
+            "heating": 335291.04000000004,
+            "cooling": null,
+            "interiorLighting": 8753.36,
+            "equipment": 98950.31999999999,
+            "fans": 7040.04,
+            "pumps": 324.8,
+            "hotWater": 31050.879999999997
+          },
+          "totalEui": 59.287,
+          "annualEnergyKBTU": 481410.44,
+          "annualEnergyCost": 7257.701642650742,
+          "incrementalCost": 15000,
+          "incrementalAnnualSavings": 823.1914210151826,
+          "cumulativeAnnualSavings": 823.1914210151826,
+          "simplePaybackYears": 18.22176424227257,
+          "sourceIndex": "31111123",
+          "simulationId": 1134,
+          "sourceIndices": {
+            "wallIndex": 1,
+            "roofIndex": 1,
+            "windowIndex": 1,
+            "infiltrationIndex": 1,
+            "ventilationIndex": 1,
+            "hvacIndex": 2,
+            "hotWaterIndex": 3
+          },
+          "sourceCells": {
+            "measure": "C5",
+            "eui": "C14",
+            "annualEnergy": "C39",
+            "annualCost": "C52"
+          }
+        },
+        {
+          "id": "step-3",
+          "label": "Install ERV & Heat Pump Combo",
+          "measure": "Install ERV & Heat Pump Combo",
+          "chartLabel": "ERV + Heat Pump",
+          "measureDescription": "- Replaces existing ventilation and heating system with a heat pump/energy recovery ventilator combo unit",
+          "inputs": {
+            "wallRValue": 10,
+            "roofRValue": 17,
+            "windowUFactor": 0.57,
+            "infiltrationRate": 0.00055,
+            "ventilation": "ERV",
+            "hvacSystem": "Heat Pump",
+            "waterHeatingSystem": "Heat Pump Water"
+          },
+          "endUses": {
+            "heating": 77513.51999999999,
+            "cooling": 4108.72,
+            "interiorLighting": 8753.36,
+            "equipment": 98950.31999999999,
+            "fans": 13186.880000000001,
+            "pumps": null,
+            "hotWater": 31050.879999999997
+          },
+          "totalEui": 28.764,
+          "annualEnergyKBTU": 233563.68,
+          "annualEnergyCost": 4846.514813599061,
+          "incrementalCost": 116000,
+          "incrementalAnnualSavings": 2411.1868290516804,
+          "cumulativeAnnualSavings": 3234.378250066863,
+          "simplePaybackYears": 48.109088272360374,
+          "sourceIndex": "31111233",
+          "simulationId": 1377,
+          "sourceIndices": {
+            "wallIndex": 1,
+            "roofIndex": 1,
+            "windowIndex": 1,
+            "infiltrationIndex": 1,
+            "ventilationIndex": 2,
+            "hvacIndex": 3,
+            "hotWaterIndex": 3
+          },
+          "sourceCells": {
+            "measure": "D5",
+            "eui": "D14",
+            "annualEnergy": "D39",
+            "annualCost": "D52"
+          }
+        }
+      ],
+      "summary": {
+        "finalEui": 28.764,
+        "euiReductionPercent": 58.792602037161735,
+        "modeledAnnualEnergyCost": 4846.514813599061,
+        "totalPackageCost": 131000,
+        "annualSavings": 3234.378250066863,
+        "simplePaybackYears": 40.5023747600615
+      },
+      "assumptions": {
+        "electricityPricePerKWh": 0.07079999999999999,
+        "gasPricePerTherm": 1.26
+      },
+      "units": {
+        "eui": "kBtu/ft²/year",
+        "annualEnergy": "kBtu/year",
+        "annualEnergyCost": "USD/year",
+        "cost": "USD",
+        "simplePayback": "years",
+        "electricityPrice": "USD/kWh",
+        "gasPrice": "USD/therm"
+      },
+      "evidenceType": "Modeled",
+      "sourceWorkbook": "energy-retrofit-ten-unit.xlsx",
+      "sourceWorksheet": "Package3",
+      "status": "prototype"
+    }
+  ],
+  "costNote": "Modeled estimates based on the energy-price assumptions used in the study.",
+  "developmentDataNotice": "Package 1 and Package 2 currently contain identical source descriptions and summary values."
+}
