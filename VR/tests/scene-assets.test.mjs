@@ -5,7 +5,7 @@ import test from "node:test";
 import { fileURLToPath } from "node:url";
 
 const publicDir = path.resolve(fileURLToPath(new URL("../public", import.meta.url)));
-const manifests = ["assets/scene-manifest.json", "assets/south-park-scene-manifest.json"];
+const manifests = ["runtime-assets/scene-manifest.json", "runtime-assets/south-park-scene-manifest.json"];
 
 function parseGlbJson(bytes) {
   const jsonLength = bytes.readUInt32LE(12);
@@ -121,7 +121,7 @@ for (const manifestPath of manifests) {
 
     for (const chunk of manifest.chunks) {
       assert.equal(chunk.status, "ready");
-      assert.match(chunk.url, /^\/assets\/scenes\/.+\.glb$/);
+      assert.match(chunk.url, /^\/runtime-assets\/scenes\/.+\.glb$/);
       const bytes = await fs.readFile(path.join(publicDir, chunk.url));
       assert.ok(bytes.byteLength > 20, `${chunk.id} is empty`);
       assert.equal(bytes.subarray(0, 4).toString("ascii"), "glTF", `${chunk.id} is not GLB`);

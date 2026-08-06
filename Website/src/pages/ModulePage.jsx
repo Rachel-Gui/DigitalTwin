@@ -7,6 +7,7 @@ import airMap from "../assets/air-quality/pm25-prediction-map.png";
 import clarityScreenshot from "../assets/air-quality/clarity-screenshot.png";
 import vrConcord from "../assets/vr/concord-pm25-particle-view.png";
 import vrCity from "../assets/vr/city-scale-pollution-view.png";
+import vrDashboard from "../assets/vr/1111.png";
 import renewableMap from "../assets/home/south-park-arcgis-preview.png";
 import { PublicationRecord, SectionHeader, SourceCaption, StatusLabel } from "../components";
 import { Link } from "react-router-dom";
@@ -17,8 +18,9 @@ const AirQualityTableau = lazy(() => import("../components/AirQualityTableau"));
 export default function ModulePage({type}){
   return ({energy:<EnergyPage/>,retrofit:<RetrofitPage/>,air:<AirPage/>,vr:<VRPage/>,renewable:<RenewablePage/>,scenario:<ScenarioPage/>})[type];
 }
-function ModuleHero({index,status,title,subtitle,children}){
-  return <section className="module-editorial-hero"><div><span>{index} / MODULE</span><StatusLabel>{status}</StatusLabel></div><h1>{title}</h1><p>{subtitle}</p>{children}</section>
+function ModuleHero({index,status,title,subtitle,children,className="",heroImage}){
+  const heroStyle=heroImage ? {backgroundImage:`linear-gradient(90deg,rgba(5,5,5,.96) 0%,rgba(5,5,5,.82) 42%,rgba(5,5,5,.38) 100%),url(${heroImage})`} : undefined;
+  return <section className={`module-editorial-hero ${className}`} style={heroStyle}><div><span>{index} / MODULE</span>{status&&<StatusLabel>{status}</StatusLabel>}</div><h1>{title}</h1><p>{subtitle}</p>{children}</section>
 }
 function Figure({src,title,detail,source,status}){return <figure className="research-figure"><div className="figure-image"><img src={src} alt={title}/></div><SourceCaption title={title} detail={detail} source={source} status={status}/></figure>}
 
@@ -199,21 +201,28 @@ function VRPage(){
     {index:"02",label:"NEIGHBORHOOD-SCALE PM2.5 CONCENTRATION MODEL",title:"South Park, Seattle",description:"Explore modeled road-network PM2.5 Concentration (µg/m³) using observed weather conditions and the restored GIS model.",date:"Selectable historical dates · default 2025-01-29 (Wednesday)",time:"00:00–23:00 · America/Los_Angeles",type:"Historical observations driving a modeled particle simulation",source:"pm25_with_wind.xlsx · Sheet1",image:vrCity,href:`${vrBase}/#south-park`}
   ];
   const interfaceElements=[
-    ["01","3D environment","The buildings, streets, landscape, and sky establish the spatial context for understanding where exposure occurs."],
-    ["02","PM2.5 Concentration particles","Animated particles make changing PM2.5 Concentration (µg/m³) visible through their density, movement, and distribution. They are visual symbols—not physical particles at actual size or count."],
-    ["03","Time and sunlight","The hourly control and moving sun connect each environmental reading to a time in the 24-hour cycle."],
-    ["04","PM2.5 Concentration data","The right panel shows the hourly PM2.5 Concentration (µg/m³), 24-hour mean, peak, trend, and monitoring context."],
-    ["05","Air-quality standard","EPA color bands show whether the current condition is Good, Moderate, Unhealthy, or more severe."],
-    ["06","Immersive controls","Scene controls switch locations, while Enter VR opens the headset-ready WebXR view on compatible devices."]
+    ["01","Time / hourly reading","The time control selects the simulated hour. The sun position shows the corresponding daylight condition; the hourly reading is the PM2.5 concentration at that hour."],
+    ["02","PM2.5 concentration","Fine particulate matter 2.5 micrometers or smaller, shown in micrograms per cubic meter (µg/m³). The particles are a visual representation, not particles at physical scale."],
+    ["03","24-hour average","The mean PM2.5 concentration across the displayed 24-hour profile. In the example image, the average is 16.1 µg/m³."],
+    ["04","Hourly peak","The highest hourly PM2.5 concentration in the displayed profile. In the example image, the peak is 22.5 µg/m³."],
+    ["05","24-hour PM2.5 reference","The dashed EPA reference line provides context for the 24-hour concentration comparison. It is not an hourly legal limit or an attainment determination."],
+    ["06","24-hour AQI","The Air Quality Index converts a 24-hour PM2.5 concentration into a public-health category. The example image shows AQI 64, labeled Moderate."],
+    ["07","24-hour trend","The line chart shows how PM2.5 concentration changes hour by hour; the horizontal reference line helps compare the daily profile with the selected benchmark."],
+    ["08","Local concentration zones","Zone cards show modeled PM2.5 values at local points around the school scene, allowing users to compare spatial differences within the same hour."],
+    ["09","Scene and data context","The scene name, date, time range, source, data type, and simulation label explain what the current visualization represents."],
+    ["10","Immersive controls","Enter VR starts the browser WebXR session on a compatible headset. Scene selection, replay, and guided-tour controls remain connected to the same visualization."]
   ];
-  const glossary=[
-    ["VR","Virtual Reality — an immersive, spatial experience viewed on a screen or through a headset."],
-    ["WebXR","A browser standard that enables virtual and augmented reality experiences without a separate native application."],
-    ["PM2.5 Concentration","The amount of fine particulate matter, 2.5 micrometers or smaller, measured in a volume of air."],
-    ["µg/m³","Micrograms per cubic meter — the concentration unit used for PM2.5 Concentration."],
-    ["AQI","Air Quality Index — a public health scale that converts pollutant concentration into six air-quality categories."],
-    ["24H AVG","The 24-hour average PM2.5 Concentration used to calculate the displayed daily AQI."],
-    ["Concord / South Park","The school-scale particle model and neighborhood-scale digital-twin scenes available in this prototype."]
+  const knowledgeQuestions=[
+    ["SCENE / CONCORD SCHOOL","Why are there six particle zones around the school?","The Concord scene reproduces six modeled particle zones from the Grasshopper profile. They help compare local differences around the school, but they are not a complete hour-by-hour atmospheric dispersion model."],
+    ["SCENE / SOUTH PARK","Why do the particles move along the roads?","South Park uses historical wind direction and speed to influence particle motion along a restored road volume. This is a simplified visual simulation—not CFD—and does not represent every emission, turbulence, temperature, or chemistry process."],
+    ["BASIC CONCEPT","What exactly is PM2.5?","PM2.5 means fine particulate matter with a diameter of 2.5 micrometers or smaller. It is measured as a mass concentration in the air and can penetrate deeply into the respiratory system."],
+    ["BASIC CONCEPT","What does µg/m³ mean?","It means micrograms per cubic meter—the amount of PM2.5 mass contained in one cubic meter of air. This is the unit used by the values in the VR interface."],
+    ["READING THE PANEL","What is the 24-hour average?","It is the mean PM2.5 concentration across the displayed 24-hour profile. It gives a broader daily view than a single hourly reading and is used for the displayed AQI context."],
+    ["READING THE PANEL","What does AQI tell me?","The Air Quality Index translates pollutant concentration into a public-health category, from Good through Hazardous. It is a communication scale, not a direct measurement or diagnosis."],
+    ["READING THE PANEL","Why is there an EPA reference line?","The reference line helps compare the displayed daily concentration with a 24-hour benchmark. It is contextual in this prototype, not an hourly legal limit or an attainment determination."],
+    ["TECHNOLOGY","What is VR in this project?","VR means Virtual Reality: a spatial experience that surrounds the viewer and can be explored on a monitor or through a compatible headset."],
+    ["TECHNOLOGY","What does WebXR do?","WebXR is a browser standard that lets the same web scene enter an immersive headset session without requiring a separate native application."],
+    ["EXPERIENCE","What should I look at first?","Start with the scene and particle density, then check the time, hourly reading, 24-hour average, peak, trend, and local zones. Together they connect the visible atmosphere to the data behind it."]
   ];
   const airQualityStandards=[
     ["good","Good","0–50","0.0–9.0 µg/m³","Air quality is satisfactory, with little or no health risk."],
@@ -224,15 +233,16 @@ function VRPage(){
     ["hazardous","Hazardous","301–500","225.5+ µg/m³","Health warning of emergency conditions; everyone is more likely to be affected."]
   ];
   return <div className="vr-page">
-    <ModuleHero index="06" status="WORKING WEBXR PROTOTYPE" title={<>Step inside the<br/><em>city&apos;s atmosphere.</em></>} subtitle="Choose a scene below to move from the DecarbCityTwin research platform into its interactive 3D and headset-ready WebXR environment."/>
+    <ModuleHero className="vr-module-hero" heroImage={vrDashboard} index="06" status="" title={<>Step inside the<br/><em>city&apos;s atmosphere.</em></>} subtitle="Choose a scene below to move from the DecarbCityTwin research platform into its interactive 3D and headset-ready WebXR environment."/>
     <section className="vr-interface-guide">
       <div className="vr-interface-guide-inner">
         <header className="vr-guide-heading"><span>01 / INSIDE THE EXPERIENCE</span><h2>Read the environment before you enter.</h2><p>This guide explains how the visible scene, time controls, particles, and PM2.5 Concentration information work together inside the VR experience.</p></header>
-        <figure className="vr-overview-figure"><div className="vr-overview-image"><img src={vrConcord} alt="Concord International School VR experience showing PM2.5 Concentration particles and hourly conditions"/><span className="vr-overview-badge">VR EXPERIENCE PREVIEW</span></div><figcaption>Concord International School · School-scale PM2.5 Concentration visualization · Working WebXR prototype</figcaption></figure>
-        <div className="vr-element-grid">{interfaceElements.map(([number,title,text])=><article key={number}><span>{number}</span><div><h3>{title}</h3><p>{text}</p></div></article>)}</div>
+        <div className="vr-guide-layout">
+          <figure className="vr-overview-figure"><div className="vr-overview-image"><img src={vrConcord} alt="Concord International School VR experience showing PM2.5 concentration particles and hourly conditions"/><span className="vr-overview-badge">VR EXPERIENCE PREVIEW</span></div><figcaption>Concord International School · School-scale PM2.5 concentration visualization · Working WebXR prototype</figcaption></figure>
+          <aside className="vr-indicator-panel"><header><span>SCENE READING GUIDE</span><strong>10 indicators</strong><p>Follow the numbered guide to understand what each part of the VR interface is telling you.</p></header><div className="vr-element-grid">{interfaceElements.map(([number,title,text])=><article key={number}><span>{number}</span><div><h3>{title}</h3><p>{text}</p></div></article>)}</div></aside>
+        </div>
         <section className="vr-aqi-explainer"><header><span>PM2.5 CONCENTRATION IN THE VR VIEW</span><h2>How to read the PM2.5 Concentration 24-hour trend.</h2><p>The solid curve contains hourly PM2.5 Concentration readings in µg/m³. The dashed 35 µg/m³ line identifies the U.S. EPA primary 24-hour PM2.5 NAAQS for context. It is not an hourly limit. The interface compares the displayed 24-hour PM2.5 Concentration mean—not an individual hour—with that reference.</p><a className="vr-aqi-source" href="https://www.epa.gov/criteria-air-pollutants/naaqs-table" target="_blank" rel="noreferrer">Source: U.S. EPA NAAQS Table · PM2.5 Concentration · 2024 ↗</a></header><div className="vr-aqi-standard-list">{airQualityStandards.map(([key,label,aqi,pm,text])=><article className={`vr-aqi-${key}`} key={key}><i/><div><span>AQI {aqi} · 24-HOUR PM2.5 CONCENTRATION BREAKPOINT</span><h3>{label}</h3><strong>{pm}</strong><p>{text}</p></div></article>)}</div><p className="vr-aqi-method-note">The 35 µg/m³ PM2.5 NAAQS has a regulatory form: the annual 98th percentile of 24-hour PM2.5 Concentrations, averaged over three years. The VR display is contextual and is not an attainment determination. AQI categories also use 24-hour PM2.5 Concentration; they are not one-hour standards.</p></section>
-        <section className="vr-model-scope"><header><span>MODEL SCOPE</span><h2>What the particles represent.</h2><p>These notes are provided here so the immersive interface can remain focused on the scene, time controls, and current PM2.5 Concentration.</p></header><div><article><span>CONCORD SCHOOL</span><h3>Six modeled particle zones</h3><p>The scene reproduces six particle zones from the Grasshopper profile. It does not use an hour-by-hour wind field and is not a full atmospheric dispersion model.</p></article><article><span>SOUTH PARK</span><h3>Wind-driven visual simulation</h3><p>Historical wind direction and speed influence particle motion along the restored road volume. The animation is a simplified visualization—not CFD or a complete atmospheric dispersion model—and does not fully represent emissions, temperature, turbulence, chemistry, or every building-scale airflow effect.</p></article></div></section>
-        <div className="vr-glossary-block"><header><span>KEY NAMES / DEFINITIONS</span><h2>What the terms mean.</h2></header><dl>{glossary.map(([term,definition])=><div key={term}><dt>{term}</dt><dd>{definition}</dd></div>)}</dl></div>
+        <section className="vr-qa-block"><header><span>04 / ASK THE SCENE</span><h2>What are you seeing?</h2><p>Open a question to understand how the scene, particles, indicators, and headset experience connect. Start with the highlighted question, then explore at your own pace.</p></header><div className="vr-qa-list">{knowledgeQuestions.map(([category,question,answer],index)=><details className="vr-qa-card" open={index===0} key={question}><summary><span>{String(index+1).padStart(2,"0")} · {category}</span><strong>{question}</strong><i aria-hidden="true"/></summary><p>{answer}</p></details>)}</div></section>
       </div>
     </section>
     <section className="vr-entry-section">

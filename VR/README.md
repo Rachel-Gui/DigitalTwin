@@ -10,6 +10,8 @@ On macOS, double-click `Start PHI WebXR.command`. It builds the current project,
 
 Keep the Terminal window open while using the experience. Press `Control-C` in that window to stop it.
 
+On Windows, run `Start PHI WebXR.ps1` from PowerShell. It starts the local development server at `http://127.0.0.1:3000`.
+
 Command-line alternative:
 
 ```bash

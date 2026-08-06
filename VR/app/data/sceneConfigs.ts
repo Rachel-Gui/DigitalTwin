@@ -1,6 +1,6 @@
-import concordManifest from "../../public/assets/scene-manifest.json";
-import southParkManifest from "../../public/assets/south-park-scene-manifest.json";
-import southParkBoundary from "../../public/assets/boundaries/south-park-road-volume.json";
+import concordManifest from "../../public/runtime-assets/scene-manifest.json";
+import southParkManifest from "../../public/runtime-assets/south-park-scene-manifest.json";
+import southParkBoundary from "../../public/runtime-assets/boundaries/south-park-road-volume.json";
 import { CONCORD_PARTICLE_GROUPS, SOUTH_PARK_SEEDS } from "./experienceData";
 import type { SceneConfig, SceneId } from "../lib/types";
 
@@ -46,7 +46,7 @@ export const SCENE_CONFIGS: Record<SceneId, SceneConfig> = {
   concord: {
     id: "concord",
     label: "Concord School",
-    manifestUrl: "/assets/scene-manifest.json",
+    manifestUrl: "/runtime-assets/scene-manifest.json",
     caption: "Concord International School",
     detail: "Six-zone PM2.5 Concentration profile",
     ...runtime(concordManifest),
@@ -60,7 +60,7 @@ export const SCENE_CONFIGS: Record<SceneId, SceneConfig> = {
   "south-park": {
     id: "south-park",
     label: "South Park",
-    manifestUrl: "/assets/south-park-scene-manifest.json",
+    manifestUrl: "/runtime-assets/south-park-scene-manifest.json",
     caption: "South Park",
     detail: "Road-network PM2.5 Concentration flow · restored GIS ground",
     ...runtime(southParkManifest),

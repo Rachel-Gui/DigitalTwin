@@ -4,7 +4,7 @@ import test from "node:test";
 import { CONCORD_PARTICLE_GROUPS, CONCORD_PM_SERIES, SOUTH_PARK_SEEDS } from "../app/data/experienceData.ts";
 import { concordPopulateCounts, makeExtrudedPolygonBoundary } from "../app/lib/particleModel.ts";
 
-const boundary = JSON.parse(await fs.readFile(new URL("../public/assets/boundaries/south-park-road-volume.json", import.meta.url), "utf8"));
+const boundary = JSON.parse(await fs.readFile(new URL("../public/runtime-assets/boundaries/south-park-road-volume.json", import.meta.url), "utf8"));
 
 test("preserves all 24 hours of the six original Concord Populate3D groups", () => {
   assert.equal(CONCORD_PARTICLE_GROUPS.length, 6);

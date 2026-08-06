@@ -7,6 +7,12 @@ import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.j
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { Sky } from "three/examples/jsm/objects/Sky.js";
 import { VRButton } from "three/examples/jsm/webxr/VRButton.js";
+
+type XrGlobalState = typeof globalThis & {
+  __phiActiveImmersiveSession?: XRSession | null;
+};
+
+const xrGlobal = globalThis as XrGlobalState;
 import type { AirRecord, ConcordPopulateConfig, NarrationStatus, SceneConfig, SouthParkWindConfig } from "../lib/types";
 import {
   MAX_PARTICLES,
@@ -45,14 +51,14 @@ type ReplacementInstance = {
 type ReplacementModelKey = "tree" | "conifer" | "shrub" | "fern" | "grass" | "vehicle" | "bench" | "fence";
 
 const replacementModelUrls: Record<ReplacementModelKey, string> = {
-  tree: "/assets/models/replacements/deciduous-tree.glb",
-  conifer: "/assets/models/replacements/conifer.glb",
-  shrub: "/assets/models/replacements/shrub.glb",
-  fern: "/assets/models/replacements/fern.glb",
-  grass: "/assets/models/replacements/ornamental-grass.glb",
-  vehicle: "/assets/models/replacements/car.glb",
-  bench: "/assets/models/replacements/bench.glb",
-  fence: "/assets/models/replacements/fence.glb",
+  tree: "/runtime-assets/models/replacements/deciduous-tree.glb",
+  conifer: "/runtime-assets/models/replacements/conifer.glb",
+  shrub: "/runtime-assets/models/replacements/shrub.glb",
+  fern: "/runtime-assets/models/replacements/fern.glb",
+  grass: "/runtime-assets/models/replacements/ornamental-grass.glb",
+  vehicle: "/runtime-assets/models/replacements/car.glb",
+  bench: "/runtime-assets/models/replacements/bench.glb",
+  fence: "/runtime-assets/models/replacements/fence.glb",
 };
 
 function replacementModelKey(item: ReplacementInstance): ReplacementModelKey | null {
@@ -746,7 +752,19 @@ export function SceneCanvas({
     const vrButton = VRButton.createButton(renderer);
     vrButton.className = "vr-entry";
     vrButton.setAttribute("aria-label", "Enter VR");
-    (document.getElementById(vrButtonHostId) ?? mount).appendChild(vrButton);
+    const guardDuplicateSession = (event: MouseEvent) => {
+      const rendererSession = renderer.xr.getSession();
+      const activeSession = xrGlobal.__phiActiveImmersiveSession ?? null;
+      if (activeSession && activeSession !== rendererSession) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        void activeSession.end().catch(() => undefined);
+      }
+    };
+    vrButton.addEventListener("click", guardDuplicateSession, true);
+    const vrButtonHost = document.getElementById(vrButtonHostId) ?? mount;
+    vrButtonHost.querySelectorAll(".vr-entry").forEach((button) => button.remove());
+    vrButtonHost.appendChild(vrButton);
     const xrNavigator = navigator as Navigator & { xr?: { isSessionSupported(mode: string): Promise<boolean> } };
     xrNavigator.xr?.isSessionSupported("immersive-vr")
       .then((supported) => { if (!cancelled) onVrSupport(supported); })
@@ -755,12 +773,16 @@ export function SceneCanvas({
     const desktopCameraPosition = camera.position.clone();
     const desktopTarget = controls.target.clone();
     const handleSessionStart = () => {
+      xrGlobal.__phiActiveImmersiveSession = renderer.xr.getSession();
       controls.enabled = false;
       camera.position.set(0, 1.6, 0);
       player.position.set(...sceneConfig.xrStart);
       vrHud.mesh.visible = true;
     };
     const handleSessionEnd = () => {
+      if (xrGlobal.__phiActiveImmersiveSession === renderer.xr.getSession()) {
+        xrGlobal.__phiActiveImmersiveSession = null;
+      }
       player.position.set(0, 0, 0);
       player.rotation.set(0, 0, 0);
       camera.position.copy(desktopCameraPosition);
@@ -862,6 +884,12 @@ export function SceneCanvas({
       renderer.setAnimationLoop(null);
       renderer.xr.removeEventListener("sessionstart", handleSessionStart);
       renderer.xr.removeEventListener("sessionend", handleSessionEnd);
+      vrButton.removeEventListener("click", guardDuplicateSession, true);
+      const session = renderer.xr.getSession() ?? xrGlobal.__phiActiveImmersiveSession ?? null;
+      if (session) {
+        if (xrGlobal.__phiActiveImmersiveSession === session) xrGlobal.__phiActiveImmersiveSession = null;
+        void session.end().catch(() => undefined);
+      }
       controls.dispose();
       concordParticles?.dispose();
       southParkParticles?.dispose();

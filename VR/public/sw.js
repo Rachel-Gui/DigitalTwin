@@ -1,9 +1,9 @@
 const CACHE = "phi-webxr-v19";
 const CORE = [
   "/",
-  "/assets/scene-manifest.json",
-  "/assets/south-park-scene-manifest.json",
-  "/assets/boundaries/south-park-road-volume.json",
+  "/runtime-assets/scene-manifest.json",
+  "/runtime-assets/south-park-scene-manifest.json",
+  "/runtime-assets/boundaries/south-park-road-volume.json",
   "/audio/phi-vr-narration.mp3",
 ];
 
@@ -45,10 +45,10 @@ self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
   const url = new URL(event.request.url);
   if (url.origin !== self.location.origin) return;
-  const durableAsset = url.pathname.startsWith("/assets/scenes/")
-    || url.pathname.startsWith("/assets/boundaries/")
-    || url.pathname.startsWith("/assets/instances/")
-    || url.pathname.startsWith("/assets/models/")
+  const durableAsset = url.pathname.startsWith("/runtime-assets/scenes/")
+    || url.pathname.startsWith("/runtime-assets/boundaries/")
+    || url.pathname.startsWith("/runtime-assets/instances/")
+    || url.pathname.startsWith("/runtime-assets/models/")
     || url.pathname.startsWith("/audio/");
   event.respondWith(durableAsset ? cacheFirst(event.request) : networkFirst(event.request));
 });
