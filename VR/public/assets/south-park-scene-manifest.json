@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0.0",
+  "scene_id": "south-park-webxr",
+  "coordinate_system": "three-y-up-meters",
+  "status": "grasshopper-gis-and-height-restored",
+  "source": "south park.3dm + from shp to geo.gh internalised GIS geometry and Height field",
+  "runtime": {
+    "rhino_origin": [1009500, -8371500, -100],
+    "source_units": "millimeters",
+    "meters_per_source_unit": 0.001,
+    "axis_transform": "Rhino XYZ to Three.js X,Z,-Y",
+    "ground_y": 0.1,
+    "camera_position": [-311.371, 373.454, 1287.732],
+    "camera_target": [-202.914, 25, 677.368],
+    "xr_start": [0, 520, 900],
+    "max_distance": 4800,
+    "fog_density": 0.00042
+  },
+  "particle_boundary": { "id": "south-park-road-air-volume", "url": "/assets/boundaries/south-park-road-volume.json", "role": "particle-boundary", "status": "ready" },
+  "chunks": [
+    { "id": "south_park_ground", "url": "/assets/scenes/south_park_ground.glb", "required": true, "status": "ready", "role": "visual" },
+    { "id": "south_park_roads", "url": "/assets/scenes/south_park_roads.glb", "required": true, "status": "ready", "role": "visual" },
+    { "id": "south_park_buildings", "url": "/assets/scenes/south_park_buildings.glb", "required": true, "status": "ready", "role": "visual", "source": "1,432 footprint_internalised records extruded by matching Height values" },
+    { "id": "south_park_colliders", "url": "/assets/scenes/south_park_colliders.glb", "required": true, "status": "ready", "role": "collider" }
+  ]
+}
