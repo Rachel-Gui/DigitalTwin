@@ -4,6 +4,7 @@ import homepageDemo from "../assets/home/homepage_demo_2.png";
 import vrHero from "../assets/vr/1111.png";
 import paperCover from "../assets/research/energy-paper-cover.png";
 import projectPartners from "../assets/partners/project-partners-transparent.png";
+import silLogo from "../assets/brand/sustainable-intelligence-lab-logo.png";
 import { PublicationRecord, SectionHeader } from "../components";
 import { useLanguage } from "../i18n";
 
@@ -57,6 +58,6 @@ function PublicationsSection(){
 function PartnersSection(){
   return <section className="home-partners" aria-labelledby="project-partners-title"><div className="page-container">
     <div className="home-partners-heading"><span className="eyebrow">PROJECT NETWORK</span><h2 id="project-partners-title">Partners &amp; Collaborators</h2></div>
-    <div className="home-partners-logo-frame"><img src={projectPartners} alt="Project partners and collaborators: University of Washington, Population Health Initiative, Department of Architecture, Electrical and Computer Engineering, Integrated Design Lab, Renewable Energy Analysis Lab, Sustainable Intelligence Lab, Southern Illinois University College of Arts and Media, Urban Intelligence and Integrity Lab, City of Seattle Office of Sustainability and Environment, and Duwamish River Community Coalition"/></div>
+    <div className="home-partners-logo-frame"><img src={projectPartners} alt="Project partners and collaborators: University of Washington, Population Health Initiative, Department of Architecture, Electrical and Computer Engineering, Integrated Design Lab, Renewable Energy Analysis Lab, Sustainable Intelligence Lab, Southern Illinois University College of Arts and Media, Urban Intelligence and Integrity Lab, City of Seattle Office of Sustainability and Environment, and Duwamish River Community Coalition"/><span className="home-partners-sil-logo" aria-hidden="true"><img src={silLogo} alt=""/></span></div>
   </div></section>
 }
