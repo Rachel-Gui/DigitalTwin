@@ -19,7 +19,7 @@ import { PrototypeSelector, RetrofitExplorer, SelectedPrototypeSummary, useEnerg
 const AirQualityTableau = lazy(() => import("../components/AirQualityTableau"));
 
 export default function ModulePage({type}){
-  return type === "vr" ? <VRPage/> : <ScenarioPage/>;
+  return ({energy:<EnergyPage/>,vr:<VRPage/>,scenario:<ScenarioPage/>})[type]||null;
 }
 function ModuleHero({index,status,title,subtitle,children,className="",heroImage}){
   const heroStyle=heroImage ? {backgroundImage:`linear-gradient(90deg,rgba(5,5,5,.96) 0%,rgba(5,5,5,.82) 42%,rgba(5,5,5,.38) 100%),url(${heroImage})`} : undefined;
