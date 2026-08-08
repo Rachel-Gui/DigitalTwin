@@ -19,6 +19,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/energy" element={<ModulePage type="energy" />} />
           <Route path="/vr" element={<ModulePage type="vr" />} />
           <Route path="/scenario-analysis" element={<ModulePage type="scenario" />} />
           <Route path="/research" element={<Research />} />
