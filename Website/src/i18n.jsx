@@ -76,6 +76,127 @@ const pageEs = {
   "Date represented":"Fecha representada", "Date to be confirmed":"Fecha por confirmar", "Time range":"Intervalo de tiempo", "Pollutant":"Contaminante", "Data type":"Tipo de datos", "Simulation":"Simulación", "Yes · particle behavior is simulated":"Sí · el comportamiento de las partículas es simulado", "Historical modeled profile · exact date unverified":"Perfil histórico modelado · fecha exacta no verificada", "Historical PurpleAir data visualized as a modeled particle profile":"Datos históricos de PurpleAir visualizados como un perfil modelado de partículas", "Historical observations driving a modeled particle simulation":"Observaciones históricas que impulsan una simulación modelada de partículas", "Selectable historical dates · default 2025-01-29 (Wednesday)":"Fechas históricas seleccionables · fecha predeterminada 2025-01-29 (miércoles)", "Concord School PM2.5 Scenario":"Escenario de PM2.5 de Concord School", "South Park PM2.5 Scenario":"Escenario de PM2.5 de South Park", "Latest Available PM2.5 Concentration":"Última concentración de PM2.5 disponible", "04 / LATEST AVAILABLE PM2.5 CONCENTRATION · DAISY / SOUTH PARK":"04 / ÚLTIMA CONCENTRACIÓN DE PM2.5 DISPONIBLE · DAISY / SOUTH PARK", "Latest available PM2.5 Concentration observations returned by the Clarity API. This is not a continuously updating live feed; successful server responses may be cached for up to 4 hours 45 minutes.":"Últimas observaciones disponibles de concentración de PM2.5 devueltas por la API de Clarity. No es una transmisión en vivo de actualización continua; las respuestas correctas del servidor pueden almacenarse en caché hasta 4 horas y 45 minutos.", "Latest sensor data is unavailable.":"Los datos más recientes de los sensores no están disponibles.", "Animated particles make changing PM2.5 Concentration (µg/m³) visible through their density, movement, and distribution. They are visual symbols—not physical particles at actual size or count.":"Las partículas animadas hacen visible el cambio de la concentración de PM2.5 (µg/m³) mediante su densidad, movimiento y distribución. Son símbolos visuales, no partículas físicas representadas con su tamaño o cantidad reales."
 };
 
+// Copy that is rendered directly by interactive components rather than through t().
+// Keep these entries here so the page-level translator covers visible text and
+// accessibility labels consistently across every route.
+Object.assign(pageEs, {
+  "01 / Current Prototype":"01 / Prototipo actual",
+  "02 / Immersive Mode":"02 / Modo inmersivo",
+  "03 / Publications":"03 / Publicaciones",
+  "PROJECT NETWORK":"RED DEL PROYECTO",
+  "Partners & Collaborators":"Socios y colaboradores",
+  "DecarbCityTwin immersive VR experience interface":"Interfaz de la experiencia inmersiva de VR de DecarbCityTwin",
+  "Project partners and collaborators: University of Washington, Population Health Initiative, Department of Architecture, Electrical and Computer Engineering, Integrated Design Lab, Renewable Energy Analysis Lab, Sustainable Intelligence Lab, Southern Illinois University College of Arts and Media, Urban Intelligence and Integrity Lab, City of Seattle Office of Sustainability and Environment, and Duwamish River Community Coalition":"Socios y colaboradores del proyecto: University of Washington, Population Health Initiative, Department of Architecture, Electrical and Computer Engineering, Integrated Design Lab, Renewable Energy Analysis Lab, Sustainable Intelligence Lab, Southern Illinois University College of Arts and Media, Urban Intelligence and Integrity Lab, City of Seattle Office of Sustainability and Environment y Duwamish River Community Coalition",
+  "Air Quality view":"Vista de calidad del aire",
+  "Live Sensors":"Sensores con datos recientes",
+  "Modeled PM₂.₅":"PM₂.₅ modelado",
+  "Preparing the Air Quality visualization…":"Preparando la visualización de calidad del aire…",
+  "Explore Air Quality Module →":"Explorar el módulo de calidad del aire →",
+  "The VR environment translates PM2.5 Concentration (µg/m³) data into time-based spatial experiences for community exploration and education.":"El entorno de VR transforma los datos de concentración de PM2.5 (µg/m³) en experiencias espaciales temporales para la exploración y la educación comunitarias.",
+  "Ground-level PM2.5 Concentration VR environment around Concord International School":"Entorno de VR a nivel del suelo sobre la concentración de PM2.5 alrededor de Concord International School",
+  "High- and low-PM2.5-Concentration comparison":"Comparación de concentraciones altas y bajas de PM2.5",
+  "Loading converted workbook data…":"Cargando los datos convertidos del libro de cálculo…",
+  "Source: Abbasabadi et al., Architecture 2026, 6, 84.":"Fuente: Abbasabadi et al., Architecture 2026, 6, 84.",
+  "Retrofit Explorer":"Explorador de rehabilitación",
+  "Compare energy and retrofit strategies.":"Compara estrategias energéticas y de rehabilitación.",
+  "Preparing the Retrofit Explorer…":"Preparando el explorador de rehabilitación…",
+  "Retrofit data is not available.":"Los datos de rehabilitación no están disponibles.",
+  "Available Modeled Variables":"Variables modeladas disponibles",
+  "Digital Twin Connection":"Conexión con el gemelo digital",
+  "Retrofit scenarios are planned for connection to building and archetype records in the Digital Twin, where users can examine intervention packages alongside energy, environmental, and building information.":"Está previsto conectar los escenarios de rehabilitación con los registros de edificios y arquetipos del gemelo digital, donde se podrán examinar los paquetes de intervención junto con información energética, ambiental y de los edificios.",
+  "The PM2.5 Concentration module brings together sensor measurements, geospatial variables, and prediction models to examine how PM2.5 Concentration (µg/m³) varies across time and space in South Park and the wider Seattle area.":"El módulo de concentración de PM2.5 integra mediciones de sensores, variables geoespaciales y modelos predictivos para analizar cómo varía la concentración de PM2.5 (µg/m³) en el tiempo y el espacio en South Park y el área metropolitana de Seattle.",
+  "Module process":"Proceso del módulo",
+  "The Clarity platform provides access to PM2.5 Concentration monitoring locations and time-based measurements in µg/m³ associated with the South Park and Duwamish Valley study area. These records represent observed PM2.5 Concentration at specific sensor locations.":"La plataforma Clarity permite consultar ubicaciones de monitoreo y mediciones temporales de concentración de PM2.5 en µg/m³ correspondientes al área de estudio de South Park y el valle de Duwamish. Estos registros representan concentraciones observadas de PM2.5 en ubicaciones específicas de sensores.",
+  "Clarity platform map, PM2.5 Concentration sensor locations, and time-series measurements in micrograms per cubic meter":"Mapa de la plataforma Clarity, ubicaciones de sensores de concentración de PM2.5 y mediciones de series temporales en microgramos por metro cúbico",
+  "The prediction dashboard presents modeled PM2.5 Concentration (µg/m³) across neighborhood and grid scales. It complements point-based monitoring records by showing estimated spatial variation between sensor locations.":"El panel de predicción presenta concentraciones modeladas de PM2.5 (µg/m³) a escala barrial y de cuadrícula. Complementa los registros puntuales de monitoreo al mostrar la variación espacial estimada entre las ubicaciones de los sensores.",
+  "A project model output showing predicted annual mean PM2.5 Concentration across the study domain. The figure provides a static research record that complements the interactive Tableau view.":"Resultado de un modelo del proyecto que muestra la concentración media anual prevista de PM2.5 en el área de estudio. La figura constituye un registro estático de investigación que complementa la vista interactiva de Tableau.",
+  "Annual mean PM2.5 Concentration prediction":"Predicción de la concentración media anual de PM2.5",
+  "Static Random Forest model output showing predicted PM2.5 Concentration across the study domain · µg/m³.":"Resultado estático de un modelo Random Forest que muestra la concentración prevista de PM2.5 en el área de estudio · µg/m³.",
+  "Modeled project output":"Resultado modelado del proyecto",
+  "SCENE READING GUIDE":"GUÍA PARA INTERPRETAR LA ESCENA",
+  "10 indicators":"10 indicadores",
+  "Follow the numbered guide to understand what each part of the VR interface is telling you.":"Sigue la guía numerada para comprender qué comunica cada parte de la interfaz de VR.",
+  "04 / ASK THE SCENE":"04 / PREGUNTA A LA ESCENA",
+  "What are you seeing?":"¿Qué estás viendo?",
+  "Open a question to understand how the scene, particles, indicators, and headset experience connect. Start with the highlighted question, then explore at your own pace.":"Abre una pregunta para comprender cómo se relacionan la escena, las partículas, los indicadores y la experiencia con visor. Empieza por la pregunta destacada y continúa a tu propio ritmo.",
+  "DecarbCityTwin VR and live-data system architecture connecting sensors, cloud services, Unity, and Seattle models":"Arquitectura del sistema de VR y datos recientes de DecarbCityTwin que conecta sensores, servicios en la nube, Unity y modelos de Seattle",
+  "LIVE AIR REFERENCE · DAISY / SOUTH PARK":"REFERENCIA RECIENTE DEL AIRE · DAISY / SOUTH PARK",
+  "Current conditions, beside the model.":"Condiciones actuales, junto al modelo.",
+  "The latest available Clarity sensor snapshot adds present-day context. It remains separate from the historical and modeled values driving the VR scenes.":"La instantánea más reciente disponible de los sensores Clarity aporta contexto sobre las condiciones actuales. Se mantiene separada de los valores históricos y modelados que controlan las escenas de VR.",
+  "Latest snapshot unavailable":"La instantánea más reciente no está disponible",
+  "Try again":"Intentar de nuevo",
+  "Reporting locations":"Ubicaciones con datos",
+  "Latest observation":"Observación más reciente",
+  "Latest available · may be cached":"Últimos datos disponibles · pueden estar en caché",
+  "Not a continuously updating data stream · successful responses may be cached for up to 4 h 45 min":"No es un flujo de actualización continua · las respuestas correctas pueden almacenarse en caché hasta 4 h 45 min",
+  "Open Clarity source ↗":"Abrir la fuente de Clarity ↗",
+  "MONITORING MAP":"MAPA DE MONITOREO",
+  "Module Process":"Proceso del módulo",
+  "Next Connections":"Próximas conexiones",
+  "Residential prototype selection":"Selección de prototipo residencial",
+  "Selected Prototype":"Prototipo seleccionado",
+  "Interactive modeled scenarios":"Escenarios modelados interactivos",
+  "Scenario data in preparation":"Datos del escenario en preparación",
+  "Building context:":"Contexto del edificio:",
+  "· No building-level values are connected in this phase.":"· En esta fase no hay valores conectados a nivel de edificio.",
+  "Modeled floor area":"Superficie modelada",
+  "Wall insulation":"Aislamiento de muros",
+  "Roof insulation":"Aislamiento de cubierta",
+  "Window U-factor":"Factor U de las ventanas",
+  "Infiltration":"Infiltración",
+  "Ventilation":"Ventilación",
+  "Heating & cooling":"Calefacción y refrigeración",
+  "Water heating":"Calentamiento de agua",
+  "Baseline EUI":"EUI de referencia",
+  "Annual energy":"Energía anual",
+  "Retrofit strategy selection":"Selección de estrategia de rehabilitación",
+  "Cumulative retrofit pathway":"Secuencia acumulativa de rehabilitación",
+  "Study EUI target ·":"Objetivo de EUI del estudio ·",
+  "View modeled assumptions":"Ver supuestos del modelo",
+  "Current modeled assumptions":"Supuestos actuales del modelo",
+  "Simulation ID:":"ID de simulación:",
+  "Annual End Uses":"Usos finales anuales",
+  "Selected step":"Etapa seleccionada",
+  "Blank Cooling or Pumps segments indicate formula cells without cached workbook results; no zero value was substituted.":"Los segmentos vacíos de refrigeración o bombas indican celdas de fórmula sin resultados almacenados en el libro de cálculo; no se sustituyeron por valores cero.",
+  "EUI Comparison":"Comparación de EUI",
+  "Final strategy EUI":"EUI final de la estrategia",
+  "Study EUI Target ·":"Objetivo de EUI del estudio ·",
+  "Retrofit Strategy Comparison":"Comparación de estrategias de rehabilitación",
+  "Baseline and retrofit strategy results":"Resultados de referencia y de las estrategias de rehabilitación",
+  "Retrofit strategy":"Estrategia de rehabilitación",
+  "Description":"Descripción",
+  "Final EUI":"EUI final",
+  "EUI reduction":"Reducción del EUI",
+  "Selected":"Seleccionada",
+  "Final Strategy Summary":"Resumen de la estrategia final",
+  "Retrofit scenario data for this archetype is being prepared.":"Se están preparando los datos de escenarios de rehabilitación para este arquetipo.",
+  "Single Family scenarios are currently available for exploration.":"Actualmente se pueden explorar los escenarios de vivienda unifamiliar.",
+  "Development data notice.":"Aviso sobre datos en desarrollo.",
+  "Selected Retrofit Strategy":"Estrategia de rehabilitación seleccionada",
+  "Evidence type · Modeled":"Tipo de evidencia · Modelada",
+  "Validation ·":"Validación ·",
+  "Interactive dashboard":"Panel interactivo",
+  "PM2.5 Concentration Prediction and Visualization":"Predicción y visualización de la concentración de PM2.5",
+  "Loading the interactive Tableau dashboard…":"Cargando el panel interactivo de Tableau…",
+  "The dashboard could not be loaded.":"No se pudo cargar el panel.",
+  "Tableau Public may be unavailable or blocked by the current network. Open the visualization directly to try again.":"Tableau Public puede no estar disponible o estar bloqueado por la red actual. Abre la visualización directamente para volver a intentarlo.",
+  "Open in Tableau ↗":"Abrir en Tableau ↗",
+  "How to read this view":"Cómo interpretar esta vista",
+  "This dashboard presents modeled estimates rather than live sensor readings. Check the legend, units, spatial resolution, and time period before comparing locations. Sensor records represent observed conditions at specific locations, while prediction models estimate patterns between those locations.":"Este panel presenta estimaciones modeladas, no lecturas de sensores en tiempo real. Antes de comparar ubicaciones, consulta la leyenda, las unidades, la resolución espacial y el periodo. Los registros de sensores representan condiciones observadas en ubicaciones específicas, mientras que los modelos predictivos estiman los patrones entre ellas.",
+  "Interactive project dashboard.":"Panel interactivo del proyecto."
+});
+
+Object.assign(es, {
+  Reporting:"Cobertura",
+  "PM2.5 reporting":"Cobertura de PM2.5"
+});
+
+for (const dictionary of [es, pageEs]) {
+  for (const [english, spanish] of Object.entries(dictionary)) {
+    dictionary[english] = spanish.replaceAll("IA agéntica", "IA basada en agentes").replaceAll("agéntico", "basado en agentes").replaceAll("agéntica", "basada en agentes");
+  }
+}
+
 const pageEn = Object.fromEntries(Object.entries(pageEs).map(([english,spanish])=>[spanish,english]));
 
 export function SpanishPageTranslator(){
@@ -86,7 +207,8 @@ export function SpanishPageTranslator(){
     const dictionary=language==="es"?pageEs:pageEn;
     const translate=(value)=>{
       const trimmed=value.trim();
-      const translated=dictionary[trimmed];
+      const normalized=trimmed.replace(/\s+/g," ");
+      const translated=dictionary[trimmed]||dictionary[normalized];
       return translated?value.replace(trimmed,translated):value;
     };
     const visit=(node)=>{
