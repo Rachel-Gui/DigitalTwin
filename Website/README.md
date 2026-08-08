@@ -39,7 +39,9 @@ detected automatically.
 
 The `/vr` module contains clickable Concord and South Park scene previews. Set
 `VITE_VR_URL` to the public URL of the separately deployed WebXR application.
-Local development defaults to `http://localhost:3000`.
+The default points to the public WebXR deployment at
+`https://decarb-city-twin-vr.ruichg.chatgpt.site`. Override `VITE_VR_URL` only
+when testing a different deployment or a local VR server.
 
 ## Production build
 

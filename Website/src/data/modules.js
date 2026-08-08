@@ -16,5 +16,5 @@ export const layers = {
 export const externalPlatforms = {
   airQuality: "https://openmap.clarity.io/",
   agentic: "https://example.com/decarbcitytwin-agent",
-  vr: import.meta.env.VITE_VR_URL || "http://localhost:3000"
+  vr: import.meta.env.VITE_VR_URL || "https://decarb-city-twin-vr.ruichg.chatgpt.site"
 };
