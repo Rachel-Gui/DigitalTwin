@@ -1,32 +1,15 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import "leaflet/dist/leaflet.css";
+import { useEffect, useMemo, useRef, useState } from "react";
 import "../analytics.css";
 import { useLanguage } from "../i18n";
+import ClaritySensorMap from "../components/ClaritySensorMap";
+import useClarityData from "../hooks/useClarityData";
+import { formatAirQualityValue as formatValue, pm25Level } from "../data/airQuality";
 
 const metrics = {
   pm25: { label: "PM2.5", unit: "µg/m³", summary: "pm25Average" },
   pm10: { label: "PM10", unit: "µg/m³", summary: "pm10Average" },
   no2: { label: "NO₂", unit: "ppb", summary: "no2Average" },
 };
-
-function formatValue(value, decimals = 1) {
-  if (value === null || value === undefined || !Number.isFinite(Number(value))) return "—";
-  return Number(value).toLocaleString(undefined, {
-    maximumFractionDigits: decimals,
-    minimumFractionDigits: decimals,
-  });
-}
-
-function sourceNumber(name) {
-  return Number(name.match(/^\s*(\d+)/)?.[1] || Number.MAX_SAFE_INTEGER);
-}
-
-function pm25Level(value) {
-  if (value === null || value === undefined) return { label: "No data", tone: "muted" };
-  if (value <= 9) return { label: "Good", tone: "good" };
-  if (value <= 35.4) return { label: "Moderate", tone: "moderate" };
-  return { label: "Elevated", tone: "elevated" };
-}
 
 function AnimatedNumber({ value, decimals = 1, suffix = "", duration = 900 }) {
   const numericValue = Number(value);
@@ -64,96 +47,24 @@ function AnimatedNumber({ value, decimals = 1, suffix = "", duration = 900 }) {
   </span>;
 }
 
-function ClaritySensorMap({ sources }) {
-  const mapElement = useRef(null);
-  const mappableSources = useMemo(
-    () => sources.filter((source) => Number.isFinite(source.latitude) && Number.isFinite(source.longitude)),
-    [sources],
-  );
-
-  useEffect(() => {
-    if (!mapElement.current) return undefined;
-    let map;
-    let cancelled = false;
-    import("leaflet").then((module) => {
-      if (cancelled || !mapElement.current) return;
-      const L = module.default || module;
-      map = L.map(mapElement.current, { zoomControl: true, scrollWheelZoom: false, preferCanvas: true })
-        .setView([47.53, -122.32], 12);
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: "© OpenStreetMap contributors",
-        maxZoom: 19,
-      }).addTo(map);
-      const bounds = [];
-      mappableSources.forEach((source) => {
-        const value = source.metrics.pm25?.value;
-        const level = pm25Level(value);
-        const color = level.tone === "good" ? "#2f8d70" : level.tone === "moderate" ? "#b18a18" : level.tone === "elevated" ? "#c65334" : "#77807d";
-        const location = [source.latitude, source.longitude];
-        bounds.push(location);
-        const popup = document.createElement("div");
-        popup.className = "air-map-popup";
-        const title = document.createElement("strong");
-        title.textContent = source.name.split("(")[0].trim();
-        const reading = document.createElement("span");
-        reading.textContent = value === null || value === undefined ? "No recent PM2.5 data" : `${formatValue(value)} µg/m³ PM2.5`;
-        const status = document.createElement("small");
-        status.textContent = level.label;
-        popup.append(title, reading, status);
-        const label = document.createElement("span");
-        label.className = "air-map-marker-label";
-        label.textContent = `${source.name.split("(")[0].trim()} · ${value === null || value === undefined ? "—" : formatValue(value)}`;
-        L.circleMarker(location, {
-          radius: 18,
-          stroke: false,
-          fillColor: color,
-          fillOpacity: .2,
-          interactive: false,
-        }).addTo(map);
-        L.circleMarker(location, {
-          radius: 11,
-          color: "#ffffff",
-          weight: 2,
-          fillColor: color,
-          fillOpacity: .94,
-        }).bindPopup(popup)
-          .bindTooltip(label, { permanent: true, direction: "top", offset: [0, -12], className: "air-map-sensor-tooltip" })
-          .addTo(map);
-      });
-      if (bounds.length) map.fitBounds(bounds, { padding: [55, 55], maxZoom: 14 });
-    });
-    return () => {
-      cancelled = true;
-      if (map) map.remove();
-    };
-  }, [mappableSources]);
-
-  return <div className="clarity-sensor-map" ref={mapElement} aria-label={`Interactive map of ${mappableSources.length} Clarity monitoring locations`}/>;
+function LiveAirConnection({ state, load, t }) {
+  return <div className="air-dashboard-connection">
+    <span className={`analytics-health ${state.error ? "error" : ""}`}><i />{t(state.error ? "Connection error" : state.loading ? "Syncing data" : "Network online")}</span>
+    <button type="button" onClick={load} disabled={state.loading}>{t(state.loading ? "Syncing…" : "Refresh data")}</button>
+  </div>;
 }
 
-export default function Analytics() {
+function LiveAirContext({ updated, reportingRate, language, t }) {
+  return <div className="air-dashboard-context">
+    <p>{t("Latest available PM2.5 Concentration observations returned by the Clarity API. This is not a continuously updating live feed; successful server responses may be cached for up to 4 hours 45 minutes.")}</p>
+    <dl><div><dt>{t("Last updated")}</dt><dd>{updated}</dd></div><div><dt>{t("Reporting")}</dt><dd>{reportingRate}% {language==="es"?"de la red":"of network"}</dd></div></dl>
+  </div>;
+}
+
+export function LiveAirQualityContent({ showHero = false }) {
   const {language,t}=useLanguage();
-  const [state, setState] = useState({ loading: true, data: null, error: null });
+  const { state, load, sources } = useClarityData();
   const [metric, setMetric] = useState("pm25");
-
-  const load = useCallback(async () => {
-    setState((current) => ({ ...current, loading: true, error: null }));
-    try {
-      const response = await fetch("/api/clarity");
-      const payload = await response.json();
-      if (!response.ok) throw new Error(payload.detail || payload.error || "Unable to load air-quality data.");
-      setState({ loading: false, data: payload, error: null });
-    } catch (error) {
-      setState({ loading: false, data: null, error: error.message });
-    }
-  }, []);
-
-  useEffect(() => { load(); }, [load]);
-
-  const sources = useMemo(
-    () => [...(state.data?.sources || [])].sort((a, b) => sourceNumber(a.name) - sourceNumber(b.name)),
-    [state.data],
-  );
   const rankedSources = useMemo(
     () => sources
       .filter((source) => source.metrics[metric]?.value !== null && source.metrics[metric]?.value !== undefined)
@@ -177,24 +88,23 @@ export default function Analytics() {
 
   return (
     <div className={`analytics-page ${state.loading ? "is-syncing" : "is-live"}`}>
-      <section className="air-dashboard-header">
+      {showHero && <section className="air-dashboard-header">
         <div className="page-container">
           <div className="air-dashboard-toolbar">
             <div>
               <span className="eyebrow">{t("DAISY monitoring network / South Park")}</span>
               <h1>{t("Latest Available PM2.5 Concentration")}</h1>
             </div>
-            <div className="air-dashboard-connection">
-              <span className={`analytics-health ${state.error ? "error" : ""}`}><i />{t(state.error ? "Connection error" : state.loading ? "Syncing data" : "Network online")}</span>
-              <button type="button" onClick={load} disabled={state.loading}>{t(state.loading ? "Syncing…" : "Refresh data")}</button>
-            </div>
+            <LiveAirConnection state={state} load={load} t={t}/>
           </div>
-          <div className="air-dashboard-context">
-            <p>{t("Latest available PM2.5 Concentration observations returned by the Clarity API. This is not a continuously updating live feed; successful server responses may be cached for up to 4 hours 45 minutes.")}</p>
-            <dl><div><dt>{t("Last updated")}</dt><dd>{updated}</dd></div><div><dt>{t("Reporting")}</dt><dd>{reportingRate}% {language==="es"?"de la red":"of network"}</dd></div></dl>
-          </div>
+          <LiveAirContext updated={updated} reportingRate={reportingRate} language={language} t={t}/>
         </div>
-      </section>
+      </section>}
+
+      {!showHero && <section className="embedded-live-air-status"><div className="page-container">
+        <LiveAirConnection state={state} load={load} t={t}/>
+        <LiveAirContext updated={updated} reportingRate={reportingRate} language={language} t={t}/>
+      </div></section>}
 
       <main className="air-dashboard-main">
         <div className="page-container">
@@ -287,4 +197,8 @@ export default function Analytics() {
       </main>
     </div>
   );
+}
+
+export default function Analytics() {
+  return <LiveAirQualityContent showHero />;
 }

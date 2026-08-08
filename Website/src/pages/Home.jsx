@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import studyAreaMap from "../assets/south-park-study-area-map.png";
-import homepageDemo from "../assets/home/south-park-arcgis-preview.png";
+import homepageDemo from "../assets/home/homepage_demo_2.png";
 import vrConcord from "../assets/vr/concord-pm25-particle-view.png";
 import paperCover from "../assets/research/energy-paper-cover.png";
 import { PublicationRecord, SectionHeader, StatusLabel } from "../components";

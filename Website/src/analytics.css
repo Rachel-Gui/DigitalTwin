@@ -52,9 +52,9 @@
 .air-map-panel>header>div:last-child span{display:flex;align-items:center;gap:8px;color:#4c5d57;font-size:9px;letter-spacing:.08em;text-transform:uppercase}
 .air-map-panel>header>div:last-child i{width:7px;height:7px;border-radius:50%;background:#438c76;box-shadow:0 0 0 5px rgba(67,140,118,.12)}
 .air-map-panel>header a,.air-map-panel>footer a{font-size:10px;font-weight:700}
-.air-map-frame{position:relative;height:clamp(440px,58vw,720px);overflow:hidden;border-radius:12px;background:#000}
+.air-map-frame{position:relative;z-index:0;isolation:isolate;height:clamp(440px,58vw,720px);overflow:hidden;border-radius:12px;background:#000}
 .air-map-frame iframe{width:100%;height:100%;border:0}
-.clarity-sensor-map{width:100%;height:100%;background:#d9ddda}
+.clarity-sensor-map{position:relative;z-index:0;isolation:isolate;width:100%;height:100%;overflow:hidden;background:#d9ddda}
 .clarity-sensor-map .leaflet-control-zoom{overflow:hidden;border:0!important;border-radius:9px;box-shadow:0 6px 24px rgba(0,0,0,.18)}
 .clarity-sensor-map .leaflet-control-zoom a{width:34px;height:34px;line-height:34px;border-color:#e0e0e0;background:#fff;color:#000}
 .clarity-sensor-map .leaflet-control-attribution{font-size:8px}
