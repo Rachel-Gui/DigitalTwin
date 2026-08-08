@@ -75,21 +75,26 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
 .vr-button-host { min-height: 34px; }
 .vr-button-host .vr-entry { position: static !important; display: block !important; width: 100% !important; min-width: 0 !important; min-height: 44px !important; margin: 0 !important; padding: 11px 14px !important; background: rgba(217, 255, 104, .14) !important; border: 1px solid rgba(217, 255, 104, .72) !important; border-radius: 8px !important; color: var(--accent) !important; opacity: 1 !important; font-size: 11px !important; font-weight: 650 !important; letter-spacing: .045em !important; box-shadow: 0 8px 22px rgba(0, 0, 0, .2), inset 0 1px 0 rgba(255, 255, 255, .08) !important; }
 
-@media (max-width: 760px) {
+@media (max-width: 900px) {
   html, body { overflow: hidden; }
   .experience-shell { height: 100dvh; grid-template-columns: 1fr; }
   .scene-panel { min-height: 100dvh; }
-  .control-panel { position: fixed; z-index: 20; left: 0; right: 0; bottom: 0; height: min(72dvh, 620px); padding: 17px 15px 22px; border-left: 0; border-top: 1px solid var(--line); transform: translateY(calc(100% - 62px)); transition: transform .22s ease; box-shadow: 0 -18px 45px rgba(0, 0, 0, .32); }
+  .control-panel { position: fixed; z-index: 20; left: 0; right: 0; bottom: 0; height: min(78dvh, 680px); padding: 17px max(15px, env(safe-area-inset-right)) calc(22px + env(safe-area-inset-bottom)) max(15px, env(safe-area-inset-left)); border-left: 0; border-top: 1px solid var(--line); transform: translateY(calc(100% - 68px - env(safe-area-inset-bottom))); transition: transform .22s ease; box-shadow: 0 -18px 45px rgba(0, 0, 0, .32); overscroll-behavior:contain; }
   .control-panel.is-open { transform: translateY(0); }
   .scene-topbar { inset: 14px 14px auto; }
   .scene-caption { top: 70px; left: 14px; }
-  .mobile-panel-launcher { display: block; position: absolute; right: 14px; bottom: 14px; padding: 9px 13px; border: 1px solid var(--line); background: rgba(6, 12, 15, .78); color: var(--ink); font-size: 10px; }
+  .mobile-panel-launcher { display: block; position: absolute; right: max(14px, env(safe-area-inset-right)); bottom: calc(14px + env(safe-area-inset-bottom)); min-width: 112px; min-height: 48px; padding: 11px 15px; border: 1px solid var(--line); border-radius:8px; background: rgba(6, 12, 15, .88); color: var(--ink); font-size: 11px; cursor:pointer; }
   .mobile-panel-launcher[aria-expanded="true"] { display: none; }
-  .mobile-panel-close { display: grid; place-items: center; width: 30px; height: 30px; padding: 0; border: 1px solid var(--line); background: transparent; color: var(--ink); font-size: 18px; }
+  .mobile-panel-close { display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 1px solid var(--line); background: transparent; color: var(--ink); font-size: 21px; cursor:pointer; }
+  .panel-header{min-height:48px}
+  .field-control select,.start-tour,.resume-guide,.audio-buttons button{min-height:44px}
+  .replay-row{grid-template-columns:44px 1fr}
+  .replay-row button{width:44px;height:44px}
+  input[type="range"]{min-height:44px}
 }
 
 /* Floating split-panel VR interface */
-@media (min-width: 761px) {
+@media (min-width: 901px) {
   .experience-shell { display: block; position: relative; }
   .scene-panel { width: 100%; height: 100dvh; }
   .control-panel {
@@ -339,7 +344,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
   .control-panel > .narration-control .resume-guide { color: var(--accent); }
 }
 
-@media (min-width: 761px) and (max-height: 820px) {
+@media (min-width: 901px) and (max-height: 820px) {
   .panel-right { top: 0; right: 0; height: 100dvh; max-height: 100dvh; padding: 10px 12px; gap: 4px; }
   .panel-right .panel-header { min-height: 36px; padding-bottom: 5px; }
   .panel-right .field-control select { padding-top: 5px; padding-bottom: 5px; }
@@ -452,7 +457,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
 .aqi-source-link { color: rgba(243, 241, 233, .72); font: 9px/1.4 ui-monospace, monospace; text-decoration: underline; text-decoration-color: rgba(255, 184, 102, .55); text-underline-offset: 3px; }
 .aqi-source-link:hover { color: var(--warm); }
 
-@media (max-width: 760px) {
+@media (max-width: 900px) {
   .control-panel { display: block; overflow-y: auto; }
   .panel-column { display: flex; flex-direction: column; gap: 14px; }
   .panel-right { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
@@ -460,7 +465,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
 }
 
 /* Viewport-responsive PM2.5 panel density */
-@media (min-width: 761px) {
+@media (min-width: 901px) {
   .experience-shell { --pm25-panel-width: clamp(360px, 27vw, 380px); }
   .panel-column.panel-right {
     inset: 0 0 0 auto;
@@ -527,7 +532,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
   }
 }
 
-@media (min-width: 761px) and (max-height: 820px),
+@media (min-width: 901px) and (max-height: 820px),
        (min-width: 761px) and (max-width: 1100px) {
   .panel-column.panel-right { padding: 7px 12px; gap: 3px; }
   .panel-right .panel-header { min-height: 36px; padding-bottom: 4px; }
@@ -551,7 +556,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
   .panel-right .vr-button-host .vr-entry { min-height: 38px !important; padding: 7px 12px !important; }
 }
 
-@media (min-width: 761px) and (max-height: 740px) {
+@media (min-width: 901px) and (max-height: 740px) {
   .panel-column.panel-right { padding-block: 5px; gap: 2px; }
   .panel-right .panel-header { min-height: 32px; padding-bottom: 2px; }
   .panel-right .field-control select { padding-top: 3px; padding-bottom: 3px; }

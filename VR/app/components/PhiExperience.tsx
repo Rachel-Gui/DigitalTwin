@@ -159,7 +159,7 @@ export function PhiExperience() {
   }, []);
 
   useEffect(() => {
-    const query = window.matchMedia("(max-width: 760px)");
+    const query = window.matchMedia("(max-width: 900px)");
     const updateLayout = () => setMobileLayout(query.matches);
     updateLayout();
     query.addEventListener("change", updateLayout);
