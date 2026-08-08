@@ -2,11 +2,29 @@ import { lazy, Suspense, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import vrPreview from "../assets/vr/concord-pm25-particle-view.png";
 import { ViewerPanel } from "../components";
-import { modules, layers, externalPlatforms } from "../data/modules";
+import { modules, externalPlatforms } from "../data/modules";
 
 const AirQualityTableau = lazy(() => import("../components/AirQualityTableau"));
+const LiveAirQualityContent = lazy(() => import("../components/LiveAirQualityContent"));
 const spatialModes = new Set(["energy", "retrofit", "renewable"]);
-const digitalTwinModules = modules.filter((module) => spatialModes.has(module.key));
+const digitalTwinModules = ["energy", "retrofit", "renewable", "air"].map((key) => modules.find((module) => module.key === key));
+const spatialViewers = {
+  energy: {
+    src: "https://uw.maps.arcgis.com/apps/instant/3dviewer/index.html?appid=9754941f6944410e88f2b4777450925b",
+    title: "South Park Energy Modeling 3D Viewer",
+    description: "Explore modeled baseline energy use across South Park residential buildings."
+  },
+  retrofit: {
+    src: "https://uw.maps.arcgis.com/apps/instant/3dviewer/index.html?appid=817bebb1f30b4ebfa3893d45555fa846",
+    title: "South Park Retrofit Opportunities 3D Viewer",
+    description: "Explore modeled retrofit opportunities and potential energy savings."
+  },
+  renewable: {
+    src: "https://uw.maps.arcgis.com/apps/instant/3dviewer/index.html?appid=9d99a4a0c2e2482b912608249bf3248f",
+    title: "South Park Solar Potential 3D Viewer",
+    description: "Explore modeled rooftop and façade solar potential."
+  }
+};
 
 export default function Dashboard() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -15,6 +33,7 @@ export default function Dashboard() {
     ? requestedMode
     : "energy";
   const [mode, setMode] = useState(initialMode);
+  const [airQualityView, setAirQualityView] = useState("live");
 
   const changeMode = (nextMode) => {
     setMode(nextMode);
@@ -33,69 +52,37 @@ export default function Dashboard() {
         aria-selected={mode === module.key}
         className={mode === module.key ? "active" : ""}
         onClick={() => changeMode(module.key)}
-      ><span>{module.icon}</span>{module.short}</button>)}
+      ><span>{module.icon}</span>{module.key === "air" ? "Air Quality" : module.short}</button>)}
     </div>
 
-    {mode === "air" && <AirQualityWorkspace />}
+    {mode === "air" && <AirQualityWorkspace view={airQualityView} onViewChange={setAirQualityView} />}
     {spatialModes.has(mode) && <SpatialWorkspace mode={mode} />}
     {mode === "scenario" && <AgenticWorkspace />}
     {mode === "vr" && <VRWorkspace />}
   </div>;
 }
 
-function AirQualityWorkspace() {
-  return <section className="dashboard-special-workspace dashboard-tableau-workspace">
-    <header className="workspace-intro">
-      <span className="eyebrow">Air Quality analytics</span>
-      <h2>PM2.5 Concentration Prediction and Visualization</h2>
-      <p>The dashboard presents project PM2.5 Concentration model outputs and spatial patterns at neighborhood and grid scales.</p>
-      <Link to="/air-quality">Open full Air Quality Dashboard ↗</Link>
-    </header>
-    <Suspense fallback={<div className="tableau-route-loading" role="status">Preparing the interactive dashboard…</div>}>
-      <AirQualityTableau compact />
+function AirQualityWorkspace({ view, onViewChange }) {
+  const modeled = view === "modeled";
+  return <section className="dashboard-special-workspace dashboard-tableau-workspace dashboard-air-workspace">
+    <div className="air-quality-subtabs" role="tablist" aria-label="Air Quality view">
+      <button type="button" role="tab" aria-selected={!modeled} className={!modeled ? "active" : ""} onClick={() => onViewChange("live")}>Live Sensors</button>
+      <button type="button" role="tab" aria-selected={modeled} className={modeled ? "active" : ""} onClick={() => onViewChange("modeled")}>Modeled PM₂.₅</button>
+    </div>
+    <p className="air-quality-view-description">{modeled ? "Explore modeled neighborhood-scale PM₂.₅ patterns across South Park." : "View the latest available PM₂.₅ measurements from active community sensors."}</p>
+    <div className="air-quality-viewer-label"><span>{modeled ? "MODELED ESTIMATE" : "SENSOR MEASUREMENTS · LATEST AVAILABLE"}</span><span>{modeled ? "Tableau visualization" : "Clarity monitoring network"}</span></div>
+    <Suspense fallback={<div className="tableau-route-loading" role="status">Preparing the Air Quality visualization…</div>}>
+      {modeled ? <AirQualityTableau compact /> : <div className="dashboard-live-air-content"><LiveAirQualityContent /></div>}
     </Suspense>
+    <Link className="air-quality-module-link" to="/air-quality">Explore Air Quality Module →</Link>
   </section>;
 }
 
 function SpatialWorkspace({ mode }) {
-  const module = modules.find((item) => item.key === mode);
-  return <>
-    <div className="dashboard-grid spatial-workspace">
-      <aside className="panel layer-panel">
-        <div className="panel-title">
-          <div><span className="eyebrow">{module.title}</span><h2>Planned layers</h2></div>
-          <span className="status">Pending</span>
-        </div>
-        <p>These dataset fields are planned for the interface. They do not yet control the embedded ArcGIS Web Scene.</p>
-        <div className="planned-layer-list">
-          {layers[mode].map((label) => <div key={label}><span>{label}</span><small>Pending</small></div>)}
-        </div>
-        {mode === "renewable" && <p className="renewable-legend-help">Open the Layers panel in the map controls, then select the Legend tab to interpret the solar-potential colors.</p>}
-      </aside>
-      <ViewerPanel />
-      <PendingBuildingPanel mode={mode} />
-    </div>
-  </>;
-}
-
-function PendingBuildingPanel({ mode }) {
-  const messages = {
-    energy: "Select a building in the map to view available energy and archetype records.",
-    retrofit: "Select a building in the map to view available retrofit scenario records.",
-    renewable: "Select a building in the map to view available roof and façade solar-potential records."
-  };
-  return <aside className="panel building-panel pending-building-panel">
-    <div className="panel-title">
-      <div><span className="eyebrow">Data connection pending</span><h2>Selected Building</h2></div>
-      <span className="status">Pending</span>
-    </div>
-    <p>{messages[mode]}</p>
-    <div className="pending-record">
-      <span>Map-to-interface connection</span>
-      <strong>Under development</strong>
-    </div>
-    <p className="data-note">No illustrative building values or scenario results are shown as connected project data.</p>
-  </aside>;
+  const viewer = spatialViewers[mode];
+  return <div className="dashboard-grid spatial-workspace spatial-workspace-map-only">
+    <ViewerPanel {...viewer} />
+  </div>;
 }
 
 function AgenticWorkspace() {

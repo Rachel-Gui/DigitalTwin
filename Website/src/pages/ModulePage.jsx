@@ -26,13 +26,23 @@ function ModuleHero({index,status,title,subtitle,children,className="",heroImage
 }
 function Figure({src,title,detail,source,status}){return <figure className="research-figure"><div className="figure-image"><img src={src} alt={title}/></div><SourceCaption title={title} detail={detail} source={source} status={status}/></figure>}
 
+const energyArchetypeAliases={
+  "apartment":"ten-unit-apartment",
+  "duplex":"duplex",
+  "quadplex":"quadplex",
+  "single-family":"single-family",
+  "single family":"single-family"
+};
+const normalizeEnergyArchetype=value=>value?energyArchetypeAliases[value.trim().toLowerCase()]||null:null;
+
 function EnergyPage(){
   const [searchParams]=useSearchParams();
   const requestedArchetype=searchParams.get("archetype");
+  const requestedArchetypeId=normalizeEnergyArchetype(requestedArchetype);
   const buildingId=searchParams.get("building");
   const {loading,error,prototypes,packagesByArchetype,report}=useEnergyRetrofitData();
-  const validRequested=prototypes.some(item=>item.id===requestedArchetype)?requestedArchetype:null;
-  const [selectedArchetype,setSelectedArchetype]=useState(requestedArchetype||"single-family");
+  const validRequested=prototypes.some(item=>item.id===requestedArchetypeId)?requestedArchetypeId:null;
+  const [selectedArchetype,setSelectedArchetype]=useState(requestedArchetypeId||"single-family");
   const selectedPrototype=prototypes.find(item=>item.id===selectedArchetype)||prototypes.find(item=>item.id==="single-family")||null;
   const packageData=selectedPrototype?packagesByArchetype[selectedPrototype.id]||null:null;
   const prototypeImages={"single-family":singleFamilyImage,duplex:duplexImage,quadplex:quadplexImage,"ten-unit-apartment":tenUnitImage};
@@ -43,7 +53,7 @@ function EnergyPage(){
     ["Water Heating","Gas, electric, and heat-pump water-heating systems."]
   ];
   const connection=["Neighborhood Building","Assigned Archetype","Energy Scenario","Retrofit Comparison"];
-  useEffect(()=>{if(validRequested)setSelectedArchetype(validRequested);},[validRequested]);
+  useEffect(()=>{setSelectedArchetype(validRequested||"single-family");},[requestedArchetype,validRequested]);
   return <div className="module-page energy-page">
     <style>{`
       .energy-page section{padding:clamp(72px,9vw,132px) 0}.energy-page .energy-hero{padding-top:clamp(96px,12vw,170px)}
@@ -74,7 +84,7 @@ function EnergyPage(){
       {!loading&&!error&&selectedPrototype&&packageData?<SelectedPrototypeSummary prototype={selectedPrototype} baseline={packageData.baseline} buildingId={buildingId}/>:null}
     </div></section>
 
-    <section className="energy-scenarios"><div className="page-container"><SectionHeader eyebrow="Retrofit Explorer" title="Compare energy and retrofit packages."/>{loading?<p className="energy-development-note" role="status">Preparing the Retrofit Explorer…</p>:error||!selectedPrototype?<div className="energy-data-error" role="alert"><strong>Retrofit data is not available.</strong><span>{error||"The converted data files could not be loaded."}</span></div>:<RetrofitExplorer prototype={selectedPrototype} packageData={packageData} report={report} buildingId={buildingId}/>}</div></section>
+    <section className="energy-scenarios"><div className="page-container"><SectionHeader eyebrow="Retrofit Explorer" title="Compare energy and retrofit strategies."/>{loading?<p className="energy-development-note" role="status">Preparing the Retrofit Explorer…</p>:error||!selectedPrototype?<div className="energy-data-error" role="alert"><strong>Retrofit data is not available.</strong><span>{error||"The converted data files could not be loaded."}</span></div>:<RetrofitExplorer prototype={selectedPrototype} packageData={packageData} report={report} buildingId={buildingId}/>}</div></section>
 
     <section className="energy-conditions"><div className="page-container"><SectionHeader eyebrow="Available Modeled Variables" title="What can change in the simulations."/><div className="energy-condition-grid">{conditions.map(([title,text])=><article className="energy-condition-card" key={title}><h3>{title}</h3><p>{text}</p></article>)}</div></div></section>
 
