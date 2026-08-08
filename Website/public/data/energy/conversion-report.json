@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-06T07:59:35.832Z",
+  "generatedAt": "2026-08-08T04:15:59.944Z",
   "workbooks": [
     {
       "archetypeId": "single-family",
@@ -120,7 +120,7 @@
     },
     {
       "code": "missing-cached-formula-value",
-      "message": "Package2 Install ERVs cooling annual energy has no cached formula result.",
+      "message": "Package2 Replace Siding, Windows & Add R-10 to Wall cooling annual energy has no cached formula result.",
       "archetypeId": "single-family",
       "workbook": "energy-retrofit-single-family.xlsx",
       "worksheet": "Package2",
@@ -129,7 +129,7 @@
     },
     {
       "code": "missing-cached-formula-value",
-      "message": "Package2 Replace Windows & Siding cooling annual energy has no cached formula result.",
+      "message": "Package2 Add R-30 to Roof cooling annual energy has no cached formula result.",
       "archetypeId": "single-family",
       "workbook": "energy-retrofit-single-family.xlsx",
       "worksheet": "Package2",
@@ -138,16 +138,16 @@
     },
     {
       "code": "missing-cached-formula-value",
-      "message": "Package2 Install Heat Pump For Heating/Cooling pumps annual energy has no cached formula result.",
+      "message": "Package2 Install ERVs cooling annual energy has no cached formula result.",
       "archetypeId": "single-family",
       "workbook": "energy-retrofit-single-family.xlsx",
       "worksheet": "Package2",
-      "cell": "E37",
-      "formula": "IF(E31=\"None\",\"\",VLOOKUP(E$27,'Energy Data'!$A:$R,16, FALSE)*VLOOKUP($B$2,'Measure and Buildings Overview'!$A$15:$E$19,2, FALSE))"
+      "cell": "E33",
+      "formula": "IF(E31=\"None\", \"\",VLOOKUP(E$27,'Energy Data'!$A:$R,12, FALSE)*VLOOKUP($B$2,'Measure and Buildings Overview'!$A$15:$E$19,2, FALSE))"
     },
     {
       "code": "missing-cached-formula-value",
-      "message": "Package2 Install Heat Pump Water Heater pumps annual energy has no cached formula result.",
+      "message": "Package2 Install Heat Pump For Heating/Cooling pumps annual energy has no cached formula result.",
       "archetypeId": "single-family",
       "workbook": "energy-retrofit-single-family.xlsx",
       "worksheet": "Package2",
@@ -180,16 +180,6 @@
       "worksheet": "Package3",
       "cell": "D37",
       "formula": "IF(D31=\"None\",\"\",VLOOKUP(D$27,'Energy Data'!$A:$R,16, FALSE)*VLOOKUP($B$2,'Measure and Buildings Overview'!$A$15:$E$19,2, FALSE))"
-    },
-    {
-      "code": "duplicate-package",
-      "message": "Package 2 has the same description and summary values as Package 1. Source values were preserved.",
-      "archetypeId": "single-family",
-      "workbook": "energy-retrofit-single-family.xlsx",
-      "packages": [
-        "Package 1",
-        "Package 2"
-      ]
     },
     {
       "code": "missing-cached-formula-value",
@@ -247,7 +237,7 @@
     },
     {
       "code": "missing-cached-formula-value",
-      "message": "Package2 Install ERVs cooling annual energy has no cached formula result.",
+      "message": "Package2 Replace Siding, Windows & Add R-10 to Wall cooling annual energy has no cached formula result.",
       "archetypeId": "duplex",
       "workbook": "energy-retrofit-duplex.xlsx",
       "worksheet": "Package2",
@@ -256,7 +246,7 @@
     },
     {
       "code": "missing-cached-formula-value",
-      "message": "Package2 Replace Windows & Siding cooling annual energy has no cached formula result.",
+      "message": "Package2 Add R-30 to Roof cooling annual energy has no cached formula result.",
       "archetypeId": "duplex",
       "workbook": "energy-retrofit-duplex.xlsx",
       "worksheet": "Package2",
@@ -265,16 +255,16 @@
     },
     {
       "code": "missing-cached-formula-value",
-      "message": "Package2 Install Heat Pump For Heating/Cooling pumps annual energy has no cached formula result.",
+      "message": "Package2 Install ERVs cooling annual energy has no cached formula result.",
       "archetypeId": "duplex",
       "workbook": "energy-retrofit-duplex.xlsx",
       "worksheet": "Package2",
-      "cell": "E37",
-      "formula": "IF(E31=\"None\",\"\",VLOOKUP(E$27,'Energy Data'!$A:$R,16, FALSE)*VLOOKUP($B$2,'Measure and Buildings Overview'!$A$15:$E$19,2, FALSE))"
+      "cell": "E33",
+      "formula": "IF(E31=\"None\", \"\",VLOOKUP(E$27,'Energy Data'!$A:$R,12, FALSE)*VLOOKUP($B$2,'Measure and Buildings Overview'!$A$15:$E$19,2, FALSE))"
     },
     {
       "code": "missing-cached-formula-value",
-      "message": "Package2 Install Heat Pump Water Heater pumps annual energy has no cached formula result.",
+      "message": "Package2 Install Heat Pump For Heating/Cooling pumps annual energy has no cached formula result.",
       "archetypeId": "duplex",
       "workbook": "energy-retrofit-duplex.xlsx",
       "worksheet": "Package2",
@@ -307,16 +297,6 @@
       "worksheet": "Package3",
       "cell": "D37",
       "formula": "IF(D31=\"None\",\"\",VLOOKUP(D$27,'Energy Data'!$A:$R,16, FALSE)*VLOOKUP($B$2,'Measure and Buildings Overview'!$A$15:$E$19,2, FALSE))"
-    },
-    {
-      "code": "duplicate-package",
-      "message": "Package 2 has the same description and summary values as Package 1. Source values were preserved.",
-      "archetypeId": "duplex",
-      "workbook": "energy-retrofit-duplex.xlsx",
-      "packages": [
-        "Package 1",
-        "Package 2"
-      ]
     },
     {
       "code": "missing-cached-formula-value",
@@ -374,7 +354,7 @@
     },
     {
       "code": "missing-cached-formula-value",
-      "message": "Package2 Install ERVs cooling annual energy has no cached formula result.",
+      "message": "Package2 Replace Siding, Windows & Add R-10 to Wall cooling annual energy has no cached formula result.",
       "archetypeId": "quadplex",
       "workbook": "energy-retrofit-quadplex.xlsx",
       "worksheet": "Package2",
@@ -383,7 +363,7 @@
     },
     {
       "code": "missing-cached-formula-value",
-      "message": "Package2 Replace Windows & Siding cooling annual energy has no cached formula result.",
+      "message": "Package2 Add R-30 to Roof cooling annual energy has no cached formula result.",
       "archetypeId": "quadplex",
       "workbook": "energy-retrofit-quadplex.xlsx",
       "worksheet": "Package2",
@@ -392,16 +372,16 @@
     },
     {
       "code": "missing-cached-formula-value",
-      "message": "Package2 Install Heat Pump For Heating/Cooling pumps annual energy has no cached formula result.",
+      "message": "Package2 Install ERVs cooling annual energy has no cached formula result.",
       "archetypeId": "quadplex",
       "workbook": "energy-retrofit-quadplex.xlsx",
       "worksheet": "Package2",
-      "cell": "E37",
-      "formula": "IF(E31=\"None\",\"\",VLOOKUP(E$27,'Energy Data'!$A:$R,16, FALSE)*VLOOKUP($B$2,'Measure and Buildings Overview'!$A$15:$E$19,2, FALSE))"
+      "cell": "E33",
+      "formula": "IF(E31=\"None\", \"\",VLOOKUP(E$27,'Energy Data'!$A:$R,12, FALSE)*VLOOKUP($B$2,'Measure and Buildings Overview'!$A$15:$E$19,2, FALSE))"
     },
     {
       "code": "missing-cached-formula-value",
-      "message": "Package2 Install Heat Pump Water Heater pumps annual energy has no cached formula result.",
+      "message": "Package2 Install Heat Pump For Heating/Cooling pumps annual energy has no cached formula result.",
       "archetypeId": "quadplex",
       "workbook": "energy-retrofit-quadplex.xlsx",
       "worksheet": "Package2",
@@ -434,16 +414,6 @@
       "worksheet": "Package3",
       "cell": "D37",
       "formula": "IF(D31=\"None\",\"\",VLOOKUP(D$27,'Energy Data'!$A:$R,16, FALSE)*VLOOKUP($B$2,'Measure and Buildings Overview'!$A$15:$E$19,2, FALSE))"
-    },
-    {
-      "code": "duplicate-package",
-      "message": "Package 2 has the same description and summary values as Package 1. Source values were preserved.",
-      "archetypeId": "quadplex",
-      "workbook": "energy-retrofit-quadplex.xlsx",
-      "packages": [
-        "Package 1",
-        "Package 2"
-      ]
     },
     {
       "code": "missing-cached-formula-value",
@@ -501,7 +471,7 @@
     },
     {
       "code": "missing-cached-formula-value",
-      "message": "Package2 Install ERVs cooling annual energy has no cached formula result.",
+      "message": "Package2 Replace Siding, Windows & Add R-10 to Wall cooling annual energy has no cached formula result.",
       "archetypeId": "ten-unit-apartment",
       "workbook": "energy-retrofit-ten-unit.xlsx",
       "worksheet": "Package2",
@@ -510,7 +480,7 @@
     },
     {
       "code": "missing-cached-formula-value",
-      "message": "Package2 Replace Windows & Siding cooling annual energy has no cached formula result.",
+      "message": "Package2 Add R-30 to Roof cooling annual energy has no cached formula result.",
       "archetypeId": "ten-unit-apartment",
       "workbook": "energy-retrofit-ten-unit.xlsx",
       "worksheet": "Package2",
@@ -519,16 +489,16 @@
     },
     {
       "code": "missing-cached-formula-value",
-      "message": "Package2 Install Heat Pump For Heating/Cooling pumps annual energy has no cached formula result.",
+      "message": "Package2 Install ERVs cooling annual energy has no cached formula result.",
       "archetypeId": "ten-unit-apartment",
       "workbook": "energy-retrofit-ten-unit.xlsx",
       "worksheet": "Package2",
-      "cell": "E37",
-      "formula": "IF(E31=\"None\",\"\",VLOOKUP(E$27,'Energy Data'!$A:$R,16, FALSE)*VLOOKUP($B$2,'Measure and Buildings Overview'!$A$15:$E$19,2, FALSE))"
+      "cell": "E33",
+      "formula": "IF(E31=\"None\", \"\",VLOOKUP(E$27,'Energy Data'!$A:$R,12, FALSE)*VLOOKUP($B$2,'Measure and Buildings Overview'!$A$15:$E$19,2, FALSE))"
     },
     {
       "code": "missing-cached-formula-value",
-      "message": "Package2 Install Heat Pump Water Heater pumps annual energy has no cached formula result.",
+      "message": "Package2 Install Heat Pump For Heating/Cooling pumps annual energy has no cached formula result.",
       "archetypeId": "ten-unit-apartment",
       "workbook": "energy-retrofit-ten-unit.xlsx",
       "worksheet": "Package2",
@@ -561,16 +531,6 @@
       "worksheet": "Package3",
       "cell": "D37",
       "formula": "IF(D31=\"None\",\"\",VLOOKUP(D$27,'Energy Data'!$A:$R,16, FALSE)*VLOOKUP($B$2,'Measure and Buildings Overview'!$A$15:$E$19,2, FALSE))"
-    },
-    {
-      "code": "duplicate-package",
-      "message": "Package 2 has the same description and summary values as Package 1. Source values were preserved.",
-      "archetypeId": "ten-unit-apartment",
-      "workbook": "energy-retrofit-ten-unit.xlsx",
-      "packages": [
-        "Package 1",
-        "Package 2"
-      ]
     }
   ],
   "stats": {

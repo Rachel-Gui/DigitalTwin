@@ -13,18 +13,18 @@ const endUseConfig=[
 
 const isNumber=value=>typeof value==="number"&&Number.isFinite(value);
 const number=(value,digits=1)=>isNumber(value)?new Intl.NumberFormat("en-US",{maximumFractionDigits:digits}).format(value):"Not cached";
-const currency=value=>isNumber(value)?new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",maximumFractionDigits:0}).format(value):"Not cached";
-const energyPrice=value=>isNumber(value)?`$${number(value,4)}`:"Not cached";
 const percent=value=>isNumber(value)?`${number(value,1)}%`:"Not cached";
+const strategyLabel=id=>id==="baseline"?"Baseline":`Retrofit Strategy ${id?.split("-").at(-1)}`;
+const fetchEnergyJson=file=>fetch(`${dataRoot}/${file}`,{cache:"no-store"});
 
 export function useEnergyRetrofitData(){
   const [state,setState]=useState({loading:true,error:null,prototypes:[],packagesByArchetype:{},report:null});
   useEffect(()=>{
     let active=true;
     Promise.all([
-      fetch(`${dataRoot}/prototypes.json`).then(response=>response.ok?response.json():Promise.reject(new Error("Prototype data is unavailable."))),
-      ...["single-family","duplex","quadplex","ten-unit-apartment"].map(id=>fetch(`${dataRoot}/${id}-packages.json`).then(response=>response.ok?response.json():null).then(data=>[id,data])),
-      fetch(`${dataRoot}/conversion-report.json`).then(response=>response.ok?response.json():Promise.reject(new Error("Conversion report is unavailable.")))
+      fetchEnergyJson("prototypes.json").then(response=>response.ok?response.json():Promise.reject(new Error("Prototype data is unavailable."))),
+      ...["single-family","duplex","quadplex","ten-unit-apartment"].map(id=>fetchEnergyJson(`${id}-packages.json`).then(response=>response.ok?response.json():null).then(data=>[id,data])),
+      fetchEnergyJson("conversion-report.json").then(response=>response.ok?response.json():Promise.reject(new Error("Conversion report is unavailable.")))
     ]).then(([prototypeData,...rest])=>{
       const report=rest.pop();
       if(active)setState({loading:false,error:null,prototypes:prototypeData.prototypes||[],packagesByArchetype:Object.fromEntries(rest.filter(([,data])=>data)),report});
@@ -64,14 +64,13 @@ export function SelectedPrototypeSummary({prototype,baseline,buildingId}){
       <DataValue label="Water heating" value={inputs.waterHeatingSystem||"Not cached"}/>
       <DataValue label="Baseline EUI" value={number(baseline.totalEui,2)} unit="kBtu/ft²/year"/>
       <DataValue label="Annual energy" value={number(baseline.annualEnergyKBTU,0)} unit="kBtu/year"/>
-      <DataValue label="Annual energy cost" value={currency(baseline.annualEnergyCost)} unit="modeled/year"/>
     </dl>
   </section>
 }
 
 function PackageSelector({selected,onSelect}){
-  const choices=[["baseline","Baseline"],["package-1","Package 1"],["package-2","Package 2"],["package-3","Package 3"]];
-  return <div className="energy-package-tabs" role="tablist" aria-label="Retrofit package selection">{choices.map(([id,label])=><button type="button" role="tab" aria-selected={selected===id} className={selected===id?"is-active":""} onClick={()=>onSelect(id)} key={id}>{label}</button>)}</div>
+  const choices=["baseline","package-1","package-2","package-3"];
+  return <div className="energy-package-tabs" role="tablist" aria-label="Retrofit strategy selection">{choices.map(id=><button type="button" role="tab" aria-selected={selected===id} className={selected===id?"is-active":""} onClick={()=>onSelect(id)} key={id}>{strategyLabel(id)}</button>)}</div>
 }
 
 function RetrofitPathway({steps,selectedStepId,onSelect}){
@@ -82,11 +81,7 @@ function PackageMetrics({step,target}){
   const targetState=isNumber(step.totalEui)?step.totalEui<=target.value?step.totalEui===target.value?"Meeting target":"Below target":"Above target":"Target status unavailable";
   const items=[
     ["Current-step EUI",number(step.totalEui,2),"kBtu/ft²/year"],
-    ["Annual energy",number(step.annualEnergyKBTU,0),"kBtu/year"],
-    ["Modeled annual cost",currency(step.annualEnergyCost),"per year"],
-    ["Incremental measure cost",currency(step.incrementalCost),"modeled estimate"],
-    ["Incremental annual savings",currency(step.incrementalAnnualSavings),"modeled/year"],
-    ["Cumulative annual savings",currency(step.cumulativeAnnualSavings),"modeled/year"]
+    ["Annual energy",number(step.annualEnergyKBTU,0),"kBtu/year"]
   ];
   return <div className="energy-metrics">
     <div className="energy-metric-grid">{items.map(([label,value,unit])=><article key={label}><span>{label}</span><strong>{value}</strong><small>{unit}</small></article>)}</div>
@@ -109,7 +104,7 @@ function Assumptions({step}){
 
 function EnergyEndUseChart({steps,selectedStepId}){
   return <section className="energy-chart-panel" aria-labelledby="end-use-chart-title">
-    <header><div><span className="eyebrow">Annual End Uses</span><h3 id="end-use-chart-title">Cumulative package pathway</h3></div><span>kBtu/year</span></header>
+    <header><div><span className="eyebrow">Annual End Uses</span><h3 id="end-use-chart-title">Cumulative retrofit pathway</h3></div><span>kBtu/year</span></header>
     <div className="energy-chart-legend">{endUseConfig.map(([key,label,color])=><span key={key}><i style={{background:color}}/>{label}</span>)}</div>
     <div className="energy-stacked-chart">{steps.map(step=>{
       const available=endUseConfig.map(([key])=>step.endUses[key]).filter(isNumber);
@@ -122,10 +117,10 @@ function EnergyEndUseChart({steps,selectedStepId}){
 }
 
 function EuiComparisonChart({baseline,packages,target}){
-  const rows=[{id:"baseline",name:"Baseline",eui:baseline.totalEui},...packages.map(item=>({id:item.id,name:item.name,eui:item.summary.finalEui}))];
+  const rows=[{id:"baseline",name:"Baseline",eui:baseline.totalEui},...packages.map(item=>({id:item.id,name:strategyLabel(item.id),eui:item.summary.finalEui}))];
   const max=Math.max(target.value,...rows.map(row=>row.eui||0))*1.08;
   return <section className="energy-chart-panel" aria-labelledby="eui-chart-title">
-    <header><div><span className="eyebrow">EUI Comparison</span><h3 id="eui-chart-title">Final package EUI</h3></div><span>kBtu/ft²/year</span></header>
+    <header><div><span className="eyebrow">EUI Comparison</span><h3 id="eui-chart-title">Final strategy EUI</h3></div><span>kBtu/ft²/year</span></header>
     <p className="energy-target-explainer" title={target.note}>Study EUI Target · {target.value} {target.unit} <span aria-hidden="true">ⓘ</span></p>
     <div className="energy-eui-chart" style={{"--target-position":`${target.value/max*100}%`}}>{rows.map(row=>{const status=row.eui<=target.value?(row.eui===target.value?"Meeting target":"Below target"):"Above target";return <div key={row.id}><span>{row.name}</span><div><i style={{width:`${row.eui/max*100}%`}}/><b aria-hidden="true"/></div><strong>{number(row.eui,2)}<small>{status}</small></strong></div>})}</div>
     <p className="energy-target-note-copy">{target.note}</p>
@@ -133,16 +128,17 @@ function EuiComparisonChart({baseline,packages,target}){
 }
 
 function PackageComparison({baseline,packages,selectedPackageId}){
-  const rows=[{id:"baseline",name:"Baseline",description:"Existing modeled condition",finalEui:baseline.totalEui,reduction:0,annualCost:baseline.annualEnergyCost,savings:null,cost:null,payback:null},...packages.map(item=>({id:item.id,name:item.name,description:item.description,finalEui:item.summary.finalEui,reduction:item.summary.euiReductionPercent,annualCost:item.summary.modeledAnnualEnergyCost,savings:item.summary.annualSavings,cost:item.summary.totalPackageCost,payback:item.summary.simplePaybackYears}))];
-  return <section className="energy-comparison-panel" aria-labelledby="package-comparison-title"><header><span className="eyebrow">Package Comparison</span><h3 id="package-comparison-title">Baseline and final package results</h3></header><div className="energy-table-scroll"><table><thead><tr><th>Package</th><th>Description</th><th>Final EUI</th><th>EUI reduction</th><th>Annual cost</th><th>Annual savings</th><th>Package cost</th><th>Simple payback</th></tr></thead><tbody>{rows.map(row=><tr className={selectedPackageId===row.id?"is-selected":""} key={row.id}><th scope="row">{row.name}{selectedPackageId===row.id?<small>Selected</small>:null}</th><td>{row.description}</td><td>{number(row.finalEui,2)}</td><td>{row.id==="baseline"?"Reference":percent(row.reduction)}</td><td>{currency(row.annualCost)}</td><td>{currency(row.savings)}</td><td>{currency(row.cost)}</td><td>{isNumber(row.payback)?`${number(row.payback,1)} years`:"—"}</td></tr>)}</tbody></table></div></section>
+  const rows=[{id:"baseline",name:"Baseline",description:"Existing modeled condition",finalEui:baseline.totalEui,reduction:0},...packages.map(item=>({id:item.id,name:strategyLabel(item.id),description:item.description,finalEui:item.summary.finalEui,reduction:item.summary.euiReductionPercent}))];
+  return <section className="energy-comparison-panel" aria-labelledby="package-comparison-title"><header><span className="eyebrow">Retrofit Strategy Comparison</span><h3 id="package-comparison-title">Baseline and retrofit strategy results</h3></header><div className="energy-table-scroll"><table><thead><tr><th>Retrofit strategy</th><th>Description</th><th>Final EUI</th><th>EUI reduction</th></tr></thead><tbody>{rows.map(row=><tr className={selectedPackageId===row.id?"is-selected":""} key={row.id}><th scope="row">{row.name}{selectedPackageId===row.id?<small>Selected</small>:null}</th><td>{row.description}</td><td>{number(row.finalEui,2)}</td><td>{row.id==="baseline"?"Reference":percent(row.reduction)}</td></tr>)}</tbody></table></div></section>
 }
 
 function FinalPackageSummary({activePackage,target}){
   if(!activePackage)return null;
   const summary=activePackage.summary;
+  const finalStep=activePackage.steps.at(-1);
   const targetStatus=isNumber(summary.finalEui)&&summary.finalEui<=target.value?summary.finalEui===target.value?"Meeting target":"Below target":"Above target";
-  return <section className="energy-final-summary"><header><div><span className="eyebrow">Final Package Summary</span><h3>{activePackage.name}</h3></div><span className="energy-data-status">{targetStatus}</span></header><div>{[
-    ["Final EUI",number(summary.finalEui,2),"kBtu/ft²/year"],["EUI reduction",percent(summary.euiReductionPercent),"from baseline"],["Modeled annual cost",currency(summary.modeledAnnualEnergyCost),"per year"],["Modeled annual savings",currency(summary.annualSavings),"per year"],["Total package cost",currency(summary.totalPackageCost),"modeled estimate"],["Simple payback",`${number(summary.simplePaybackYears,1)} years`,"simple payback"]
+  return <section className="energy-final-summary"><header><div><span className="eyebrow">Final Strategy Summary</span><h3>{strategyLabel(activePackage.id)}</h3></div><span className="energy-data-status">{targetStatus}</span></header><div>{[
+    ["Final Strategy EUI",number(summary.finalEui,2),"kBtu/ft²/year"],["Annual energy",number(finalStep?.annualEnergyKBTU,0),"kBtu/year"],["EUI reduction",percent(summary.euiReductionPercent),"from baseline"]
   ].map(([label,value,unit])=><article key={label}><span>{label}</span><strong>{value}</strong><small>{unit}</small></article>)}</div></section>
 }
 
@@ -163,12 +159,12 @@ export function RetrofitExplorer({prototype,packageData,report,buildingId}){
     <div className="retrofit-explorer-heading"><div><span className="eyebrow">Retrofit Explorer</span><h3>Explore cumulative {prototype.name} strategies.</h3></div></div>
     {packageData.developmentDataNotice?<p className="energy-quality-notice"><strong>Development data notice.</strong> {packageData.developmentDataNotice}</p>:null}
     <PackageSelector selected={selectedPackageId} onSelect={id=>{setSelectedPackageId(id);setSelectedStepId(id==="baseline"?"baseline":packageData.packages.find(item=>item.id===id)?.steps.at(-1)?.id||"baseline");}}/>
-    <div className="energy-package-intro"><div><span>Selected package</span><h4>{activePackage?.name||"Baseline"}</h4><p>{activePackage?.description||"Existing modeled condition used as the reference for package comparisons."}</p></div>{activePackage?<ul>{activePackage.steps.slice(1).map(step=><li key={step.id}>{step.measure}</li>)}</ul>:null}</div>
+    <div className="energy-package-intro"><div><span>Selected Retrofit Strategy</span><h4>{strategyLabel(activePackage?.id||"baseline")}</h4><p>{activePackage?.description||"Existing modeled condition used as the reference for retrofit strategy comparisons."}</p></div>{activePackage?<ul>{activePackage.steps.slice(1).map(step=><li key={step.id}>{step.measure}</li>)}</ul>:null}</div>
     <RetrofitPathway steps={steps} selectedStepId={selectedStep.id} onSelect={setSelectedStepId}/>
     <div className="energy-step-layout"><PackageMetrics step={selectedStep} target={packageData.euiTarget}/><Assumptions step={selectedStep}/></div>
     <EnergyEndUseChart steps={steps} selectedStepId={selectedStep.id}/>
     <FinalPackageSummary activePackage={activePackage} target={packageData.euiTarget}/>
-    <div className="energy-comparison-layout"><EuiComparisonChart baseline={packageData.baseline} packages={packageData.packages} target={packageData.euiTarget}/><div className="energy-cost-note"><span className="eyebrow">Cost Assumptions</span><p>{packageData.costNote}</p><details><summary>Workbook price assumptions</summary><dl><DataValue label="Electricity" value={energyPrice(packageData.packages[0].assumptions.electricityPricePerKWh)} unit="per kWh"/><DataValue label="Gas" value={energyPrice(packageData.packages[0].assumptions.gasPricePerTherm)} unit="per therm"/></dl><small>Study assumptions; not current utility rates.</small></details><span className="energy-data-status">Advanced scenario builder — in development</span></div></div>
+    <EuiComparisonChart baseline={packageData.baseline} packages={packageData.packages} target={packageData.euiTarget}/>
     <PackageComparison baseline={packageData.baseline} packages={packageData.packages} selectedPackageId={selectedPackageId}/>
     <footer className="energy-explorer-footer"><span>Evidence type · Modeled</span><span>Source · {packageData.packages[0]?.sourceWorkbook||"Workbook unavailable"}</span><span>Validation · {report?.errors?.length||0} errors / {report?.warnings?.length||0} warnings</span></footer>
   </div>
