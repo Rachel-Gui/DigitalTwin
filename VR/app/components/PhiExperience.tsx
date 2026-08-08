@@ -18,6 +18,7 @@ import { INITIAL_TOUR_STATE, tourReducer } from "../lib/tourModel";
 
 const SceneCanvas = lazy(() => import("./SceneCanvas").then((module) => ({ default: module.SceneCanvas })));
 const VR_BUTTON_HOST_ID = "vr-button-host";
+const EPA_PM25_ANNUAL_NAAQS = 9;
 const EPA_PM25_24H_NAAQS = 35;
 const EPA_PM25_SOURCE_URL = "https://www.epa.gov/criteria-air-pollutants/naaqs-table";
 
@@ -401,13 +402,15 @@ export function PhiExperience() {
             </div>
             <div className="trend-chart">
               <div className="section-line"><span>PM2.5 CONCENTRATION · 24H</span><span>{sceneId === "concord" ? "PROFILE" : "OBSERVED"}</span></div>
-              <svg viewBox="0 0 240 102" role="img" aria-label="Hourly PM2.5 Concentration in micrograms per cubic meter with EPA 24-hour reference context line at 35 micrograms per cubic meter">
+              <svg viewBox="0 0 240 102" role="img" aria-label="Hourly PM2.5 Concentration in micrograms per cubic meter with EPA annual reference line at 9 and 24-hour reference line at 35 micrograms per cubic meter">
+                <g className="threshold annual-reference"><line x1="0" y1={92 - (EPA_PM25_ANNUAL_NAAQS / dashboardStats.chartMax) * 80} x2="240" y2={92 - (EPA_PM25_ANNUAL_NAAQS / dashboardStats.chartMax) * 80}/><text x="238" y={89 - (EPA_PM25_ANNUAL_NAAQS / dashboardStats.chartMax) * 80} textAnchor="end">EPA ANNUAL NAAQS · 9 µg/m³</text></g>
                 <g className="threshold health-reference"><line x1="0" y1={92 - (EPA_PM25_24H_NAAQS / dashboardStats.chartMax) * 80} x2="240" y2={92 - (EPA_PM25_24H_NAAQS / dashboardStats.chartMax) * 80}/><text x="238" y={89 - (EPA_PM25_24H_NAAQS / dashboardStats.chartMax) * 80} textAnchor="end">EPA 24H NAAQS · 35 µg/m³</text></g>
                 <polyline points={dashboardStats.points} />
                 <line className="current-hour-line" x1={dashboardStats.currentX} y1="10" x2={dashboardStats.currentX} y2="94" />
                 <circle className="current-hour-point" cx={dashboardStats.currentX} cy={dashboardStats.currentY} r="3.5" />
               </svg>
-              <div className="aqi-trend-key"><span><i/> Dashed line: EPA primary 24-hour PM2.5 Concentration standard</span><strong>{isComplete24HourPeriod ? (dailyReferenceExceeded ? "24H MEAN ABOVE 35" : "24H MEAN BELOW 35") : "NO 24H COMPARISON"}</strong></div>
+              <div className="aqi-trend-key"><div><span><i className="annual"/> EPA annual mean reference · 9</span><span><i className="daily"/> EPA 24-hour reference · 35</span></div><strong>{isComplete24HourPeriod ? (dailyReferenceExceeded ? "24H MEAN ABOVE 35" : "24H MEAN BELOW 35") : "NO 24H COMPARISON"}</strong></div>
+              <p className="annual-reference-note">The annual line is context only; this hourly or single-day profile cannot determine annual-standard attainment.</p>
             </div>
             <div className="aqi-compact-scale" aria-label="EPA PM2.5 Concentration AQI categories based on 24-hour concentration">{AIR_QUALITY_CATEGORIES.map((category) => <span key={category.key} className={`aqi-${category.key}${category.key === dailyAirQuality.key ? " is-current" : ""}`} title={`${category.label}: AQI ${category.aqiRange}, 24-hour PM2.5 Concentration ${category.pmRange} µg/m³`}><i/><small>{category.aqiRange}</small></span>)}</div>
             <a className="aqi-source-link" href={EPA_PM25_SOURCE_URL} target="_blank" rel="noreferrer">EPA 2024 PM2.5 NAAQS source ↗</a>
