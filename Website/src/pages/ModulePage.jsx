@@ -1,4 +1,5 @@
-import { lazy, Suspense, useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
+import "leaflet/dist/leaflet.css";
 import singleFamilyImage from "../assets/energy/single-family.jpg";
 import duplexImage from "../assets/energy/duplex.jpg";
 import quadplexImage from "../assets/energy/quadplex.jpg";
@@ -17,7 +18,7 @@ import { PrototypeSelector, RetrofitExplorer, SelectedPrototypeSummary, useEnerg
 const AirQualityTableau = lazy(() => import("../components/AirQualityTableau"));
 
 export default function ModulePage({type}){
-  return ({energy:<EnergyPage/>,retrofit:<RetrofitPage/>,air:<AirPage/>,vr:<VRPage/>,renewable:<RenewablePage/>,scenario:<ScenarioPage/>})[type];
+  return type === "vr" ? <VRPage/> : <ScenarioPage/>;
 }
 function ModuleHero({index,status,title,subtitle,children,className="",heroImage}){
   const heroStyle=heroImage ? {backgroundImage:`linear-gradient(90deg,rgba(5,5,5,.96) 0%,rgba(5,5,5,.82) 42%,rgba(5,5,5,.38) 100%),url(${heroImage})`} : undefined;
@@ -260,9 +261,70 @@ function VRPage(){
       <header className="vr-entry-heading"><div><span>02 / IMMERSIVE SCENES</span><h2>Choose an environment.</h2></div><p>Each scene opens the working 3D application directly. Explore on desktop with a mouse and keyboard, or select Enter VR inside the scene with a compatible browser and headset.</p></header>
       <div className="vr-scene-grid">{scenes.map(scene=><a className="vr-scene-card" href={scene.href} target="_blank" rel="noreferrer" key={scene.index}><span className="vr-scene-index">{scene.index}</span><div className="vr-scene-image"><img src={scene.image} alt={`${scene.title} interactive VR scene preview`}/><span>OPEN INTERACTIVE SCENE ↗</span></div><div className="vr-scene-copy"><small>{scene.label}</small><h3>{scene.title}</h3><p>{scene.description}</p><dl className="vr-scene-provenance"><div><dt>Date represented</dt><dd>{scene.date}</dd></div><div><dt>Time range</dt><dd>{scene.time}</dd></div><div><dt>Pollutant</dt><dd>PM2.5 Concentration (µg/m³)</dd></div><div><dt>Data type</dt><dd>{scene.type}</dd></div><div><dt>Source</dt><dd>{scene.source}</dd></div><div><dt>Simulation</dt><dd>Yes · particle behavior is simulated</dd></div></dl></div></a>)}</div>
     </section>
-    <section className="vr-editorial"><div className="vr-intro"><span>03 / PM2.5 CONCENTRATION MODEL</span><h2>Time is visible.<br/>PM2.5 Concentration changes.</h2><p>The moving sun marks the passage of time through a 24-hour cycle. PM2.5 Concentration (µg/m³) is represented through changes in particle number, size, motion, and density.</p></div><article className="vr-concentration-summary"><span>DISPLAYED POLLUTANT</span><h3>PM2.5 Concentration</h3><dl><div><dt>Unit</dt><dd>µg/m³</dd></div><div><dt>Time scale</dt><dd>Hourly · 00:00–23:00</dd></div><div><dt>Visual encoding</dt><dd>Particle number · size · motion · density</dd></div></dl><p>Every value and particle pattern in this experience refers specifically to PM2.5 Concentration.</p></article></section>
+    <section className="vr-editorial"><div className="vr-editorial-overview"><div className="vr-intro"><span>03 / PM2.5 CONCENTRATION MODEL</span><h2>Time is visible.<br/>PM2.5 Concentration changes.</h2><p>The moving sun marks the passage of time through a 24-hour cycle. PM2.5 Concentration (µg/m³) is represented through changes in particle number, size, motion, and density.</p></div><article className="vr-concentration-summary"><span>DISPLAYED POLLUTANT</span><h3>PM2.5 Concentration</h3><dl><div><dt>Unit</dt><dd>µg/m³</dd></div><div><dt>Time scale</dt><dd>Hourly · 00:00–23:00</dd></div><div><dt>Visual encoding</dt><dd>Particle number · size · motion · density</dd></div></dl><p>Every value and particle pattern in this experience refers specifically to PM2.5 Concentration.</p></article></div><VRLiveAirSnapshot/></section>
     <section className="vr-cta"><span>COMMUNITY ENGAGEMENT / IMMERSIVE MODE</span><h2>Two scales. One environmental story.</h2><p>Begin at Concord International School or move across the South Park neighborhood.</p><a className="button light-button" href={`${vrBase}/#concord`} target="_blank" rel="noreferrer">Enter Concord VR ↗</a></section>
   </div>
+}
+
+function VRLiveAirSnapshot(){
+  const [state,setState]=useState({loading:true,data:null,error:null});
+  const load=async()=>{
+    setState((current)=>({...current,loading:true,error:null}));
+    try{
+      const response=await fetch("/api/clarity");
+      const payload=await response.json();
+      if(!response.ok)throw new Error(payload.detail||payload.error||"Unable to load the latest air-quality snapshot.");
+      setState({loading:false,data:payload,error:null});
+    }catch(error){setState({loading:false,data:null,error:error.message})}
+  };
+  useEffect(()=>{load()},[]);
+  const summary=state.data?.summary||{};
+  const updated=state.data?.newestMeasurementAt?new Date(state.data.newestMeasurementAt).toLocaleString([], {dateStyle:"medium",timeStyle:"short"}):"—";
+  const value=(number,decimals=1)=>Number.isFinite(number)?number.toFixed(decimals):"—";
+  return <div className="vr-live-air" aria-busy={state.loading}>
+    <div className="vr-live-air-inner">
+      <header><div><span>LIVE AIR REFERENCE · DAISY / SOUTH PARK</span><h2>Current conditions, beside the model.</h2></div><p>The latest available Clarity sensor snapshot adds present-day context. It remains separate from the historical and modeled values driving the VR scenes.</p></header>
+      {state.error?<div className="vr-live-error"><div><strong>Latest snapshot unavailable</strong><span>{state.error}</span></div><button type="button" onClick={load}>Try again</button></div>:<div className="vr-live-dashboard"><VRClarityMap sources={state.data?.sources||[]}/><div className="vr-live-metrics">
+        <article className="primary"><span>Network average</span><strong>{state.loading?"···":value(summary.pm25Average)}</strong><small>µg/m³ PM2.5</small></article>
+        <article><span>Peak reading</span><strong>{state.loading?"···":value(summary.pm25Maximum)}</strong><small>µg/m³ PM2.5</small></article>
+        <article><span>Reporting locations</span><strong>{state.loading?"···":value(summary.reportingLocations,0)}</strong><small>of {summary.monitoringLocations??"—"} sensors</small></article>
+        <article><span>Latest observation</span><strong className="time">{state.loading?"Syncing…":updated}</strong><small>Latest available · may be cached</small></article>
+      </div></div>}
+      <footer><span>Not a continuously updating data stream · successful responses may be cached for up to 4 h 45 min</span><a href="https://dashboard.clarity.io/daisy4I1NK/live-data" target="_blank" rel="noreferrer">Open Clarity source ↗</a></footer>
+    </div>
+  </div>
+}
+
+function VRClarityMap({sources}){
+  const mapElement=useRef(null);
+  const locations=useMemo(()=>sources.filter((source)=>Number.isFinite(source.latitude)&&Number.isFinite(source.longitude)),[sources]);
+  useEffect(()=>{
+    if(!mapElement.current||!locations.length)return undefined;
+    let map,cancelled=false;
+    import("leaflet").then((module)=>{
+      if(cancelled||!mapElement.current)return;
+      const L=module.default||module;
+      map=L.map(mapElement.current,{zoomControl:true,scrollWheelZoom:false,preferCanvas:true}).setView([47.53,-122.32],12);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{attribution:"© OpenStreetMap",maxZoom:19}).addTo(map);
+      const bounds=[];
+      locations.forEach((source)=>{
+        const reading=source.metrics?.pm25?.value;
+        const color=!Number.isFinite(reading)?"#77807d":reading<=9?"#2f8d70":reading<=35.4?"#b18a18":"#c65334";
+        const point=[source.latitude,source.longitude];
+        bounds.push(point);
+        const popup=document.createElement("div");
+        const title=document.createElement("strong");
+        const measurement=document.createElement("span");
+        title.textContent=source.name.split("(")[0].trim();
+        measurement.textContent=`${Number.isFinite(reading)?reading.toFixed(1):"—"} µg/m³ PM2.5`;
+        popup.append(title,document.createElement("br"),measurement);
+        L.circleMarker(point,{radius:9,color:"#fff",weight:2,fillColor:color,fillOpacity:.95}).bindPopup(popup).addTo(map);
+      });
+      map.fitBounds(bounds,{padding:[35,35],maxZoom:14});
+    });
+    return()=>{cancelled=true;if(map)map.remove()};
+  },[locations]);
+  return <div className="vr-live-map"><div className="vr-live-map-label"><span>MONITORING MAP</span><small>{locations.length} locations</small></div><div className="vr-clarity-map" ref={mapElement} aria-label={`Map of ${locations.length} Clarity monitoring locations`}/></div>;
 }
 function RenewablePage(){
   const process=[

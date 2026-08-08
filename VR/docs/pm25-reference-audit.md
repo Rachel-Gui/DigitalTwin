@@ -15,7 +15,7 @@ The existing project image `Website/src/assets/vr/high-low-pollution-chart.png` 
 
 ## Interface decision
 
-The VR chart uses a dashed **35 µg/m³** line labeled `EPA 24H NAAQS` only as context for the separately displayed 24-hour mean. The interface explicitly states that the line is not an hourly limit and that the display is not a regulatory attainment determination. Above/below status is calculated from the 24-hour mean, never from an individual hourly point.
+The VR chart uses two context lines: the **9.0 µg/m³** EPA annual mean NAAQS and the **35 µg/m³** EPA 24-hour NAAQS. The interface explicitly states that neither line is an hourly limit and that a single hourly or daily profile cannot determine annual-standard attainment. Above/below status is calculated only for a complete displayed 24-hour mean against the 35 µg/m³ reference, never from an individual hourly point. No annual attainment status is calculated.
 
 The historical 9 µg/m³ line is not labeled `acceptable`, because 9 µg/m³ is an annual NAAQS and an AQI breakpoint, not an EPA one-hour acceptable level.
 

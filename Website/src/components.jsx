@@ -2,16 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import silLogo from "./assets/brand/sustainable-intelligence-lab-logo.png";
 import uwWhite from "./assets/brand/uw-signature-white.png";
-import { modules } from "./data/modules";
 import { useLanguage } from "./i18n";
-
-const dropdownModules = modules.filter((module) => ["air", "energy", "retrofit", "renewable"].includes(module.key));
 
 export function Navbar() {
   const { language, setLanguage, t } = useLanguage();
-  const [open,setOpen]=useState(false), [drop,setDrop]=useState(false);
+  const [open,setOpen]=useState(false);
   const navRef=useRef(null);
-  const close=()=>{setOpen(false);setDrop(false)};
+  const close=()=>setOpen(false);
   useEffect(()=>{
     const onPointerDown=(event)=>{if(!navRef.current?.contains(event.target))close()};
     const onKeyDown=(event)=>{if(event.key==="Escape")close()};
@@ -27,12 +24,6 @@ export function Navbar() {
       <NavLink to="/" onClick={close}>{t("Home")}</NavLink>
       <NavLink to="/dashboard" onClick={close}>{t("Digital Twin")}</NavLink>
       <NavLink to="/vr" onClick={close}>{t("VR Experience")}</NavLink>
-      <NavLink to="/analytics" onClick={close}>{t("PM2.5 Data")}</NavLink>
-      <div className="dropdown"><button className="dropdown-trigger" onClick={()=>setDrop(!drop)} aria-controls="modules-menu" aria-haspopup="true" aria-expanded={drop}><span>{t("Modules")}</span><i className="dropdown-chevron" aria-hidden="true"/></button>
-        <div id="modules-menu" className={drop?"dropdown-menu show":"dropdown-menu"} aria-hidden={!drop}>
-          {dropdownModules.map((m,index)=><NavLink key={m.key} to={m.path} onClick={close}><small>{String(index+1).padStart(2,"0")}</small><span><strong>{m.title}</strong></span><b aria-hidden="true">↗</b></NavLink>)}
-        </div>
-      </div>
       <div className="language-switch" role="group" aria-label="Language / Idioma"><button type="button" className={language==="en"?"active":""} onClick={()=>setLanguage("en")} aria-pressed={language==="en"}>EN</button><span>/</span><button type="button" className={language==="es"?"active":""} onClick={()=>setLanguage("es")} aria-pressed={language==="es"}>ES</button></div>
       <img className="mobile-uw" src={uwWhite} alt="University of Washington"/>
     </nav>
@@ -43,7 +34,7 @@ export function Navbar() {
 
 export function Footer(){
   const {t}=useLanguage();
-  return <footer className="site-footer"><div><img src={silLogo} alt="Sustainable Intelligence Lab"/><div><h2>DecarbCityTwin</h2><p>{t("Urban intelligence for equitable climate action.")}</p></div></div><div><span>{t("RESEARCH PLATFORM")}</span><p>South Park · Duwamish Valley · Seattle</p><p>{t("Figures and statuses are labeled by source and development stage.")}</p></div><nav aria-label="Footer navigation"><Link to="/">{t("Home")}</Link><Link to="/dashboard">{t("Digital Twin")}</Link><Link to="/vr">{t("VR Experience")}</Link><Link to="/analytics">{t("PM2.5 Data")}</Link><Link to="/research">{t("Research")}</Link><a href="mailto:info@silab.org">{t("Contact")}</a></nav><div><img src={uwWhite} alt="University of Washington"/><p>© 2026 Sustainable Intelligence Lab</p></div></footer>
+  return <footer className="site-footer"><div><img src={silLogo} alt="Sustainable Intelligence Lab"/><div><h2>DecarbCityTwin</h2><p>{t("Urban intelligence for equitable climate action.")}</p></div></div><div><span>{t("RESEARCH PLATFORM")}</span><p>South Park · Duwamish Valley · Seattle</p><p>{t("Figures and statuses are labeled by source and development stage.")}</p></div><nav aria-label="Footer navigation"><Link to="/">{t("Home")}</Link><Link to="/dashboard">{t("Digital Twin")}</Link><Link to="/vr">{t("VR Experience")}</Link><Link to="/research">{t("Research")}</Link><a href="mailto:info@silab.org">{t("Contact")}</a></nav><div><img src={uwWhite} alt="University of Washington"/><p>© 2026 Sustainable Intelligence Lab</p></div></footer>
 }
 
 export function SectionHeader({eyebrow,title,text,action}){return <div className="section-header"><div><span className="eyebrow">{eyebrow}</span><h2>{title}</h2>{text&&<p>{text}</p>}</div>{action}</div>}
