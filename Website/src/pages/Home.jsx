@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import studyAreaMap from "../assets/south-park-study-area-map.png";
 import homepageDemo from "../assets/home/homepage_demo_2.png";
-import vrConcord from "../assets/vr/concord-pm25-particle-view.png";
+import vrHero from "../assets/vr/1111.png";
 import paperCover from "../assets/research/energy-paper-cover.png";
-import projectPartners from "../assets/partners/project-partners.png";
+import projectPartners from "../assets/partners/project-partners-transparent.png";
 import { PublicationRecord, SectionHeader } from "../components";
 import { useLanguage } from "../i18n";
 
@@ -43,7 +43,7 @@ function StudyAreaSection(){
 function ImmersiveModeSection(){
   return <section className="home-feature-section"><div className="home-feature page-container">
     <div className="home-feature-copy"><span className="eyebrow">02 / Immersive Mode</span><h2>Step inside the city’s atmosphere.</h2><p>Explore environmental conditions through interactive, browser-based, and headset-ready 3D experiences.</p><Link className="button home-feature-action" to="/vr">Enter Immersive Mode ↗</Link></div>
-    <Link className="home-feature-media" to="/vr" aria-label="Enter Immersive Mode"><img src={vrConcord} alt="Immersive PM2.5 Concentration particle visualization around Concord International School"/></Link>
+    <Link className="home-feature-media" to="/vr" aria-label="Enter Immersive Mode"><img src={vrHero} alt="DecarbCityTwin immersive VR experience interface"/></Link>
   </div></section>
 }
 

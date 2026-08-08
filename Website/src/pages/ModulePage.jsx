@@ -9,6 +9,7 @@ import clarityScreenshot from "../assets/air-quality/clarity-screenshot.png";
 import vrConcord from "../assets/vr/concord-pm25-particle-view.png";
 import vrCity from "../assets/vr/city-scale-pollution-view.png";
 import vrDashboard from "../assets/vr/1111.png";
+import liveDataArchitecture from "../assets/vr/live-data-system-architecture.png";
 import renewableMap from "../assets/home/south-park-arcgis-preview.png";
 import { PublicationRecord, SectionHeader, SourceCaption, StatusLabel } from "../components";
 import { Link, useSearchParams } from "react-router-dom";
@@ -261,7 +262,7 @@ function VRPage(){
       <header className="vr-entry-heading"><div><span>02 / IMMERSIVE SCENES</span><h2>Choose an environment.</h2></div><p>Each scene opens the working 3D application directly. Explore on desktop with a mouse and keyboard, or select Enter VR inside the scene with a compatible browser and headset.</p></header>
       <div className="vr-scene-grid">{scenes.map(scene=><a className="vr-scene-card" href={scene.href} target="_blank" rel="noreferrer" key={scene.index}><span className="vr-scene-index">{scene.index}</span><div className="vr-scene-image"><img src={scene.image} alt={`${scene.title} interactive VR scene preview`}/><span>OPEN INTERACTIVE SCENE ↗</span></div><div className="vr-scene-copy"><small>{scene.label}</small><h3>{scene.title}</h3><p>{scene.description}</p><dl className="vr-scene-provenance"><div><dt>Date represented</dt><dd>{scene.date}</dd></div><div><dt>Time range</dt><dd>{scene.time}</dd></div><div><dt>Pollutant</dt><dd>PM2.5 Concentration (µg/m³)</dd></div><div><dt>Data type</dt><dd>{scene.type}</dd></div><div><dt>Source</dt><dd>{scene.source}</dd></div><div><dt>Simulation</dt><dd>Yes · particle behavior is simulated</dd></div></dl></div></a>)}</div>
     </section>
-    <section className="vr-editorial"><div className="vr-editorial-overview"><div className="vr-intro"><span>03 / PM2.5 CONCENTRATION MODEL</span><h2>Time is visible.<br/>PM2.5 Concentration changes.</h2><p>The moving sun marks the passage of time through a 24-hour cycle. PM2.5 Concentration (µg/m³) is represented through changes in particle number, size, motion, and density.</p></div><article className="vr-concentration-summary"><span>DISPLAYED POLLUTANT</span><h3>PM2.5 Concentration</h3><dl><div><dt>Unit</dt><dd>µg/m³</dd></div><div><dt>Time scale</dt><dd>Hourly · 00:00–23:00</dd></div><div><dt>Visual encoding</dt><dd>Particle number · size · motion · density</dd></div></dl><p>Every value and particle pattern in this experience refers specifically to PM2.5 Concentration.</p></article></div><VRLiveAirSnapshot/></section>
+    <section className="vr-editorial"><VRLiveAirSnapshot/></section>
     <section className="vr-cta"><span>COMMUNITY ENGAGEMENT / IMMERSIVE MODE</span><h2>Two scales. One environmental story.</h2><p>Begin at Concord International School or move across the South Park neighborhood.</p><a className="button light-button" href={`${vrBase}/#concord`} target="_blank" rel="noreferrer">Enter Concord VR ↗</a></section>
   </div>
 }
@@ -283,6 +284,7 @@ function VRLiveAirSnapshot(){
   const value=(number,decimals=1)=>Number.isFinite(number)?number.toFixed(decimals):"—";
   return <div className="vr-live-air" aria-busy={state.loading}>
     <div className="vr-live-air-inner">
+      <figure className="vr-live-architecture"><img src={liveDataArchitecture} alt="DecarbCityTwin VR and live-data system architecture connecting sensors, cloud services, Unity, and Seattle models"/></figure>
       <header><div><span>LIVE AIR REFERENCE · DAISY / SOUTH PARK</span><h2>Current conditions, beside the model.</h2></div><p>The latest available Clarity sensor snapshot adds present-day context. It remains separate from the historical and modeled values driving the VR scenes.</p></header>
       {state.error?<div className="vr-live-error"><div><strong>Latest snapshot unavailable</strong><span>{state.error}</span></div><button type="button" onClick={load}>Try again</button></div>:<div className="vr-live-dashboard"><VRClarityMap sources={state.data?.sources||[]}/><div className="vr-live-metrics">
         <article className="primary"><span>Network average</span><strong>{state.loading?"···":value(summary.pm25Average)}</strong><small>µg/m³ PM2.5</small></article>
