@@ -18,11 +18,13 @@ import { INITIAL_TOUR_STATE, tourReducer } from "../lib/tourModel";
 
 const SceneCanvas = lazy(() => import("./SceneCanvas").then((module) => ({ default: module.SceneCanvas })));
 const VR_BUTTON_HOST_ID = "vr-button-host";
+const EPA_PM25_ANNUAL_NAAQS = 9;
+const EPA_PM25_24H_NAAQS = 35;
+const EPA_PM25_SOURCE_URL = "https://www.epa.gov/criteria-air-pollutants/naaqs-table";
 
-function pmBand(value: number) {
-  if (value <= 9) return "LOW";
-  if (value <= 15) return "MODERATE";
-  return "ELEVATED";
+function weekdayFor(date: string) {
+  return new Intl.DateTimeFormat("en-US", { weekday: "long", timeZone: AIR_QUALITY_SOURCE.timezone })
+    .format(new Date(`${date}T12:00:00-08:00`));
 }
 
 const PM25_AQI_BREAKPOINTS = [
@@ -33,6 +35,24 @@ const PM25_AQI_BREAKPOINTS = [
   [125.5, 225.4, 201, 300],
   [225.5, 325.4, 301, 500],
 ] as const;
+
+const AIR_QUALITY_CATEGORIES = [
+  { key: "good", label: "Good", aqiRange: "0–50", pmRange: "0.0–9.0", description: "Air quality is satisfactory, with little or no health risk." },
+  { key: "moderate", label: "Moderate", aqiRange: "51–100", pmRange: "9.1–35.4", description: "Air quality is acceptable; unusually sensitive people may be at risk." },
+  { key: "sensitive", label: "Unhealthy for Sensitive Groups", aqiRange: "101–150", pmRange: "35.5–55.4", description: "Sensitive groups may experience health effects; the general public is less likely to be affected." },
+  { key: "unhealthy", label: "Unhealthy", aqiRange: "151–200", pmRange: "55.5–125.4", description: "Some members of the general public may experience health effects; sensitive groups may experience more serious effects." },
+  { key: "very-unhealthy", label: "Very Unhealthy", aqiRange: "201–300", pmRange: "125.5–225.4", description: "Health alert: the risk of health effects is increased for everyone." },
+  { key: "hazardous", label: "Hazardous", aqiRange: "301–500", pmRange: "225.5+", description: "Health warning of emergency conditions: everyone is more likely to be affected." },
+] as const;
+
+function airQualityCategory(value: number) {
+  if (value <= 9) return AIR_QUALITY_CATEGORIES[0];
+  if (value <= 35.4) return AIR_QUALITY_CATEGORIES[1];
+  if (value <= 55.4) return AIR_QUALITY_CATEGORIES[2];
+  if (value <= 125.4) return AIR_QUALITY_CATEGORIES[3];
+  if (value <= 225.4) return AIR_QUALITY_CATEGORIES[4];
+  return AIR_QUALITY_CATEGORIES[5];
+}
 
 function pm25Aqi(value: number) {
   const concentration = Math.round(Math.max(0, value) * 10) / 10;
@@ -88,6 +108,9 @@ export function PhiExperience() {
   }, [concordHour, sceneId, southParkRecord]);
   const activeDay = dayForRecord(southParkRecordIndex);
   const activeDayOffset = southParkRecordIndex - activeDay.start;
+  const firstActiveHour = Number(airRecordAt(activeDay.start).local_time.slice(11, 13));
+  const lastActiveHour = Number(airRecordAt(activeDay.start + activeDay.count - 1).local_time.slice(11, 13));
+  const isComplete24HourPeriod = sceneId === "concord" || (activeDay.count === 24 && firstActiveHour === 0 && lastActiveHour === 23);
   const concordStations = useMemo(() => CONCORD_PARTICLE_GROUPS
     .filter((group) => group.role === "station")
     .map((group) => ({
@@ -101,19 +124,23 @@ export function PhiExperience() {
       : Array.from({ length: activeDay.count }, (_, index) => airRecordAt(activeDay.start + index).pm25_ug_m3);
     const average = values.reduce((sum, value) => sum + value, 0) / Math.max(values.length, 1);
     const peak = Math.max(...values);
-    const min = Math.min(...values);
-    const range = Math.max(peak - min, 0.01);
+    const chartMax = Math.max(60, peak * 1.12);
     const points = values.map((value, index) => {
       const x = values.length === 1 ? 0 : (index / (values.length - 1)) * 240;
-      const y = 58 - ((value - min) / range) * 48;
+      const y = 92 - (value / chartMax) * 80;
       return `${x.toFixed(1)},${y.toFixed(1)}`;
     }).join(" ");
-    return { average, peak, aqi: pm25Aqi(average), points };
-  }, [activeDay.count, activeDay.start, sceneId]);
+    const currentIndex = sceneId === "concord" ? concordHour : activeDayOffset;
+    const currentX = values.length === 1 ? 0 : (currentIndex / (values.length - 1)) * 240;
+    const currentY = 92 - (values[currentIndex] / chartMax) * 80;
+    return { average, peak, aqi: pm25Aqi(average), points, chartMax, currentX, currentY };
+  }, [activeDay.count, activeDay.start, activeDayOffset, concordHour, sceneId]);
   const replayProgress = sceneId === "concord"
     ? concordHour / 23
     : activeDayOffset / Math.max(activeDay.count - 1, 1);
   const sunHeight = Math.sin(Math.PI * replayProgress) * 48;
+  const dailyAirQuality = airQualityCategory(dashboardStats.average);
+  const dailyReferenceExceeded = isComplete24HourPeriod && dashboardStats.average > EPA_PM25_24H_NAAQS;
 
   useEffect(() => {
     if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(() => undefined);
@@ -132,7 +159,7 @@ export function PhiExperience() {
   }, []);
 
   useEffect(() => {
-    const query = window.matchMedia("(max-width: 760px)");
+    const query = window.matchMedia("(max-width: 900px)");
     const updateLayout = () => setMobileLayout(query.matches);
     updateLayout();
     query.addEventListener("change", updateLayout);
@@ -321,9 +348,9 @@ export function PhiExperience() {
 
         <div className="panel-column panel-right">
           <header className="panel-header data-header">
-            <div><span className="panel-kicker">LIVE ENVIRONMENT</span><h2>City Data</h2></div>
+            <div><span className="panel-kicker">HISTORICAL PM2.5 SCENARIO</span><h2>PM2.5 Concentration</h2></div>
             <div className="panel-header-actions">
-              <span className="live-indicator">LIVE</span>
+              <span className="historical-indicator">NOT LIVE</span>
               <button className="mobile-panel-close" onClick={() => setMobilePanelOpen(false)} aria-label="Collapse controls">×</button>
             </div>
           </header>
@@ -344,36 +371,60 @@ export function PhiExperience() {
             </label>
           )}
 
+          <section className="scenario-provenance" aria-label="Historical scenario date and data provenance">
+            <strong>{sceneId === "concord" ? "Concord School PM2.5 Scenario" : "South Park PM2.5 Scenario"}</strong>
+            <dl>
+              <div><dt>Date represented</dt><dd>{sceneId === "concord" ? "2024-04-23 · Tuesday" : `${activeDay.date} · ${weekdayFor(activeDay.date)}`}</dd></div>
+              <div><dt>Time range</dt><dd>{sceneId === "concord" ? "00:00–23:00" : `${airRecordAt(activeDay.start).local_time.slice(11, 16)}–${airRecordAt(activeDay.start + activeDay.count - 1).local_time.slice(11, 16)} · ${AIR_QUALITY_SOURCE.timezone}`}</dd></div>
+              <div><dt>Pollutant</dt><dd>PM2.5 Concentration (µg/m³)</dd></div>
+              <div><dt>Data type</dt><dd>{sceneId === "concord" ? "Historical PurpleAir profile + modeled particles" : "Historical PM2.5 + wind data + modeled particles"}</dd></div>
+              <div><dt>Source</dt><dd>{sceneId === "concord" ? "PurpleAir · PHI EarthDay.gh" : `${AIR_QUALITY_SOURCE.file} · Sheet1`}</dd></div>
+              <div><dt>Simulation</dt><dd>Yes · visual particle model</dd></div>
+            </dl>
+          </section>
+
           <section className="primary-reading">
-            <div className="section-line"><span>PM2.5</span><span>{pmBand(record.pm25_ug_m3)}</span></div>
+            <div className="section-line"><span>PM2.5 CONCENTRATION</span><span>HOURLY READING</span></div>
             <div className="pm-value"><strong>{record.pm25_ug_m3.toFixed(1)}</strong><span>µg/m³</span></div>
             <div className="reading-meta">{sceneId === "south-park" && <span>{activeDay.date}</span>}<strong>{String(hour).padStart(2, "0")}:00</strong></div>
           </section>
 
-          <section className="air-dashboard" aria-label="Air quality summary">
+          <section className={`air-dashboard aqi-${dailyAirQuality.key}${dailyReferenceExceeded ? " is-above-reference" : ""}`} aria-live="polite" aria-label={isComplete24HourPeriod ? `24-hour mean is ${dailyReferenceExceeded ? "above" : "below"} the EPA reference` : "Incomplete historical day; no 24-hour EPA comparison is made"}>
+            <div className="trend-aqi-summary">
+              <span className="aqi-status-dot" aria-hidden="true" />
+              <div><span>24-HOUR PM2.5 REFERENCE · EPA 2024</span><strong>{isComplete24HourPeriod ? (dailyReferenceExceeded ? "ABOVE REFERENCE" : "BELOW REFERENCE") : "COMPARISON NOT AVAILABLE"}</strong></div>
+              <div className="aqi-equivalent"><span>REFERENCE</span><strong>{EPA_PM25_24H_NAAQS}</strong><small>µg/m³</small></div>
+            </div>
             <div className="dashboard-metrics">
-              <div><span>24H AQI</span><strong>{dashboardStats.aqi}</strong><small>US EPA</small></div>
-              <div><span>DAILY AVG</span><strong>{dashboardStats.average.toFixed(1)}</strong><small>µg/m³</small></div>
-              <div><span>DAILY PEAK</span><strong>{dashboardStats.peak.toFixed(1)}</strong><small>µg/m³</small></div>
+              <div><span>{isComplete24HourPeriod ? "24H AQI" : "AQI"}</span><strong>{isComplete24HourPeriod ? dashboardStats.aqi : "—"}</strong><small>{isComplete24HourPeriod ? "US EPA" : "INCOMPLETE DAY"}</small></div>
+              <div><span>PM2.5 CONCENTRATION AVG</span><strong>{dashboardStats.average.toFixed(1)}</strong><small>µg/m³ · {isComplete24HourPeriod ? "24H" : `${activeDay.count} AVAILABLE HOURS`}</small></div>
+              <div><span>PM2.5 CONCENTRATION PEAK</span><strong>{dashboardStats.peak.toFixed(1)}</strong><small>µg/m³ · HOURLY</small></div>
             </div>
             <div className="trend-chart">
-              <div className="section-line"><span>24 HOUR TREND</span><span>{sceneId === "concord" ? "PROFILE" : "OBSERVED"}</span></div>
-              <svg viewBox="0 0 240 64" role="img" aria-label="PM2.5 24-hour trend">
-                <path d="M0 12H240M0 35H240M0 58H240" />
+              <div className="section-line"><span>PM2.5 CONCENTRATION · 24H</span><span>{sceneId === "concord" ? "PROFILE" : "OBSERVED"}</span></div>
+              <svg viewBox="0 0 240 102" role="img" aria-label="Hourly PM2.5 Concentration in micrograms per cubic meter with EPA annual reference line at 9 and 24-hour reference line at 35 micrograms per cubic meter">
+                <g className="threshold annual-reference"><line x1="0" y1={92 - (EPA_PM25_ANNUAL_NAAQS / dashboardStats.chartMax) * 80} x2="240" y2={92 - (EPA_PM25_ANNUAL_NAAQS / dashboardStats.chartMax) * 80}/><text x="238" y={89 - (EPA_PM25_ANNUAL_NAAQS / dashboardStats.chartMax) * 80} textAnchor="end">EPA ANNUAL NAAQS · 9 µg/m³</text></g>
+                <g className="threshold health-reference"><line x1="0" y1={92 - (EPA_PM25_24H_NAAQS / dashboardStats.chartMax) * 80} x2="240" y2={92 - (EPA_PM25_24H_NAAQS / dashboardStats.chartMax) * 80}/><text x="238" y={89 - (EPA_PM25_24H_NAAQS / dashboardStats.chartMax) * 80} textAnchor="end">EPA 24H NAAQS · 35 µg/m³</text></g>
                 <polyline points={dashboardStats.points} />
+                <line className="current-hour-line" x1={dashboardStats.currentX} y1="10" x2={dashboardStats.currentX} y2="94" />
+                <circle className="current-hour-point" cx={dashboardStats.currentX} cy={dashboardStats.currentY} r="3.5" />
               </svg>
+              <div className="aqi-trend-key"><div><span><i className="annual"/> EPA annual mean reference · 9</span><span><i className="daily"/> EPA 24-hour reference · 35</span></div><strong>{isComplete24HourPeriod ? (dailyReferenceExceeded ? "24H MEAN ABOVE 35" : "24H MEAN BELOW 35") : "NO 24H COMPARISON"}</strong></div>
+              <p className="annual-reference-note">The annual line is context only; this hourly or single-day profile cannot determine annual-standard attainment.</p>
             </div>
+            <div className="aqi-compact-scale" aria-label="EPA PM2.5 Concentration AQI categories based on 24-hour concentration">{AIR_QUALITY_CATEGORIES.map((category) => <span key={category.key} className={`aqi-${category.key}${category.key === dailyAirQuality.key ? " is-current" : ""}`} title={`${category.label}: AQI ${category.aqiRange}, 24-hour PM2.5 Concentration ${category.pmRange} µg/m³`}><i/><small>{category.aqiRange}</small></span>)}</div>
+            <a className="aqi-source-link" href={EPA_PM25_SOURCE_URL} target="_blank" rel="noreferrer">EPA 2024 PM2.5 NAAQS source ↗</a>
             <div className="last-update"><span>LAST UPDATE</span><strong>{sceneId === "concord" ? `${String(hour).padStart(2, "0")}:00 profile` : record.local_time.replace("T", " ")}</strong></div>
           </section>
 
           {sceneId === "concord" ? (
-            <section className="station-readings" aria-label="Concord monitoring stations">
-              <div className="section-line"><span>LOCAL STATIONS</span></div>
+            <section className="station-readings" aria-label="Concord PM2.5 Concentration particle zones">
+              <div className="section-line"><span>LOCAL PM2.5 CONCENTRATION ZONES</span><span>µg/m³</span></div>
               <div className="station-grid">
                 {concordStations.map((station) => (
                   <div key={station.id}>
                     <span>{station.label}</span>
-                    <strong>{station.pm25.toFixed(2)}</strong>
+                    <strong>{station.pm25.toFixed(2)}</strong><small>µg/m³</small>
                   </div>
                 ))}
               </div>

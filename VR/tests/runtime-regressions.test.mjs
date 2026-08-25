@@ -94,7 +94,9 @@ test("loader cancellation and resource disposal prevent stale scene updates", ()
 
 test("mobile controls are a collapsed bottom panel by default", () => {
   assert.match(experience, /useState\(false\).*mobilePanelOpen|mobilePanelOpen.*useState\(false\)/s);
-  assert.match(styles, /translateY\(calc\(100% - 62px\)\)/);
+  assert.match(styles, /translateY\(calc\(100% - 68px - env\(safe-area-inset-bottom\)\)\)/);
+  assert.match(styles, /@media \(max-width: 900px\)/);
+  assert.match(experience, /matchMedia\("\(max-width: 900px\)"\)/);
   assert.match(styles, /control-panel\.is-open \{ transform: translateY\(0\)/);
   assert.match(experience, /inert=\{mobileLayout && !mobilePanelOpen\}/);
   assert.match(experience, /aria-hidden=\{mobileLayout && !mobilePanelOpen\}/);

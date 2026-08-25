@@ -99,7 +99,7 @@ function buildSnapshot(datasourcePayload, measurementPayload) {
     .at(-1) || null;
 
   return {
-    period: "Latest minute measurements",
+    period: "Latest available measurements; server cache up to 4 hours 45 minutes",
     fetchedAt: new Date().toISOString(),
     newestMeasurementAt,
     summary: {

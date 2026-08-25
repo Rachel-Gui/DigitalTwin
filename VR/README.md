@@ -10,6 +10,8 @@ On macOS, double-click `Start PHI WebXR.command`. It builds the current project,
 
 Keep the Terminal window open while using the experience. Press `Control-C` in that window to stop it.
 
+On Windows, run `Start PHI WebXR.ps1` from PowerShell. It starts the local development server at `http://127.0.0.1:3000`.
+
 Command-line alternative:
 
 ```bash
@@ -34,7 +36,7 @@ pnpm run build
 - Concord School and a complete South Park GLB scene with restored GIS ground and road surfaces
 - Full 7,791-row Excel series embedded directly in TypeScript (no runtime Excel/JSON request)
 - Original six-zone Concord instanced mesh-sphere profile and South Park 8px soft Cloud Display particles constrained to the restored road network
-- Hourly PM2.5/wind forcing with continuous road-safe particle substeps and render interpolation
+- Hourly PM2.5 Concentration (µg/m³) and wind forcing with continuous road-safe particle substeps and render interpolation
 - Full historical date/hour playback, wind and sunlight
 - Simplified right sidebar, collapsed mobile bottom panel, and complete chapter-based guided narration controls
 - Desktop navigation plus WebXR joystick movement, snap turn and controller teleportation

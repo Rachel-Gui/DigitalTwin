@@ -127,7 +127,7 @@ The missing `roads.geojson` is reconstructed from internalised Grasshopper geome
 - Controller ray teleportation is implemented.
 - Thumbstick locomotion and right-stick 30° snap turning are implemented.
 - Repeated teleport offset was fixed by using headset world position.
-- VR-only HUD shows scene, PM2.5, hour, wind, and narration status.
+- VR-only HUD shows scene, PM2.5 Concentration (µg/m³), hour, wind, and narration status.
 - Controller lines and HUD resources are disposed correctly.
 - Narration remains outside the scene canvas and survives scene/XR transitions. It provides user-started play/pause, progress, restart, chapter jump, manual detach, resume synchronization, and collapsible English transcript controls.
 - Guided playback synchronizes the hour and switches Concord → South Park at 04:40.5, resetting the second chapter to 00:00.

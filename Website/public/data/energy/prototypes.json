@@ -1,0 +1,48 @@
+{
+  "prototypes": [
+    {
+      "id": "single-family",
+      "name": "Single Family",
+      "floorAreaFt2": 1247,
+      "nominalFloorAreaFt2": 1200,
+      "description": "One-unit residential prototype represented in the source workbook.",
+      "scenarioStatus": "available",
+      "sourceWorkbook": "energy-retrofit-single-family.xlsx",
+      "sourceWorksheet": "Measure and Buildings Overview",
+      "sourceRow": 16
+    },
+    {
+      "id": "duplex",
+      "name": "Duplex",
+      "floorAreaFt2": 2374,
+      "nominalFloorAreaFt2": 2400,
+      "description": "Two-unit residential prototype represented in the source workbook.",
+      "scenarioStatus": "available",
+      "sourceWorkbook": "energy-retrofit-duplex.xlsx",
+      "sourceWorksheet": "Measure and Buildings Overview",
+      "sourceRow": 17
+    },
+    {
+      "id": "quadplex",
+      "name": "Quadplex",
+      "floorAreaFt2": 3445,
+      "nominalFloorAreaFt2": 3400,
+      "description": "Four-unit residential prototype represented in the source workbook.",
+      "scenarioStatus": "available",
+      "sourceWorkbook": "energy-retrofit-quadplex.xlsx",
+      "sourceWorksheet": "Measure and Buildings Overview",
+      "sourceRow": 18
+    },
+    {
+      "id": "ten-unit-apartment",
+      "name": "Ten-Unit Apartment",
+      "floorAreaFt2": 8120,
+      "nominalFloorAreaFt2": 8100,
+      "description": "Ten-unit residential prototype represented in the source workbook.",
+      "scenarioStatus": "available",
+      "sourceWorkbook": "energy-retrofit-ten-unit.xlsx",
+      "sourceWorksheet": "Measure and Buildings Overview",
+      "sourceRow": 19
+    }
+  ]
+}

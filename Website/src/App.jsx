@@ -5,24 +5,24 @@ import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import ModulePage from "./pages/ModulePage";
 import Research from "./pages/Research";
-import Analytics from "./pages/Analytics";
-import { modules } from "./data/modules";
-import { useLanguage } from "./i18n";
+import { SpanishPageTranslator, useLanguage } from "./i18n";
 
 export default function App() {
   const { t } = useLanguage();
   return (
     <div className="app">
       <ScrollToTop />
+      <SpanishPageTranslator />
       <a className="skip-link" href="#main-content">{t("Skip to main content")}</a>
       <Navbar />
       <main id="main-content">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          {modules.map((module) => <Route key={module.key} path={module.path} element={<ModulePage type={module.key} />} />)}
+          <Route path="/energy" element={<ModulePage type="energy" />} />
+          <Route path="/vr" element={<ModulePage type="vr" />} />
+          <Route path="/scenario-analysis" element={<ModulePage type="scenario" />} />
           <Route path="/research" element={<Research />} />
-          <Route path="/analytics" element={<Analytics />} />
           <Route path="/about" element={<Navigate to="/research" replace />} />
           <Route path="*" element={<Home />} />
         </Routes>
@@ -33,9 +33,10 @@ export default function App() {
 }
 
 function ScrollToTop() {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
   useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-  }, [pathname]);
+    if (hash) requestAnimationFrame(() => document.querySelector(hash)?.scrollIntoView({ behavior: "auto", block: "start" }));
+    else window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, [pathname, hash]);
   return null;
 }

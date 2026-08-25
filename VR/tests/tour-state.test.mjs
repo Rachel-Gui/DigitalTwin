@@ -34,7 +34,7 @@ test("tour state covers start, pause, detach, resume, restart and end", () => {
 
 test("narration requires a user control and has no autoplay attribute", async () => {
   const source = await import("node:fs/promises").then((fs) => fs.readFile(new URL("../app/components/PhiExperience.tsx", import.meta.url), "utf8"));
-  assert.match(source, /onClick=\{startTour\}>Start Guided Tour/);
+  assert.match(source, /className="start-tour" onClick=\{startTour\}>.*Start Guided Tour/);
   assert.doesNotMatch(source, /autoPlay/);
   assert.match(source, /Resume Guide/);
   assert.doesNotMatch(source, /English narration text|Starts at Concord 00:00|Audio continues independently/);
