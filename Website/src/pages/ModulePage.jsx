@@ -1,67 +1,96 @@
-import { lazy, Suspense } from "react";
-import energyArchetypes from "../assets/research/energy-archetypes.png";
-import paperCover from "../assets/research/energy-paper-cover.png";
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
+import "leaflet/dist/leaflet.css";
+import singleFamilyImage from "../assets/energy/single-family.jpg";
+import duplexImage from "../assets/energy/duplex.jpg";
+import quadplexImage from "../assets/energy/quadplex.jpg";
+import tenUnitImage from "../assets/energy/ten-unit-apartment.jpg";
 import airMap from "../assets/air-quality/pm25-prediction-map.png";
 import clarityScreenshot from "../assets/air-quality/clarity-screenshot.png";
 import vrConcord from "../assets/vr/concord-pm25-particle-view.png";
 import vrCity from "../assets/vr/city-scale-pollution-view.png";
-import vrChart from "../assets/vr/high-low-pollution-chart.png";
-import { PublicationRecord, SectionHeader, SolarDiagram, SourceCaption, StatusLabel } from "../components";
-import { Link } from "react-router-dom";
+import vrDashboard from "../assets/vr/1111.png";
+import liveDataArchitecture from "../assets/vr/live-data-system-architecture.png";
+import renewableMap from "../assets/home/south-park-arcgis-preview.png";
+import { PublicationRecord, SectionHeader, SourceCaption, StatusLabel } from "../components";
+import { Link, useSearchParams } from "react-router-dom";
 import { externalPlatforms } from "../data/modules";
+import { PrototypeSelector, RetrofitExplorer, SelectedPrototypeSummary, useEnergyRetrofitData } from "../components/energy/EnergyRetrofitExplorer";
 
 const AirQualityTableau = lazy(() => import("../components/AirQualityTableau"));
 
 export default function ModulePage({type}){
-  return ({energy:<EnergyPage/>,retrofit:<RetrofitPage/>,air:<AirPage/>,vr:<VRPage/>,renewable:<RenewablePage/>,scenario:<ScenarioPage/>})[type];
+  return ({energy:<EnergyPage/>,vr:<VRPage/>,scenario:<ScenarioPage/>})[type]||null;
 }
-function ModuleHero({index,status,title,subtitle,children}){
-  return <section className="module-editorial-hero"><div><span>{index} / MODULE</span><StatusLabel>{status}</StatusLabel></div><h1>{title}</h1><p>{subtitle}</p>{children}</section>
+function ModuleHero({index,status,title,subtitle,children,className="",heroImage}){
+  const heroStyle=heroImage ? {backgroundImage:`linear-gradient(90deg,rgba(5,5,5,.96) 0%,rgba(5,5,5,.82) 42%,rgba(5,5,5,.38) 100%),url(${heroImage})`} : undefined;
+  return <section className={`module-editorial-hero ${className}`} style={heroStyle}><div><span>{index} / MODULE</span>{status&&<StatusLabel>{status}</StatusLabel>}</div><h1>{title}</h1><p>{subtitle}</p>{children}</section>
 }
-function NumberedRecords({items}){return <div className="numbered-records">{items.map((x,i)=><article key={x[0]}><span>{String(i+1).padStart(2,"0")}</span><h3>{x[0]}</h3><p>{x[1]}</p></article>)}</div>}
 function Figure({src,title,detail,source,status}){return <figure className="research-figure"><div className="figure-image"><img src={src} alt={title}/></div><SourceCaption title={title} detail={detail} source={source} status={status}/></figure>}
-function DigitalTwinAction({mode,children}){return <div className="module-action-band"><Link className="button" to={`/dashboard?module=${mode}`}>{children}</Link></div>}
+
+const energyArchetypeAliases={
+  "apartment":"ten-unit-apartment",
+  "duplex":"duplex",
+  "quadplex":"quadplex",
+  "single-family":"single-family",
+  "single family":"single-family"
+};
+const normalizeEnergyArchetype=value=>value?energyArchetypeAliases[value.trim().toLowerCase()]||null:null;
 
 function EnergyPage(){
-  const process=[
-    ["01 / Define","Four representative residential archetypes establish the building geometry used in the published study."],
-    ["02 / Parameterize","Envelope, HVAC, ventilation, and domestic hot-water conditions are varied across the modeled study set."],
-    ["03 / Simulate","EnergyPlus produces physics-based energy records for each modeled condition."],
-    ["04 / Model","The simulation records support machine-learning surrogate modeling and recorded energy outputs."]
+  const [searchParams]=useSearchParams();
+  const requestedArchetype=searchParams.get("archetype");
+  const requestedArchetypeId=normalizeEnergyArchetype(requestedArchetype);
+  const buildingId=searchParams.get("building");
+  const {loading,error,prototypes,packagesByArchetype,report}=useEnergyRetrofitData();
+  const validRequested=prototypes.some(item=>item.id===requestedArchetypeId)?requestedArchetypeId:null;
+  const [selectedArchetype,setSelectedArchetype]=useState(requestedArchetypeId||"single-family");
+  const selectedPrototype=prototypes.find(item=>item.id===selectedArchetype)||prototypes.find(item=>item.id==="single-family")||null;
+  const packageData=selectedPrototype?packagesByArchetype[selectedPrototype.id]||null:null;
+  const prototypeImages={"single-family":singleFamilyImage,duplex:duplexImage,quadplex:quadplexImage,"ten-unit-apartment":tenUnitImage};
+  const conditions=[
+    ["Building Envelope","Windows, wall insulation, roof insulation, and air leakage."],
+    ["Heating & Cooling","Existing systems and heat-pump alternatives."],
+    ["Ventilation","Exhaust ventilation and energy-recovery ventilation."],
+    ["Water Heating","Gas, electric, and heat-pump water-heating systems."]
   ];
-  const archetypes=[["01","Single Family","1,200 ft²"],["02","Duplex","2,400 ft²"],["03","Quadplex","3,400 ft²"],["04","Ten-Unit Apartment","8,100 ft²"]];
-  const conditions=[["01","Envelope","Insulation and window conditions."],["02","HVAC","System configurations represented in simulation."],["03","Ventilation","Outdoor-air and mechanical ventilation conditions."],["04","Hot Water","Domestic hot-water system conditions."]];
-  const workflow=[
-    ["Archetype definitions","Four residential building forms define the geometry and scale of the study set."],
-    ["Parametric conditions","Envelope, HVAC, ventilation, and hot-water conditions are varied."],
-    ["EnergyPlus simulation","Physics-based simulations generate the modeled energy records."],
-    ["Surrogate-model training","Machine-learning models learn relationships between conditions and outputs."],
-    ["Recorded outputs","Energy-use and end-use records remain linked to their method and source."]
-  ];
-  const records=[["01","Energy Use","Whole-building energy performance records."],["02","End-Use Demand","Modeled heating, cooling, and related end-use records."],["03","Simulation Records","Outputs produced directly through EnergyPlus."],["04","Surrogate Estimates","Model estimates trained from the simulation dataset."]];
+  const connection=["Neighborhood Building","Assigned Archetype","Energy Scenario","Retrofit Comparison"];
+  useEffect(()=>{setSelectedArchetype(validRequested||"single-family");},[requestedArchetype,validRequested]);
   return <div className="module-page energy-page">
+    <style>{`
+      .energy-page section{padding:clamp(72px,9vw,132px) 0}.energy-page .energy-hero{padding-top:clamp(96px,12vw,170px)}
+      .energy-page h1{max-width:980px}.energy-supporting-meta{display:flex;flex-wrap:wrap;gap:12px 28px;margin:36px 0 0;color:#a3a3a3;font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+      .energy-choice-grid,.energy-condition-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:48px}
+      .energy-choice{appearance:none;width:100%;padding:0;text-align:left;color:inherit;background:#0b0b0b;border:1px solid #2b2b2b;border-radius:14px;overflow:hidden;cursor:pointer;transition:border-color 220ms ease,background-color 220ms ease,transform 220ms ease}
+      .energy-choice:hover,.energy-choice:focus-visible{background:#151515;border-color:#606060;transform:translateY(-3px);outline:none}.energy-choice.is-selected{border-color:#8fbfb3;background:#151515;box-shadow:inset 0 0 0 1px #8fbfb3}
+      .energy-choice-image{display:flex;align-items:center;justify-content:center;height:230px;padding:18px;background:#111}.energy-choice-image img{display:block;width:100%;height:100%;object-fit:contain;object-position:center}
+      .energy-choice-copy{display:grid;grid-template-columns:auto 1fr;gap:16px;padding:20px}.energy-choice-copy>span{color:#707070;font-size:12px}.energy-choice-copy strong,.energy-choice-copy small,.energy-choice-copy em{display:block}.energy-choice-copy strong{margin:0 0 6px;color:#f5f5f2;font-size:20px;font-weight:500;letter-spacing:-.02em}.energy-choice-copy small{color:#a3a3a3;font-size:14px}.energy-choice-copy em{margin-top:14px;color:#8fbfb3;font-size:11px;font-style:normal;letter-spacing:.08em;text-transform:uppercase}.energy-development-note{margin:24px 0 0;color:#707070;font-size:13px}
+      .energy-condition-card{min-height:190px;padding:24px;border:1px solid #2b2b2b;border-radius:14px;background:#0b0b0b}.energy-condition-card h3{margin:0 0 48px;font-size:15px;letter-spacing:.08em;text-transform:uppercase}.energy-condition-card p{margin:0;color:#a3a3a3;line-height:1.55}
+      .energy-connection-flow{display:grid;grid-template-columns:repeat(7,auto);align-items:center;justify-content:start;gap:18px;margin:44px 0}.energy-connection-flow span{padding:18px 20px;border:1px solid #2b2b2b;border-radius:12px;background:#0b0b0b}.energy-connection-flow b{color:#707070;font-weight:400}.energy-source{margin-top:28px;color:#707070;font-size:13px}
+      @media(max-width:900px){.energy-choice-grid,.energy-condition-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.energy-connection-flow{grid-template-columns:1fr;justify-items:stretch}.energy-connection-flow b{transform:rotate(90deg);justify-self:center}}
+      @media(max-width:560px){.energy-choice-grid,.energy-condition-grid{grid-template-columns:1fr}.energy-choice-image{height:210px}}
+      @media(prefers-reduced-motion:reduce){.energy-choice{transition:none}.energy-choice:hover,.energy-choice:focus-visible{transform:none}}
+    `}</style>
     <section className="energy-hero"><div className="page-container">
-      <div className="energy-hero-meta"><span className="eyebrow">Energy Modeling</span></div>
-      <h1>Four housing types.<br/>5,832 simulated conditions.</h1>
-      <p>The Energy Modeling module documents a published workflow that combines defined residential archetypes, parametric EnergyPlus simulations, and machine-learning surrogate modeling for health-driven retrofit analysis.</p>
+      <div className="energy-hero-meta"><span className="eyebrow">Urban Building Energy Modeling</span></div>
+      <h1>Explore energy performance across representative housing types.</h1>
+      <p>Select a residential archetype and compare modeled energy conditions and retrofit scenarios derived from EnergyPlus simulations.</p>
       <Link className="button light-button" to="/dashboard?module=energy">Explore in the Digital Twin ↗</Link>
+      <div className="energy-supporting-meta"><span>4 Residential Archetypes</span><span>5,832 Modeled Conditions</span></div>
     </div></section>
-
-    <section className="energy-process"><div className="page-container"><SectionHeader eyebrow="Module Process" title="From archetypes to model outputs."/><div className="energy-process-grid">{process.map(([title,text])=><article key={title}><span>{title}</span><p>{text}</p></article>)}</div></div></section>
 
     <section className="energy-archetypes"><div className="page-container">
-      <SectionHeader eyebrow="01 / Archetype Set" title="A defined residential study set." text="The published modeling workflow uses four residential archetypes to represent a range of housing forms and scales."/>
-      <div className="energy-archetype-list">{archetypes.map(([number,name,area])=><article key={name}><span>{number}</span><h3>{name}</h3><p>{area}</p></article>)}</div>
-      <figure className="energy-archetype-figure"><div><img src={energyArchetypes} alt="Single Family, Duplex, Quadplex, and Ten-Unit Apartment residential archetypes"/></div><figcaption><div><strong>Four residential archetypes</strong><span>Defined building geometries used in the published simulation workflow.</span></div><dl><div><dt>Source</dt><dd>Abbasabadi et al., Architecture 2026, 6, 84</dd></div><div><dt>Status</dt><dd>Published research</dd></div></dl></figcaption></figure>
+      <SectionHeader eyebrow="Select a Building Type" title="Choose the housing type closest to your building."/>
+      {loading?<p className="energy-development-note" role="status">Loading converted workbook data…</p>:error?<p className="energy-data-error" role="alert">{error}</p>:<PrototypeSelector prototypes={prototypes} images={prototypeImages} selectedId={selectedPrototype?.id} onSelect={setSelectedArchetype}/>}
+      <p className="energy-source">Source: Abbasabadi et al., Architecture 2026, 6, 84.</p>
+      {!loading&&!error&&selectedPrototype&&packageData?<SelectedPrototypeSummary prototype={selectedPrototype} baseline={packageData.baseline} buildingId={buildingId}/>:null}
     </div></section>
 
-    <section className="energy-conditions"><div className="page-container"><SectionHeader eyebrow="02 / Modeled Conditions" title="What changes in the simulations."/><div className="energy-line-records">{conditions.map(([number,title,text])=><article key={title}><span>{number}</span><h3>{title}</h3><p>{text}</p></article>)}</div></div></section>
+    <section className="energy-scenarios"><div className="page-container"><SectionHeader eyebrow="Retrofit Explorer" title="Compare energy and retrofit strategies."/>{loading?<p className="energy-development-note" role="status">Preparing the Retrofit Explorer…</p>:error||!selectedPrototype?<div className="energy-data-error" role="alert"><strong>Retrofit data is not available.</strong><span>{error||"The converted data files could not be loaded."}</span></div>:<RetrofitExplorer prototype={selectedPrototype} packageData={packageData} report={report} buildingId={buildingId}/>}</div></section>
 
-    <section className="energy-workflow"><div className="page-container"><SectionHeader eyebrow="03 / Modeling Workflow" title={<>Physics first.<br/>Surrogate model second.</>} text="EnergyPlus simulations create the physics-based training record used for machine-learning surrogate modeling."/><div className="energy-workflow-steps">{workflow.map(([step,description],index)=><article key={step} tabIndex="0"><span>{String(index+1).padStart(2,"0")}</span><div><h3>{step}</h3><p>{description}</p></div>{index<workflow.length-1&&<b aria-hidden="true">→</b>}</article>)}</div></div></section>
+    <section className="energy-conditions"><div className="page-container"><SectionHeader eyebrow="Available Modeled Variables" title="What can change in the simulations."/><div className="energy-condition-grid">{conditions.map(([title,text])=><article className="energy-condition-card" key={title}><h3>{title}</h3><p>{text}</p></article>)}</div></div></section>
 
-    <section className="energy-records"><div className="page-container"><SectionHeader eyebrow="04 / Model Records" title="Simulation and surrogate outputs remain traceable to their source." text="The module distinguishes physics-based EnergyPlus records from machine-learning surrogate estimates. Each output remains associated with its archetype, modeled conditions, method, and source."/><div className="energy-record-grid">{records.map(([number,title,text])=><article key={title}><span>{number}</span><h3>{title}</h3><p>{text}</p></article>)}</div><p className="energy-connection-note">Map-connected building values will be displayed after the Digital Twin data connection is completed.</p></div></section>
+    <section className="energy-digital-twin"><div className="page-container"><SectionHeader eyebrow="Digital Twin Connection" title="From archetypes to neighborhood buildings." text="Buildings in the current prototype will be grouped by shared characteristics and connected to the closest residential archetype. Users will then be able to select a building and explore its available energy and retrofit scenarios."/><div className="energy-connection-flow">{connection.map((item,index)=><span key={item}>{item}{index<connection.length-1&&<b aria-hidden="true">→</b>}</span>)}</div><p className="energy-development-note">Connection in development.</p><Link className="button light-button" to="/dashboard?module=energy">Open Energy View ↗</Link></div></section>
 
-    <section className="energy-publication"><div className="page-container"><SectionHeader eyebrow="05 / Publication" title="Published research."/><article className="energy-publication-record"><div className="energy-cover-frame"><img src={paperCover} alt="Cover of the published Energy Modeling research article"/></div><div><span className="eyebrow">Architecture 2026, 6, 84 · CC BY 4.0</span><h2>AI-Enhanced Urban Building Energy Modeling for Health-Driven Decarbonization in Vulnerable Communities</h2><a className="text-link" href="https://doi.org/10.3390/architecture6020084" target="_blank" rel="noopener noreferrer">Read the published article ↗</a></div></article></div></section>
   </div>
 }
 function RetrofitPage(){
@@ -128,9 +157,9 @@ function RetrofitPage(){
 function AirPage(){
   return <div className="module-page editorial-page air-quality-page">
     <section className="air-hero"><div className="page-container">
-      <span className="eyebrow">Air Quality</span>
-      <h1>Monitoring and modeling neighborhood PM2.5.</h1>
-      <p>The Air Quality module brings together sensor measurements, geospatial variables, and prediction models to examine how PM2.5 conditions vary across time and space in South Park and the wider Seattle area.</p>
+      <span className="eyebrow">PM2.5 Concentration</span>
+      <h1>Monitoring and modeling neighborhood PM2.5 Concentration.</h1>
+      <p>The PM2.5 Concentration module brings together sensor measurements, geospatial variables, and prediction models to examine how PM2.5 Concentration (µg/m³) varies across time and space in South Park and the wider Seattle area.</p>
       <a className="button light-button" href="#air-quality-dashboard">Explore the dashboard ↓</a>
     </div></section>
 
@@ -138,8 +167,8 @@ function AirPage(){
       <SectionHeader eyebrow="Module process" title="From observations to spatial estimates."/>
       <div className="air-process-steps">
         {[
-          ["01 / Observe","Air-quality sensors record time-based PM2.5 measurements at monitoring locations."],
-          ["02 / Model","Geospatial variables and prediction models estimate PM2.5 conditions between monitoring locations."],
+          ["01 / Observe","Sensors record time-based PM2.5 Concentration measurements in µg/m³ at monitoring locations."],
+          ["02 / Model","Geospatial variables and prediction models estimate PM2.5 Concentration between monitoring locations."],
           ["03 / Explore","Interactive dashboards and project figures make spatial and temporal patterns available for interpretation."]
         ].map(([title,text])=><article key={title}><span>{title}</span><p>{text}</p></article>)}
       </div>
@@ -149,11 +178,11 @@ function AirPage(){
       <div className="air-monitoring-copy">
         <span className="eyebrow">Live monitoring</span>
         <h2>Sensor observations over time.</h2>
-        <p>The Clarity platform provides access to PM2.5 monitoring locations and time-based measurements associated with the South Park and Duwamish Valley study area. These records represent observed conditions at specific sensor locations.</p>
+        <p>The Clarity platform provides access to PM2.5 Concentration monitoring locations and time-based measurements in µg/m³ associated with the South Park and Duwamish Valley study area. These records represent observed PM2.5 Concentration at specific sensor locations.</p>
         <a className="button" href={externalPlatforms.airQuality} target="_blank" rel="noreferrer">Open monitoring platform ↗</a>
       </div>
       <figure className="clarity-figure">
-        <img src={clarityScreenshot} alt="Clarity platform map, PM2.5 sensor locations, and time-series measurements"/>
+        <img src={clarityScreenshot} alt="Clarity platform map, PM2.5 Concentration sensor locations, and time-series measurements in micrograms per cubic meter"/>
         <figcaption>Clarity monitoring interface · Observed measurements at sensor locations</figcaption>
       </figure>
     </div></section>
@@ -161,8 +190,8 @@ function AirPage(){
     <section className="air-spatial-section">
       <div className="air-spatial-intro page-container">
         <span className="eyebrow">Spatial prediction</span>
-        <h2>Predicted PM2.5 patterns across Seattle.</h2>
-        <p>The prediction dashboard presents modeled PM2.5 concentrations across neighborhood and grid scales. It complements point-based monitoring records by showing estimated spatial variation between sensor locations.</p>
+        <h2>Predicted PM2.5 Concentration patterns across Seattle.</h2>
+        <p>The prediction dashboard presents modeled PM2.5 Concentration (µg/m³) across neighborhood and grid scales. It complements point-based monitoring records by showing estimated spatial variation between sensor locations.</p>
       </div>
       <Suspense fallback={<div className="tableau-route-loading" role="status">Preparing the interactive dashboard…</div>}><AirQualityTableau compact showGuidance/></Suspense>
     </section>
@@ -170,10 +199,10 @@ function AirPage(){
     <section className="air-model-output"><div className="page-container">
       <div className="air-output-copy">
         <span className="eyebrow">Model output</span>
-        <h2>Annual mean PM2.5 prediction.</h2>
-        <p>A project model output showing predicted annual mean PM2.5 concentrations across the study domain. The figure provides a static research record that complements the interactive Tableau view.</p>
+        <h2>Annual mean PM2.5 Concentration prediction.</h2>
+        <p>A project model output showing predicted annual mean PM2.5 Concentration across the study domain. The figure provides a static research record that complements the interactive Tableau view.</p>
       </div>
-      <Figure src={airMap} title="Annual mean PM2.5 prediction" detail="Static Random Forest model output showing predicted concentrations across the study domain." source="DecarbCityTwin Air Quality project materials" status="Modeled project output"/>
+      <Figure src={airMap} title="Annual mean PM2.5 Concentration prediction" detail="Static Random Forest model output showing predicted PM2.5 Concentration across the study domain · µg/m³." source="DecarbCityTwin PM2.5 Concentration project materials" status="Modeled project output"/>
     </div></section>
 
   </div>
@@ -181,21 +210,167 @@ function AirPage(){
 function VRPage(){
   const vrBase=externalPlatforms.vr.replace(/\/+$/g,"");
   const scenes=[
-    {index:"01",label:"SCHOOL-SCALE PARTICLE MODEL",title:"Concord International School",description:"Explore the six-zone PM2.5 profile, hourly replay, changing sunlight, and local station readings.",image:vrConcord,href:`${vrBase}/#concord`},
-    {index:"02",label:"NEIGHBORHOOD-SCALE DIGITAL TWIN",title:"South Park, Seattle",description:"Explore road-network PM2.5 movement using observed weather conditions and the restored GIS model.",image:vrCity,href:`${vrBase}/#south-park`}
+    {index:"01",label:"SCHOOL-SCALE PM2.5 CONCENTRATION MODEL",title:"Concord International School",description:"Explore the six-zone PM2.5 Concentration profile (µg/m³), hourly replay, changing sunlight, and local particle-zone readings.",date:"2024-04-23 · Tuesday",time:"00:00–23:00",type:"Historical PurpleAir data visualized as a modeled particle profile",source:"PurpleAir · 23 April 2024 · PHI EarthDay.gh",image:vrConcord,href:`${vrBase}/#concord`},
+    {index:"02",label:"NEIGHBORHOOD-SCALE PM2.5 CONCENTRATION MODEL",title:"South Park, Seattle",description:"Explore modeled road-network PM2.5 Concentration (µg/m³) using observed weather conditions and the restored GIS model.",date:"Selectable historical dates · default 2025-01-29 (Wednesday)",time:"00:00–23:00 · America/Los_Angeles",type:"Historical observations driving a modeled particle simulation",source:"pm25_with_wind.xlsx · Sheet1",image:vrCity,href:`${vrBase}/#south-park`}
+  ];
+  const interfaceElements=[
+    ["01","Time / hourly reading","The time control selects the simulated hour. The sun position shows the corresponding daylight condition; the hourly reading is the PM2.5 concentration at that hour."],
+    ["02","PM2.5 concentration","Fine particulate matter 2.5 micrometers or smaller, shown in micrograms per cubic meter (µg/m³). The particles are a visual representation, not particles at physical scale."],
+    ["03","24-hour average","The mean PM2.5 concentration across the displayed 24-hour profile. In the example image, the average is 16.1 µg/m³."],
+    ["04","Hourly peak","The highest hourly PM2.5 concentration in the displayed profile. In the example image, the peak is 22.5 µg/m³."],
+    ["05","24-hour PM2.5 reference","The dashed EPA reference line provides context for the 24-hour concentration comparison. It is not an hourly legal limit or an attainment determination."],
+    ["06","24-hour AQI","The Air Quality Index converts a 24-hour PM2.5 concentration into a public-health category. The example image shows AQI 64, labeled Moderate."],
+    ["07","24-hour trend","The line chart shows how PM2.5 concentration changes hour by hour; the horizontal reference line helps compare the daily profile with the selected benchmark."],
+    ["08","Local concentration zones","Zone cards show modeled PM2.5 values at local points around the school scene, allowing users to compare spatial differences within the same hour."],
+    ["09","Scene and data context","The scene name, date, time range, source, data type, and simulation label explain what the current visualization represents."],
+    ["10","Immersive controls","Enter VR starts the browser WebXR session on a compatible headset. Scene selection, replay, and guided-tour controls remain connected to the same visualization."]
+  ];
+  const knowledgeQuestions=[
+    ["SCENE / CONCORD SCHOOL","Why are there six particle zones around the school?","The Concord scene reproduces six modeled particle zones from the Grasshopper profile. They help compare local differences around the school, but they are not a complete hour-by-hour atmospheric dispersion model."],
+    ["SCENE / SOUTH PARK","Why do the particles move along the roads?","South Park uses historical wind direction and speed to influence particle motion along a restored road volume. This is a simplified visual simulation—not CFD—and does not represent every emission, turbulence, temperature, or chemistry process."],
+    ["BASIC CONCEPT","What exactly is PM2.5?","PM2.5 means fine particulate matter with a diameter of 2.5 micrometers or smaller. It is measured as a mass concentration in the air and can penetrate deeply into the respiratory system."],
+    ["BASIC CONCEPT","What does µg/m³ mean?","It means micrograms per cubic meter—the amount of PM2.5 mass contained in one cubic meter of air. This is the unit used by the values in the VR interface."],
+    ["READING THE PANEL","What is the 24-hour average?","It is the mean PM2.5 concentration across the displayed 24-hour profile. It gives a broader daily view than a single hourly reading and is used for the displayed AQI context."],
+    ["READING THE PANEL","What does AQI tell me?","The Air Quality Index translates pollutant concentration into a public-health category, from Good through Hazardous. It is a communication scale, not a direct measurement or diagnosis."],
+    ["READING THE PANEL","Why is there an EPA reference line?","The reference line helps compare the displayed daily concentration with a 24-hour benchmark. It is contextual in this prototype, not an hourly legal limit or an attainment determination."],
+    ["TECHNOLOGY","What is VR in this project?","VR means Virtual Reality: a spatial experience that surrounds the viewer and can be explored on a monitor or through a compatible headset."],
+    ["TECHNOLOGY","What does WebXR do?","WebXR is a browser standard that lets the same web scene enter an immersive headset session without requiring a separate native application."],
+    ["EXPERIENCE","What should I look at first?","Start with the scene and particle density, then check the time, hourly reading, 24-hour average, peak, trend, and local zones. Together they connect the visible atmosphere to the data behind it."]
+  ];
+  const airQualityStandards=[
+    ["good","Good","0–50","0.0–9.0 µg/m³","Air quality is satisfactory, with little or no health risk."],
+    ["moderate","Moderate","51–100","9.1–35.4 µg/m³","Air quality is acceptable; unusually sensitive people may be at risk."],
+    ["sensitive","Unhealthy for Sensitive Groups","101–150","35.5–55.4 µg/m³","Sensitive groups may experience health effects."],
+    ["unhealthy","Unhealthy","151–200","55.5–125.4 µg/m³","Some members of the general public may experience health effects."],
+    ["very-unhealthy","Very Unhealthy","201–300","125.5–225.4 µg/m³","Health alert: the risk of health effects is increased for everyone."],
+    ["hazardous","Hazardous","301–500","225.5+ µg/m³","Health warning of emergency conditions; everyone is more likely to be affected."]
   ];
   return <div className="vr-page">
-    <ModuleHero index="06" status="WORKING WEBXR PROTOTYPE" title={<>Step inside the<br/><em>city&apos;s atmosphere.</em></>} subtitle="Choose a scene below to move from the DecarbCityTwin research platform into its interactive 3D and headset-ready WebXR environment."/>
-    <section className="vr-entry-section">
-      <header className="vr-entry-heading"><div><span>01 / IMMERSIVE SCENES</span><h2>Choose an environment.</h2></div><p>Each scene opens the working 3D application directly. Explore on desktop with a mouse and keyboard, or select Enter VR inside the scene with a compatible browser and headset.</p></header>
-      <div className="vr-scene-grid">{scenes.map(scene=><a className="vr-scene-card" href={scene.href} target="_blank" rel="noreferrer" key={scene.index}><span className="vr-scene-index">{scene.index}</span><div className="vr-scene-image"><img src={scene.image} alt={`${scene.title} interactive VR scene preview`}/><span>OPEN INTERACTIVE SCENE ↗</span></div><div className="vr-scene-copy"><small>{scene.label}</small><h3>{scene.title}</h3><p>{scene.description}</p></div></a>)}</div>
+    <ModuleHero className="vr-module-hero" heroImage={vrDashboard} index="06" status="" title={<>Step inside the<br/><em>city&apos;s atmosphere.</em></>} subtitle="Choose a scene below to move from the DecarbCityTwin research platform into its interactive 3D and headset-ready WebXR environment."/>
+    <section className="vr-interface-guide">
+      <div className="vr-interface-guide-inner">
+        <header className="vr-guide-heading"><span>01 / INSIDE THE EXPERIENCE</span><h2>Read the environment before you enter.</h2><p>This guide explains how the visible scene, time controls, particles, and PM2.5 Concentration information work together inside the VR experience.</p></header>
+        <div className="vr-guide-layout">
+          <figure className="vr-overview-figure"><div className="vr-overview-image"><img src={vrConcord} alt="Concord International School VR experience showing PM2.5 concentration particles and hourly conditions"/><span className="vr-overview-badge">VR EXPERIENCE PREVIEW</span></div><figcaption>Concord International School · School-scale PM2.5 concentration visualization · Working WebXR prototype</figcaption></figure>
+          <aside className="vr-indicator-panel"><header><span>SCENE READING GUIDE</span><strong>10 indicators</strong><p>Follow the numbered guide to understand what each part of the VR interface is telling you.</p></header><div className="vr-element-grid">{interfaceElements.map(([number,title,text])=><article key={number}><span>{number}</span><div><h3>{title}</h3><p>{text}</p></div></article>)}</div></aside>
+        </div>
+        <section className="vr-aqi-explainer"><header><span>PM2.5 CONCENTRATION IN THE VR VIEW</span><h2>How to read the PM2.5 Concentration 24-hour trend.</h2><p>The solid curve contains hourly PM2.5 Concentration readings in µg/m³. The dashed 35 µg/m³ line identifies the U.S. EPA primary 24-hour PM2.5 NAAQS for context. It is not an hourly limit. The interface compares the displayed 24-hour PM2.5 Concentration mean—not an individual hour—with that reference.</p><a className="vr-aqi-source" href="https://www.epa.gov/criteria-air-pollutants/naaqs-table" target="_blank" rel="noreferrer">Source: U.S. EPA NAAQS Table · PM2.5 Concentration · 2024 ↗</a></header><div className="vr-aqi-standard-list">{airQualityStandards.map(([key,label,aqi,pm,text])=><article className={`vr-aqi-${key}`} key={key}><i/><div><span>AQI {aqi} · 24-HOUR PM2.5 CONCENTRATION BREAKPOINT</span><h3>{label}</h3><strong>{pm}</strong><p>{text}</p></div></article>)}</div><p className="vr-aqi-method-note">The 35 µg/m³ PM2.5 NAAQS has a regulatory form: the annual 98th percentile of 24-hour PM2.5 Concentrations, averaged over three years. The VR display is contextual and is not an attainment determination. AQI categories also use 24-hour PM2.5 Concentration; they are not one-hour standards.</p></section>
+        <section className="vr-qa-block"><header><span>04 / ASK THE SCENE</span><h2>What are you seeing?</h2><p>Open a question to understand how the scene, particles, indicators, and headset experience connect. Start with the highlighted question, then explore at your own pace.</p></header><div className="vr-qa-list">{knowledgeQuestions.map(([category,question,answer],index)=><details className="vr-qa-card" open={index===0} key={question}><summary><span>{String(index+1).padStart(2,"0")} · {category}</span><strong>{question}</strong><i aria-hidden="true"/></summary><p>{answer}</p></details>)}</div></section>
+      </div>
     </section>
-    <section className="vr-editorial"><div className="vr-intro"><span>02 / EXPERIENCE MODEL</span><h2>Time is visible.<br/>Exposure conditions change.</h2><p>The moving sun marks the passage of time through a 24-hour cycle. PM2.5 is represented through changes in particle number, size, motion, and density.</p></div><Figure src={vrChart} title="Highest- and lowest-pollution conditions" detail="Comparison across the represented 00:00–23:00 cycle" source="DecarbCityTwin VR project materials" status="Working prototype"/></section>
+    <section className="vr-entry-section">
+      <header className="vr-entry-heading"><div><span>02 / IMMERSIVE SCENES</span><h2>Choose an environment.</h2></div><p>Each scene opens the working 3D application directly. Explore on desktop with a mouse and keyboard, or select Enter VR inside the scene with a compatible browser and headset.</p></header>
+      <div className="vr-scene-grid">{scenes.map(scene=><a className="vr-scene-card" href={scene.href} target="_blank" rel="noreferrer" key={scene.index}><span className="vr-scene-index">{scene.index}</span><div className="vr-scene-image"><img src={scene.image} alt={`${scene.title} interactive VR scene preview`}/><span>OPEN INTERACTIVE SCENE ↗</span></div><div className="vr-scene-copy"><small>{scene.label}</small><h3>{scene.title}</h3><p>{scene.description}</p><dl className="vr-scene-provenance"><div><dt>Date represented</dt><dd>{scene.date}</dd></div><div><dt>Time range</dt><dd>{scene.time}</dd></div><div><dt>Pollutant</dt><dd>PM2.5 Concentration (µg/m³)</dd></div><div><dt>Data type</dt><dd>{scene.type}</dd></div><div><dt>Source</dt><dd>{scene.source}</dd></div><div><dt>Simulation</dt><dd>Yes · particle behavior is simulated</dd></div></dl></div></a>)}</div>
+    </section>
+    <section className="vr-editorial"><VRLiveAirSnapshot/></section>
     <section className="vr-cta"><span>COMMUNITY ENGAGEMENT / IMMERSIVE MODE</span><h2>Two scales. One environmental story.</h2><p>Begin at Concord International School or move across the South Park neighborhood.</p><a className="button light-button" href={`${vrBase}/#concord`} target="_blank" rel="noreferrer">Enter Concord VR ↗</a></section>
   </div>
 }
+
+function VRLiveAirSnapshot(){
+  const [state,setState]=useState({loading:true,data:null,error:null});
+  const load=async()=>{
+    setState((current)=>({...current,loading:true,error:null}));
+    try{
+      const response=await fetch("/api/clarity");
+      const payload=await response.json();
+      if(!response.ok)throw new Error(payload.detail||payload.error||"Unable to load the latest air-quality snapshot.");
+      setState({loading:false,data:payload,error:null});
+    }catch(error){setState({loading:false,data:null,error:error.message})}
+  };
+  useEffect(()=>{load()},[]);
+  const summary=state.data?.summary||{};
+  const updated=state.data?.newestMeasurementAt?new Date(state.data.newestMeasurementAt).toLocaleString([], {dateStyle:"medium",timeStyle:"short"}):"—";
+  const value=(number,decimals=1)=>Number.isFinite(number)?number.toFixed(decimals):"—";
+  return <div className="vr-live-air" aria-busy={state.loading}>
+    <div className="vr-live-air-inner">
+      <figure className="vr-live-architecture"><img src={liveDataArchitecture} alt="DecarbCityTwin VR and live-data system architecture connecting sensors, cloud services, Unity, and Seattle models"/></figure>
+      <header><div><span>LIVE AIR REFERENCE · DAISY / SOUTH PARK</span><h2>Current conditions, beside the model.</h2></div><p>The latest available Clarity sensor snapshot adds present-day context. It remains separate from the historical and modeled values driving the VR scenes.</p></header>
+      {state.error?<div className="vr-live-error"><div><strong>Latest snapshot unavailable</strong><span>{state.error}</span></div><button type="button" onClick={load}>Try again</button></div>:<div className="vr-live-dashboard"><VRClarityMap sources={state.data?.sources||[]}/><div className="vr-live-metrics">
+        <article className="primary"><span>Network average</span><strong>{state.loading?"···":value(summary.pm25Average)}</strong><small>µg/m³ PM2.5</small></article>
+        <article><span>Peak reading</span><strong>{state.loading?"···":value(summary.pm25Maximum)}</strong><small>µg/m³ PM2.5</small></article>
+        <article><span>Reporting locations</span><strong>{state.loading?"···":value(summary.reportingLocations,0)}</strong><small>of {summary.monitoringLocations??"—"} sensors</small></article>
+        <article><span>Latest observation</span><strong className="time">{state.loading?"Syncing…":updated}</strong><small>Latest available · may be cached</small></article>
+      </div></div>}
+      <footer><span>Not a continuously updating data stream · successful responses may be cached for up to 4 h 45 min</span><a href="https://dashboard.clarity.io/daisy4I1NK/live-data" target="_blank" rel="noreferrer">Open Clarity source ↗</a></footer>
+    </div>
+  </div>
+}
+
+function VRClarityMap({sources}){
+  const mapElement=useRef(null);
+  const locations=useMemo(()=>sources.filter((source)=>Number.isFinite(source.latitude)&&Number.isFinite(source.longitude)),[sources]);
+  useEffect(()=>{
+    if(!mapElement.current||!locations.length)return undefined;
+    let map,cancelled=false;
+    import("leaflet").then((module)=>{
+      if(cancelled||!mapElement.current)return;
+      const L=module.default||module;
+      map=L.map(mapElement.current,{zoomControl:true,scrollWheelZoom:false,preferCanvas:true}).setView([47.53,-122.32],12);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{attribution:"© OpenStreetMap",maxZoom:19}).addTo(map);
+      const bounds=[];
+      locations.forEach((source)=>{
+        const reading=source.metrics?.pm25?.value;
+        const color=!Number.isFinite(reading)?"#77807d":reading<=9?"#2f8d70":reading<=35.4?"#b18a18":"#c65334";
+        const point=[source.latitude,source.longitude];
+        bounds.push(point);
+        const popup=document.createElement("div");
+        const title=document.createElement("strong");
+        const measurement=document.createElement("span");
+        title.textContent=source.name.split("(")[0].trim();
+        measurement.textContent=`${Number.isFinite(reading)?reading.toFixed(1):"—"} µg/m³ PM2.5`;
+        popup.append(title,document.createElement("br"),measurement);
+        L.circleMarker(point,{radius:9,color:"#fff",weight:2,fillColor:color,fillOpacity:.95}).bindPopup(popup).addTo(map);
+      });
+      map.fitBounds(bounds,{padding:[35,35],maxZoom:14});
+    });
+    return()=>{cancelled=true;if(map)map.remove()};
+  },[locations]);
+  return <div className="vr-live-map"><div className="vr-live-map-label"><span>MONITORING MAP</span><small>{locations.length} locations</small></div><div className="vr-clarity-map" ref={mapElement} aria-label={`Map of ${locations.length} Clarity monitoring locations`}/></div>;
+}
 function RenewablePage(){
-  return <div className="module-page editorial-page"><ModuleHero index="04" status="IN DEVELOPMENT" title={<>Geometry, demand,<br/><em>and renewable records.</em></>} subtitle="This module is being developed to connect building geometry, renewable-energy potential, and building energy demand within the South Park digital twin."><SolarDiagram/></ModuleHero><DigitalTwinAction mode="renewable">Open in Digital Twin — Renewable ↗</DigitalTwinAction><section className="paper-section"><NumberedRecords items={[["Research question","How can building geometry and energy demand be connected to renewable-energy scenario records?"],["Available building geometry","The digital twin provides the spatial structure for future approved analysis."],["Rooftop and façade opportunity","Candidate surfaces will be represented without unpublished material or numerical claims."],["Connection to energy demand","Future records will link generation estimates to modeled building demand."],["Scenario records","Baseline, PV, and combined scenarios will retain source and status metadata."],["Future approved outputs","Public figures will be added only after approval."]]}/></section></div>
+  const process=[
+    ["01 / Identify","Identify available rooftop and façade surfaces from building geometry."],
+    ["02 / Assess","Assess modeled solar potential across building surfaces and locations."],
+    ["03 / Compare","Compare future baseline, photovoltaic, and combined renewable-energy scenarios."]
+  ];
+  const available=[
+    ["Building geometry","Building footprints provide the spatial structure for rooftop and façade analysis."],
+    ["Rooftop potential","Annual rooftop solar-potential values are available for buildings in the current prototype."],
+    ["Façade potential","Annual façade solar-potential values are available for buildings in the current prototype."]
+  ];
+  return <div className="module-page renewable-page">
+    <section className="renewable-hero"><div className="page-container">
+      <div className="renewable-hero-meta"><span className="eyebrow">Solar &amp; Renewable Energy</span><StatusLabel>In Development</StatusLabel></div>
+      <h1>From building surfaces to renewable-energy opportunity.</h1>
+      <p>This module connects building geometry, rooftop and façade solar potential, and future renewable-energy scenarios within DecarbCityTwin.</p>
+      <Link className="button light-button" to="/dashboard?module=renewable">Explore in the Digital Twin ↗</Link>
+    </div></section>
+
+    <section className="renewable-section renewable-process"><div className="page-container">
+      <SectionHeader eyebrow="Module Process" title="From building surfaces to renewable-energy scenarios."/>
+      <div className="renewable-process-grid">{process.map(([title,text])=><article key={title}><span>{title}</span><p>{text}</p></article>)}</div>
+    </div></section>
+
+    <section className="renewable-section renewable-available"><div className="page-container">
+      <SectionHeader eyebrow="Available Data" title="What is currently available."/>
+      <div className="renewable-available-layout"><div className="renewable-data-list">{available.map(([title,text])=><article key={title}><h3>{title}</h3><p>{text}</p></article>)}</div><figure className="renewable-map-figure"><img src={renewableMap} alt="South Park ArcGIS building geometry view"/><figcaption>Representative Digital Twin building-geometry view · Current prototype interface</figcaption></figure></div>
+    </div></section>
+
+    <section className="renewable-section renewable-exploration"><div className="page-container">
+      <span className="eyebrow">Interactive Exploration</span>
+      <h2>Explore solar potential in the Digital Twin.</h2>
+      <p>Select Renewable in the Digital Twin to view rooftop and façade solar-potential records for individual buildings.</p>
+      <p className="renewable-helper">Open the Layers panel in the map controls, then select the Legend tab to interpret the building colors.</p>
+      <Link className="button light-button" to="/dashboard?module=renewable">Open Renewable View ↗</Link>
+    </div></section>
+
+    <section className="renewable-section renewable-next"><div className="page-container">
+      <SectionHeader eyebrow="Next Connections" title="Connecting renewable supply with building demand." text="Future development will link renewable-generation estimates with modeled building energy demand and scenario records, including baseline, photovoltaic, and combined strategies."/>
+      <div className="renewable-tags" aria-label="Future scenario types"><span>Baseline</span><span>PV</span><span>Combined</span></div>
+      <p className="renewable-note">Detailed numerical outputs will be added after the corresponding records are reviewed and approved.</p>
+    </div></section>
+  </div>
 }
 
 function ScenarioPage(){

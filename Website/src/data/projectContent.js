@@ -7,57 +7,41 @@ import retrofitFigure from "../assets/retrofit/health-driven-retrofit-strategies
 export const modulePanels = [
   {
     number:"01",
-    key:"air",
-    label:"Environmental Sensing",
-    title:"Air Quality",
-    path:"/air-quality",
-    description:"Sensor records, geospatial variables, and prediction models are used to examine neighborhood-scale PM2.5 patterns across Seattle and the South Park testbed."
+    key:"energy",
+    label:"Building Performance",
+    title:"Urban Building Energy Modeling",
+    path:"/energy",
+    description:"Explore residential archetypes, building energy performance, and simulation-based energy records."
   },
   {
     number:"02",
-    key:"energy",
-    label:"Building Performance",
-    title:"Energy Modeling",
-    path:"/energy",
-    description:"Four residential archetypes and EnergyPlus simulations characterize energy use under different envelope, HVAC, ventilation, and hot-water conditions."
+    key:"air",
+    label:"Environmental Sensing",
+    title:"PM2.5 Concentration & Exposure Assessment",
+    path:"/air-quality",
+    description:"Examine monitored and modeled air-quality conditions across time and space."
   },
   {
     number:"03",
     key:"retrofit",
     label:"Building Intervention",
-    title:"Health-Driven Retrofit",
+    title:"Health-Driven Retrofit & Decarbonization Strategies",
     path:"/retrofit",
-    description:"Compare envelope upgrades, heat pumps, ventilation, filtration, and combined retrofit packages in relation to energy use, indoor conditions, and decarbonization."
+    description:"Compare retrofit interventions related to energy performance, indoor environmental quality, and heat resilience."
   },
   {
     number:"04",
     key:"renewable",
     label:"Distributed Generation",
-    title:"Renewable Energy",
+    title:"Solar & Renewable Energy Assessment",
     path:"/renewable",
-    description:"Monthly and annual roof and façade solar-potential results are linked to building footprints for building- and neighborhood-scale renewable-energy analysis."
-  },
-  {
-    number:"05",
-    key:"scenario",
-    label:"Decision Support",
-    title:"Agentic AI",
-    path:"/scenario-analysis",
-    description:"Guided queries connect building, environmental, and scenario records to support comparison, interpretation, and evidence-grounded explanation."
-  },
-  {
-    number:"06",
-    key:"vr",
-    label:"Immersive Engagement",
-    title:"VR & Community Engagement",
-    path:"/vr",
-    description:"An immersive interface translates PM2.5 data into time-based spatial experiences for community exploration around Concord International School and South Park."
+    description:"Explore rooftop and façade solar potential and future renewable-energy scenarios."
   }
 ];
 
 export const figures = {
-  airMap: { src:airMap, title:"PM2.5 prediction visualization", detail:"Neighborhood and grid-scale model output", source:"DecarbCityTwin project materials", status:"Model integration in progress" },
-  airDashboard: { src:airDashboard, title:"PM2.5 temporal dashboard", detail:"Interface view for examining time variation", source:"DecarbCityTwin project materials", status:"Project visualization" },
+  airMap: { src:airMap, title:"PM2.5 Concentration prediction visualization", detail:"Neighborhood and grid-scale model output · µg/m³", source:"DecarbCityTwin project materials", status:"Model integration in progress" },
+  airDashboard: { src:airDashboard, title:"PM2.5 Concentration temporal dashboard", detail:"Interface view for examining PM2.5 Concentration variation · µg/m³", source:"DecarbCityTwin project materials", status:"Project visualization" },
   energyArchetypes: { src:energyArchetypes, title:"Four residential archetypes", detail:"Single Family, Duplex, Quadplex, and Ten-Unit Apartment", source:"Abbasabadi et al., Architecture 2026, 6, 84", status:"Published research" },
   energyWorkflow: { src:energyWorkflow, title:"Energy modeling method workflow", detail:"Archetype definition, parametric simulation, and model-development sequence", source:"Abbasabadi et al., Architecture 2026, 6, 84", status:"Published research" },
   retrofit: { src:retrofitFigure, title:"Health-driven retrofit strategies", detail:"Modeled intervention sequence and indoor-environment considerations", source:"Abbasabadi et al., Architecture 2026, 6, 84", status:"Published research" }

@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const publicDir = path.join(root, "public");
 const reportDir = path.join(root, "reports");
-const manifestPaths = ["assets/scene-manifest.json", "assets/south-park-scene-manifest.json"];
+const manifestPaths = ["runtime-assets/scene-manifest.json", "runtime-assets/south-park-scene-manifest.json"];
 
 function parseGlb(bytes) {
   if (bytes.subarray(0, 4).toString("ascii") !== "glTF" || bytes.readUInt32LE(4) !== 2) {

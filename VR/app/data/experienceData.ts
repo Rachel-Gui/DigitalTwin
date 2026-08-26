@@ -81,27 +81,27 @@ export const CONCORD_PARTICLE_GROUPS: readonly ConcordParticleGroup[] = [
     radius: 0.3,
   },
   {
-    id: "station-1", label: "Station 1", role: "station", pmSeries: CONCORD_PM_SERIES[1], particleRange: [100, 2000],
+    id: "station-1", label: "Particle Zone 1", role: "station", pmSeries: CONCORD_PM_SERIES[1], particleRange: [100, 2000],
     box: concordBox([6059.555447723857,4359.618853699755,995.9798159891106], [6062.235334890853,4360.835820704271,996.9798159891106]),
     radius: 0.01,
   },
   {
-    id: "station-2", label: "Station 2", role: "station", pmSeries: CONCORD_PM_SERIES[2], particleRange: [100, 2000],
+    id: "station-2", label: "Particle Zone 2", role: "station", pmSeries: CONCORD_PM_SERIES[2], particleRange: [100, 2000],
     box: concordBox([6058.138858537628,4359.617838233136,995.9798159891106], [6059.599959150371,4360.978022662015,996.9798159891106]),
     radius: 0.01,
   },
   {
-    id: "station-3", label: "Station 3", role: "station", pmSeries: CONCORD_PM_SERIES[3], particleRange: [100, 2000],
+    id: "station-3", label: "Particle Zone 3", role: "station", pmSeries: CONCORD_PM_SERIES[3], particleRange: [100, 2000],
     box: concordBox([6058.138858537628,4360.781562446862,995.9798159891106], [6060.157453395904,4362.172066580988,996.9798159891106]),
     radius: 0.01,
   },
   {
-    id: "station-4", label: "Station 4", role: "station", pmSeries: CONCORD_PM_SERIES[4], particleRange: [100, 2000],
+    id: "station-4", label: "Particle Zone 4", role: "station", pmSeries: CONCORD_PM_SERIES[4], particleRange: [100, 2000],
     box: concordBox([6060.154036703827,4359.620774747853,995.9798159891106], [6062.235334890853,4363.033544039639,996.9798159891106]),
     radius: 0.01,
   },
   {
-    id: "station-5", label: "Station 5", role: "station", pmSeries: CONCORD_PM_SERIES[5], particleRange: [100, 2000],
+    id: "station-5", label: "Particle Zone 5", role: "station", pmSeries: CONCORD_PM_SERIES[5], particleRange: [100, 2000],
     box: concordBox([6058.138858537628,4361.535583159573,995.9798159891106], [6060.427209061281,4365.011838233135,996.9798159891106]),
     radius: 0.01,
   },

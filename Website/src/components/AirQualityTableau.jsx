@@ -71,14 +71,14 @@ export default function AirQualityTableau({ compact = false, showGuidance = fals
       id="air-quality-dashboard"
       className={`air-quality-tableau-section${compact ? " compact" : ""}`}
       aria-labelledby={compact ? undefined : "air-quality-tableau-title"}
-      aria-label={compact ? "PM2.5 prediction and visualization dashboard" : undefined}
+      aria-label={compact ? "PM2.5 Concentration prediction and visualization dashboard" : undefined}
     >
       <div className="page-container">
         {!compact && <header className="section-header">
           <div>
             <p className="eyebrow">Interactive dashboard</p>
             <h2 id="air-quality-tableau-title">
-              PM2.5 Prediction and Visualization
+              PM2.5 Concentration Prediction and Visualization
             </h2>
             <p>
               The dashboard presents project air-quality model outputs and
@@ -146,7 +146,7 @@ export default function AirQualityTableau({ compact = false, showGuidance = fals
           <div>
             <span>Source</span>
             <p>
-              DecarbCityTwin Air Quality Prediction Module. Visualization
+              DecarbCityTwin PM2.5 Concentration Prediction Module. Visualization
               hosted on Tableau Public.
             </p>
           </div>

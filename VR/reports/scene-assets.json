@@ -4,7 +4,7 @@
   "scenes": [
     {
       "scene_id": "concord-school-webxr-mvp",
-      "manifest": "/assets/scene-manifest.json",
+      "manifest": "/runtime-assets/scene-manifest.json",
       "particle_boundary": "concord-populate-regions",
       "totals": {
         "download_bytes": 13270108,
@@ -83,7 +83,7 @@
     },
     {
       "scene_id": "south-park-webxr",
-      "manifest": "/assets/south-park-scene-manifest.json",
+      "manifest": "/runtime-assets/south-park-scene-manifest.json",
       "particle_boundary": "south-park-road-air-volume",
       "totals": {
         "download_bytes": 4457452,
