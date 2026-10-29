@@ -3,7 +3,12 @@ import studyAreaMap from "../assets/south-park-study-area-map.png";
 import homepageDemo from "../assets/home/homepage_demo_2.png";
 import vrHero from "../assets/vr/1111.png";
 import paperCover from "../assets/research/energy-paper-cover.png";
-import projectPartners from "../assets/partners/project-partners-transparent.png";
+import uwPartner from "../assets/partners/uw-stacked-white.png";
+import uwMark from "../assets/partners/uw-w.svg";
+import siuPartner from "../assets/partners/siu-white.png";
+import urbiPartner from "../assets/partners/urbiilab.png";
+import seattlePartner from "../assets/partners/seattle-official.svg";
+import drccLogo from "../assets/partners/drcc-official-white.png";
 import silLogo from "../assets/brand/sustainable-intelligence-lab-logo.png";
 import { PublicationRecord, SectionHeader } from "../components";
 import { useLanguage } from "../i18n";
@@ -58,6 +63,26 @@ function PublicationsSection(){
 function PartnersSection(){
   return <section className="home-partners" aria-labelledby="project-partners-title"><div className="page-container">
     <div className="home-partners-heading"><span className="eyebrow">PROJECT NETWORK</span><h2 id="project-partners-title">Partners &amp; Collaborators</h2></div>
-    <div className="home-partners-logo-frame"><img src={projectPartners} alt="Project partners and collaborators: University of Washington, Population Health Initiative, Department of Architecture, Electrical and Computer Engineering, Integrated Design Lab, Renewable Energy Analysis Lab, Sustainable Intelligence Lab, Southern Illinois University College of Arts and Media, Urban Intelligence and Integrity Lab, City of Seattle Office of Sustainability and Environment, and Duwamish River Community Coalition"/><span className="home-partners-sil-logo" aria-hidden="true"><img src={silLogo} alt=""/></span></div>
+    <div className="partner-grid">
+      <div className="partner-column partner-uw">
+        <img className="partner-uw-signature" src={uwPartner} alt="University of Washington"/>
+        <p className="partner-university-unit">Population Health Initiative</p>
+        <p className="partner-university-unit">Department of Architecture</p>
+        <p className="partner-university-unit">Electrical &amp; Computer Engineering</p>
+      </div>
+      <div className="partner-column">
+        <p className="partner-real">Renewable Energy Analysis Lab</p>
+        <div className="partner-lockup"><img className="partner-sil-mark" src={silLogo} alt=""/><p>Sustainable<br/>Intelligence Lab <span>[SIL]</span></p></div>
+        <div className="partner-idl"><div><strong>INTEGRATED<br/>DESIGN LAB</strong><img src={uwMark} alt=""/></div><span>UNIVERSITY OF WASHINGTON</span></div>
+      </div>
+      <div className="partner-column">
+        <div className="partner-siu"><img src={siuPartner} alt="Southern Illinois University Carbondale"/><p>College of Arts and Media</p></div>
+        <div className="partner-lockup partner-urbi"><img src={urbiPartner} alt=""/><p>Urban Intelligence &amp; Integrity Lab <span>[URBiiLAB]</span></p></div>
+      </div>
+      <div className="partner-column">
+        <div className="partner-lockup partner-seattle"><img src={seattlePartner} alt=""/><p>City of Seattle<span>Office of Sustainability &amp; Environment</span></p></div>
+        <div className="partner-lockup partner-drcc"><img src={drccLogo} alt=""/><p>Duwamish River<br/>Community Coalition</p></div>
+      </div>
+    </div>
   </div></section>
 }
