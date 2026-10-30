@@ -41,6 +41,11 @@ pnpm run build
 - Simplified right sidebar, collapsed mobile bottom panel, and complete chapter-based guided narration controls
 - Desktop navigation plus WebXR joystick movement, snap turn and controller teleportation
 - VR status HUD, narration audio and offline heavy-asset cache
+- Concord school navigation: model-derived plan, live camera position and heading,
+  reset view, and two particle-zone viewpoints. The plan uses virtual model
+  coordinates, not GPS or a surveyed north direction. In WebXR, a matching plan
+  appears beside the status HUD; right-controller A returns to the start.
+  Headset behavior still requires device testing.
 
 ## Project structure
 

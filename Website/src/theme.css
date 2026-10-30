@@ -1,0 +1,99 @@
+.theme-toggle{display:inline-flex;align-items:center;justify-content:center;gap:7px;flex-shrink:0;min-height:44px;padding:8px 12px;color:#eee;background:#141414;border:1px solid #444;border-radius:5px;font-size:11px;cursor:pointer}
+.theme-toggle:hover{background:#282828;border-color:#888}
+.theme-toggle svg{flex-shrink:0}
+[data-theme="light"]{background:#fff;color-scheme:light}
+[data-theme="light"] body,[data-theme="light"] .app{background:#fff;color:#161616}
+[data-theme="light"] .institutional-header{background:#fff;color:#161616;border-color:#ddd}
+[data-theme="light"] .lab-brand img,[data-theme="light"] .uw-brand,[data-theme="light"] .mobile-uw{filter:brightness(0)}
+[data-theme="light"] .nav-links>a{color:#555}
+[data-theme="light"] .nav-links>a:hover,[data-theme="light"] .nav-links>a.active{background:#eee;color:#111}
+[data-theme="light"] .language-switch{color:#555}
+[data-theme="light"] .language-switch button{color:#777}
+[data-theme="light"] .language-switch button.active{color:#111;border-color:#555}
+[data-theme="light"] .menu-button span{background:#111}
+[data-theme="light"] .theme-toggle{background:#f5f5f5;color:#222;border-color:#ccc}
+[data-theme="light"] .theme-toggle:hover{background:#e8e8e8}
+[data-theme="light"] .site-footer{background:#f4f4f2;color:#222;border-color:#ddd}
+[data-theme="light"] .site-footer img{filter:brightness(0)}
+[data-theme="light"] .site-footer p,[data-theme="light"] .site-footer nav,[data-theme="light"] .site-footer span{color:#666}
+[data-theme="light"] .platform-home{--platform-accent:#171717;--platform-muted:#5d6567;background:#fff;color:#171717}
+[data-theme="light"] .platform-hero{background:#fff;border-color:#ddd}
+[data-theme="light"] .platform-hero:after{background:linear-gradient(90deg,#fff 0,#fffffff2 22%,#ffffff80 43%,transparent 68%)}
+[data-theme="light"] .platform-hero-art{opacity:.38}
+[data-theme="light"] .platform-hero h1>span{color:#171717}
+[data-theme="light"] .platform-hero .platform-eyebrow{color:#666}
+[data-theme="light"] .platform-hero .platform-eyebrow>span{background:#333}
+[data-theme="light"] .platform-hero-description{color:#555}
+[data-theme="light"] .platform-hero-footnote{border-color:#ddd;color:#666}
+[data-theme="light"] .platform-primary{background:#171717;color:#fff;border-color:#171717}
+[data-theme="light"] .platform-primary:hover{background:#3b3b3b}
+[data-theme="light"] .platform-secondary{color:#222;border-color:#888}
+[data-theme="light"] .platform-secondary:hover{color:#666}
+[data-theme="light"] .platform-about{border-color:#ddd}
+[data-theme="light"] .platform-about .platform-about-lead{color:#333}
+[data-theme="light"] .capability-grid{background:#fafafa;border-color:#ddd}
+[data-theme="light"] .capability-grid article,[data-theme="light"] .capability-grid article:nth-child(3){border-color:#ddd}
+[data-theme="light"] .capability-top span{color:#777}
+[data-theme="light"] .capability-grid p{color:#5d6567}
+[data-theme="light"] .frontier-research{background:#f5f5f3;border-color:#ccc}
+[data-theme="light"] .frontier-research p{color:#555}
+[data-theme="light"] .frontier-badge{color:#555;border-color:#bbb}
+[data-theme="light"] .platform-demonstration{background:#f7f7f5;border-color:#ddd}
+[data-theme="light"] .platform-demo{background:#fff;border-color:#bbb}
+[data-theme="light"] .demo-topbar{background:#fafafa;border-color:#ddd;color:#666}
+[data-theme="light"] .demo-topbar>span:first-child{color:#333}
+[data-theme="light"] .demo-topbar i{background:#333}
+[data-theme="light"] .demo-controls,[data-theme="light"] .demo-inspector{background:#fff;border-color:#ddd}
+[data-theme="light"] .demo-controls h3,[data-theme="light"] .demo-kicker,[data-theme="light"] .demo-inspector-focus>span{color:#666}
+[data-theme="light"] .demo-layer-list button,[data-theme="light"] .demo-scenarios button{color:#666}
+[data-theme="light"] .demo-layer-list button[aria-pressed=true]{background:#eee;border-color:#bbb;color:#111}
+[data-theme="light"] .demo-layer-list button[aria-pressed=true]>i{background:#222;border-color:#222}
+[data-theme="light"] .demo-scenarios button[aria-pressed=true]{color:#111}
+[data-theme="light"] .demo-scenarios button[aria-pressed=true]>span{background:#222;border-color:#222;box-shadow:inset 0 0 0 3px #fff}
+[data-theme="light"] .demo-legend{border-color:#ddd}
+[data-theme="light"] .demo-legend p,[data-theme="light"] .demo-map-instruction{color:#555}
+[data-theme="light"] .demo-map{background:radial-gradient(ellipse,#e4eeea,#f5f7f6 75%)}
+[data-theme="light"] .demo-scale-switch{background:#fff;border-color:#bbb}
+[data-theme="light"] .demo-scale-switch button{color:#666}
+[data-theme="light"] .demo-scale-switch button[aria-pressed=true]{background:#ddd;color:#111}
+[data-theme="light"] .demo-inspector h3,[data-theme="light"] .demo-inspector-focus h4{color:#222}
+[data-theme="light"] .demo-status{color:#555;border-color:#bbb}
+[data-theme="light"] .demo-inspector-focus,[data-theme="light"] .demo-module-link{border-color:#ddd}
+[data-theme="light"] .demo-inspector-focus p,[data-theme="light"] .demo-workflow li{color:#666}
+[data-theme="light"] .demo-workflow h4{color:#444}
+[data-theme="light"] .demo-workflow li b{color:#333;border-color:#bbb}
+[data-theme="light"] .demo-module-link{color:#111}
+[data-theme="light"] .demo-caption{background:#fafafa;border-color:#ddd;color:#666}
+[data-theme="light"] .platform-applications>a{background:#fff;border-color:#ddd}
+[data-theme="light"] .platform-applications>a:hover{background:#eee;border-color:#999}
+[data-theme="light"] .platform-home .home-partners{background:#fff;color:#171717;border-color:#ddd}
+[data-theme="light"] .partners-introduction{color:#666}
+[data-theme="light"] .partner-column p,[data-theme="light"] .partner-idl{color:#222}
+[data-theme="light"] .partner-grid img{filter:brightness(0)}
+[data-theme="light"] .publications-page{background:#fff;color:#171717}
+[data-theme="light"] .publications-intro .platform-eyebrow,[data-theme="light"] .publications-intro .platform-secondary{color:#333}
+[data-theme="light"] .publications-intro p{color:#666}
+@media(max-width:1050px){.theme-toggle{margin-left:auto}.institutional-header .menu-button{order:2;margin-left:0}[data-theme="light"] .nav-links{background:#fff;border-color:#ddd}}
+@media(max-width:440px){.theme-toggle{padding:8px 10px;gap:5px}}
+[data-theme="light"] .lab-brand img,[data-theme="light"] .site-footer img[src*="sustainable-intelligence"],[data-theme="light"] .partner-grid img.partner-sil-mark,[data-theme="light"] .partner-urbi>img{filter:grayscale(1) invert(1)}
+
+/* Shared palette for every application route; dark values remain the CSS fallbacks. */
+html[data-theme="light"]{--theme-surface:#fff;--theme-panel:#f7f7f7;--theme-primary:#171717;--theme-secondary:#555;--theme-border:#d0d0d0;--theme-accent:#146c5c;--paper:#fff;--paper2:#f7f7f7;--green:#306f60;--blue:#006f63}
+[data-theme="light"] :is(.research-page,.module-page,.dashboard-page,.scenario-page,.analytics-page){background:#fff;color:#171717}
+[data-theme="light"] :is(.research-intro,.module-editorial-hero,.editorial-hero,.vr-editorial,.vr-gallery,.vr-cta,.vr-interface-guide,.vr-entry-section,.vr-live-air,.paper-section,.module-action-band){background:#fff;color:#171717;border-color:#ddd}
+[data-theme="light"] .research-intro p{color:#555}
+[data-theme="light"] .module-editorial-hero{background-image:none!important}
+[data-theme="light"] :is(.module-editorial-hero,.vr-module-hero):after{background:none}
+[data-theme="light"] .module-editorial-hero :is(h1,h2,p,.status-label){color:#222}
+[data-theme="light"] .energy-archetype-figure img{filter:none;mix-blend-mode:normal;opacity:1}
+[data-theme="light"] .vr-clarity-map{filter:none}
+[data-theme="light"] .energy-page .button,[data-theme="light"] .agentic-page .button,[data-theme="light"] .vr-cta .button{color:#fff;background:#171717;border-color:#171717}
+[data-theme="light"] .agentic-disabled-action{background:#eee!important;border-color:#ccc!important;color:#666!important}
+[data-theme="light"] .energy-stack>i:focus-visible{outline-color:#171717}
+[data-theme="light"] .vr-scene-image span{color:#fff}
+[data-theme="light"] .vr-scene-image:after{background:linear-gradient(transparent,rgba(5,5,5,.75))}
+[data-theme="light"] :is(.vr-live-map-label,.vr-overview-badge,.air-map-legend,.dashboard-page .layer-panel,.dashboard-page .pending-building-panel){background:rgba(255,255,255,.96);color:#222;border-color:#ccc;box-shadow:none}
+[data-theme="light"] .vr-live-map-label small{color:#555}
+[data-theme="light"] :is(.vr-live-map,.clarity-sensor-map) .leaflet-control-attribution{background:rgba(255,255,255,.95);color:#555}
+[data-theme="light"] .dashboard-page{--dt-accent:#306f60}
+[data-theme="light"] :is(.energy-choice-copy em,.energy-data-status,.energy-stack-row>span small,.energy-comparison-panel tbody th small){color:#306f60}

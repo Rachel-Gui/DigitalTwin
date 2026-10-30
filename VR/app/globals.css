@@ -18,6 +18,22 @@ button, select { color: inherit; }
 .scene-panel { position: relative; min-width: 0; overflow: hidden; }
 .scene-canvas { position: absolute; inset: 0; }
 .scene-canvas canvas { display: block; width: 100%; height: 100%; }
+.school-navigation { position:absolute; z-index:5; left:20px; bottom:20px; width:230px; border:1px solid rgba(217,255,104,.38); border-radius:12px; overflow:hidden; background:rgba(8,19,24,.92); box-shadow:0 12px 35px #0005; backdrop-filter:blur(12px); }
+.school-navigation-heading { display:flex; justify-content:space-between; align-items:center; width:100%; padding:12px; border:0; background:transparent; color:var(--accent); cursor:pointer; text-align:left; font-size:12px; }
+.school-map { aspect-ratio:1; margin:0 10px; background:#d9e2db; border-radius:6px; overflow:hidden; display:grid; place-items:center; }
+.school-map svg { display:block; width:100%; height:100%; }
+.school-map-loading { padding:15px; color:#243c38; font-size:12px; }
+.school-map-location { display:grid; gap:4px; padding:10px 12px 8px; }
+.school-map-location strong { color:var(--accent); font-size:12px; }
+.school-map-location span, .school-navigation p, .school-navigation small { font-size:10px; line-height:1.5; color:var(--muted); }
+.school-navigation-views { display:flex; gap:5px; padding:0 10px; }
+.school-navigation-views button { flex:1; padding:9px 3px; border:1px solid var(--line); border-radius:5px; background:#183039; font-size:10px; cursor:pointer; }
+.school-navigation-views button:hover { border-color:var(--accent); }
+.school-navigation-views button:disabled { opacity:.45; cursor:wait; }
+.school-navigation button:focus-visible { outline:2px solid var(--accent); outline-offset:-3px; }
+.school-navigation p { margin:9px 12px 3px; }
+.school-navigation small { display:block; margin:0 12px 10px; }
+@media(max-width:760px) { .school-navigation { left:10px; bottom:76px; width:180px; } .school-navigation-heading { padding:10px; } .school-navigation-views button { min-height:36px; } }
 .scene-loading { position: absolute; inset: 0; display: grid; place-items: center; color: var(--muted); font: 11px ui-monospace, monospace; letter-spacing: .12em; text-transform: uppercase; }
 .scene-topbar { position: absolute; inset: 20px 22px auto; display: flex; align-items: center; justify-content: space-between; pointer-events: none; }
 .brand-mark { display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid var(--line); background: rgba(6, 12, 15, .68); backdrop-filter: blur(10px); font: 700 13px/1 ui-monospace, monospace; letter-spacing: .12em; }

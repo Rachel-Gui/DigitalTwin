@@ -1,0 +1,7 @@
+.home-scroll-ruler{position:fixed;z-index:20;left:18px;top:50%;transform:translateY(-50%);width:26px;pointer-events:none}
+.home-ruler-track{position:relative;height:200px}
+.home-ruler-track i{position:absolute;left:0;width:5px;height:1px;background:var(--journal-ink);opacity:var(--tick-opacity);transform:scaleX(var(--tick-scale));transform-origin:left center;transition:transform .22s ease-out,opacity .22s ease-out}
+.home-ruler-track i.is-major{width:8px}
+@media(max-width:720px){.home-scroll-ruler{left:7px;width:12px}.home-ruler-track{height:120px}.home-ruler-track i{width:3px}.home-ruler-track i.is-major{width:4px}}
+@media(prefers-reduced-motion:reduce){.home-ruler-track i{transition:none}}
+@media print{.home-scroll-ruler{display:none}}

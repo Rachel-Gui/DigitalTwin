@@ -12,7 +12,7 @@ test("service worker refreshes the application shell while retaining heavy asset
 
 test("runtime no longer caches or fetches generated data JSON", () => {
   assert.doesNotMatch(source, /\/data\//);
-  assert.match(source, /phi-webxr-v19/);
+  assert.match(source, /phi-webxr-v20/);
   assert.match(source, /\/runtime-assets\/boundaries\//);
   assert.match(source, /\/runtime-assets\/instances\//);
   assert.match(source, /\/runtime-assets\/models\//);

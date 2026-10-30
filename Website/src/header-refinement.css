@@ -1,0 +1,35 @@
+
+/* Shared by every route; page styles must not define an alternative site header. */
+:root{--site-header-height:82px}
+.institutional-header{height:var(--site-header-height);min-height:var(--site-header-height);font-family:"Helvetica Neue",Arial,sans-serif;gap:22px;padding-inline:max(var(--page-gutter,32px),calc((100vw - var(--content-max-width,1440px))/2))}
+.institutional-header .lab-brand{min-width:240px;gap:13px;flex-shrink:0}
+.institutional-header .project-brand{display:flex;flex-direction:column;gap:5px}
+.institutional-header .project-brand strong{font-size:20px;letter-spacing:-.045em;font-weight:600;line-height:1.1}
+.institutional-header .project-brand small{font-size:10px;font-weight:400;letter-spacing:.025em;color:var(--theme-secondary,#aaa);line-height:1.2}
+.institutional-header .nav-links{gap:19px;margin-left:auto}
+.institutional-header .nav-links>a{position:relative;min-height:48px;padding:13px 0;font-size:14px;font-weight:400;border-radius:0;background:transparent;color:var(--theme-secondary,#aaa);white-space:nowrap}
+.institutional-header .nav-links>a:hover,.institutional-header .nav-links>a.active{background:transparent;color:var(--theme-primary,#fff)}
+.institutional-header .nav-links>a.active:after{content:"";position:absolute;height:2px;bottom:1px;left:0;right:0;background:currentColor}
+.institutional-header .language-switch{margin-left:5px;padding-left:20px;border-left:1px solid var(--theme-border,#333);gap:2px;font-size:11px}
+.institutional-header .language-switch button{font-family:inherit;font-size:11px;min-width:28px;min-height:44px;padding:8px 3px}
+.institutional-header .language-switch button.active{text-decoration-color:currentColor}
+.institutional-header .theme-toggle{width:44px;height:44px;min-height:44px;padding:0;border-color:transparent;border-radius:50%;background:transparent;color:var(--theme-primary,#fff);flex-shrink:0;margin:0}
+.institutional-header .theme-toggle:hover{background:var(--theme-panel,#222);border-color:var(--theme-border,#444)}
+.institutional-header :is(a,button):focus-visible{outline:2px solid var(--theme-primary,#fff);outline-offset:5px}
+@media(max-width:1150px) and (min-width:1051px){.institutional-header{gap:12px;padding-inline:24px}.institutional-header .lab-brand{min-width:220px}.institutional-header .nav-links{gap:13px}.institutional-header .language-switch{padding-left:12px}}
+@media(max-width:1050px){
+:root{--site-header-height:72px}
+.institutional-header{height:var(--site-header-height);min-height:var(--site-header-height);padding-inline:20px;gap:12px}
+.institutional-header .lab-brand{min-width:0;margin-right:auto}
+.institutional-header .project-brand{display:flex}
+.institutional-header .project-brand strong{font-size:18px}
+.institutional-header .project-brand small{font-size:9px}
+.institutional-header .theme-toggle{margin-left:0}
+.institutional-header .menu-button{order:2;min-width:44px;min-height:44px;margin:0;cursor:pointer}
+.institutional-header .nav-links{top:var(--site-header-height);margin:0;gap:5px;padding:20px;max-height:calc(100dvh - var(--site-header-height));overflow:auto}
+.institutional-header .nav-links>a{font-size:18px;padding:15px 10px;min-height:54px}
+.institutional-header .nav-links>a.active:after{left:10px;right:auto;width:24px;bottom:5px}
+.institutional-header .language-switch{margin:14px 0 0;padding:12px 7px 0;border-left:0;border-top:1px solid var(--theme-border,#333);gap:7px}
+.institutional-header .language-switch button{min-width:44px}
+}
+@media(max-width:380px){.institutional-header{gap:5px;padding-inline:12px}.institutional-header .lab-brand{gap:8px}.institutional-header .lab-brand img{width:32px;height:32px}.institutional-header .project-brand strong{font-size:16px}.institutional-header .project-brand small{font-size:8px}}

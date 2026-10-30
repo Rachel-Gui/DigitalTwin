@@ -10,7 +10,7 @@ export const modulePanels = [
     key:"energy",
     label:"Building Performance",
     title:"Urban Building Energy Modeling",
-    path:"/energy",
+    path:"/dashboard?module=energy",
     description:"Explore residential archetypes, building energy performance, and simulation-based energy records."
   },
   {

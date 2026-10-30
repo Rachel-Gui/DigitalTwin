@@ -1,138 +1,83 @@
-import { lazy, Suspense, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import vrPreview from "../assets/vr/concord-pm25-particle-view.png";
-import { ViewerPanel } from "../components";
-import { modules, externalPlatforms } from "../data/modules";
+import { useTheme } from "../theme";
+import WorkspaceIcon from "../components/dashboard/WorkspaceIcon";
+import { spatialModels, arcgisUrl } from "../components/dashboard/workspaceContent";
+import "./dashboard-workspace.css";
+import "./dashboard-refinement.css";
 
-const AirQualityTableau = lazy(() => import("../components/AirQualityTableau"));
-const LiveAirQualityContent = lazy(() => import("../components/LiveAirQualityContent"));
-const spatialModes = new Set(["energy", "retrofit", "renewable"]);
-const digitalTwinModules = ["energy", "retrofit", "renewable", "air"].map((key) => modules.find((module) => module.key === key));
-const spatialViewers = {
-  energy: {
-    src: "https://uw.maps.arcgis.com/apps/instant/3dviewer/index.html?appid=9754941f6944410e88f2b4777450925b",
-    title: "South Park Energy Modeling 3D Viewer",
-    description: "Explore modeled baseline energy use across South Park residential buildings."
-  },
-  retrofit: {
-    src: "https://uw.maps.arcgis.com/apps/instant/3dviewer/index.html?appid=817bebb1f30b4ebfa3893d45555fa846",
-    title: "South Park Retrofit Opportunities 3D Viewer",
-    description: "Explore modeled retrofit opportunities and potential energy savings."
-  },
-  renewable: {
-    src: "https://uw.maps.arcgis.com/apps/instant/3dviewer/index.html?appid=9d99a4a0c2e2482b912608249bf3248f",
-    title: "South Park Solar Potential 3D Viewer",
-    description: "Explore modeled rooftop and façade solar potential."
-  }
-};
+const AirWorkspace = lazy(()=>import("../components/dashboard/AirWorkspace"));
+const availableModes=["energy","retrofit","renewable","air"];
+const navigation=[...Object.entries(spatialModels).map(([id,model])=>({id,label:model.short,icon:model.icon})),{id:"air",label:"Air Quality",icon:"air"}];
 
-export default function Dashboard() {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const requestedMode = searchParams.get("module");
-  const initialMode = digitalTwinModules.some((module) => module.key === requestedMode)
-    ? requestedMode
-    : "energy";
-  const [mode, setMode] = useState(initialMode);
-  const [airQualityView, setAirQualityView] = useState("live");
-
-  const changeMode = (nextMode) => {
-    setMode(nextMode);
-    setSearchParams({ module: nextMode }, { replace: true });
-  };
-
-  return <div className="dashboard-page">
-    <div className="dashboard-heading">
-      <div><span className="eyebrow">Interactive research environment</span><h1>South Park Digital Twin</h1></div>
-      <div className="prototype-badge"><i/> Frontend prototype</div>
+export default function Dashboard(){
+  const [params,setParams]=useSearchParams();
+  const requested=params.get("module");
+  const mode=availableModes.includes(requested)?requested:"energy";
+  const [infoOpen,setInfoOpen]=useState(()=>window.matchMedia("(min-width: 901px)").matches);
+  const [controlsOpen,setControlsOpen]=useState(true);
+  const [airControlSlot,setAirControlSlot]=useState(null);
+  useEffect(()=>{
+    const originalOverflow=document.body.style.overflow;
+    document.body.style.overflow="hidden";
+    return()=>{document.body.style.overflow=originalOverflow};
+  },[]);
+  const changeMode=next=>{const updated=new URLSearchParams(params);updated.set("module",next);setParams(updated)};
+  const model=mode==="air"?null:spatialModels[mode];
+  return <div className="dashboard-page twin-workspace-page twin-immersive twin-refined">
+    <div className="twin-app">
+      <aside id="twin-assessment-controls" className="twin-control-dock" aria-label="Assessment controls" hidden={!controlsOpen}>
+        <div className="twin-analysis-card">
+          <div className="twin-study-picker"><WorkspaceIcon name="map"/><div><h1>South Park</h1><span>Seattle, Washington</span></div><span className="twin-study-tag">PILOT STUDY</span></div>
+          <nav className="twin-rail" aria-label="Digital Twin module">{navigation.map(item=><button type="button" key={item.id} aria-pressed={mode===item.id} onClick={()=>changeMode(item.id)}><WorkspaceIcon name={item.icon}/><span>{item.label}</span></button>)}</nav>
+          <div className="twin-assessment-summary"><span className="twin-source-tag">{model?model.badge:"Observations & model outputs"}</span><h2>{model?model.title:"Air quality"}</h2><p>{model?model.description:"Explore the latest DAISY sensor observations and modeled annual-average PM₂.₅ across Seattle."}</p>
+            {model&&<div className="twin-active-measure"><span>Map measure</span><strong>{model.metric}</strong><small>{model.unit}</small></div>}
+          </div>
+          <div className="twin-air-control-slot" ref={setAirControlSlot}/>
+        </div>
+      </aside>
+      <div className="twin-content">
+        <div className="twin-toolbar-actions"><button type="button" aria-label={controlsOpen?"Hide assessment controls":"Show assessment controls"} aria-expanded={controlsOpen} aria-controls="twin-assessment-controls" onClick={()=>setControlsOpen(!controlsOpen)}><WorkspaceIcon name="layers"/><span>Analysis</span></button><button type="button" aria-label={infoOpen?"Hide data and methods":"Show data and methods"} aria-expanded={infoOpen} aria-controls="twin-view-info" onClick={()=>setInfoOpen(!infoOpen)}><WorkspaceIcon name="info"/><span>Data & methods</span></button></div>
+        {mode==="air"?<Suspense fallback={<div className="twin-loading" role="status">Loading air-quality workspace…</div>}><AirWorkspace infoOpen={infoOpen} controlsSlot={airControlSlot} onInspect={setInfoOpen}/></Suspense>:<SpatialWorkspace key={mode} mode={mode} infoOpen={infoOpen} controlsOpen={controlsOpen}/>}
+      </div>
     </div>
-    <div className="module-switcher" role="tablist" aria-label="Digital Twin module">
-      {digitalTwinModules.map((module) => <button
-        key={module.key}
-        role="tab"
-        aria-selected={mode === module.key}
-        className={mode === module.key ? "active" : ""}
-        onClick={() => changeMode(module.key)}
-      ><span>{module.icon}</span>{module.key === "air" ? "Air Quality" : module.short}</button>)}
-    </div>
-
-    {mode === "air" && <AirQualityWorkspace view={airQualityView} onViewChange={setAirQualityView} />}
-    {spatialModes.has(mode) && <SpatialWorkspace mode={mode} />}
-    {mode === "scenario" && <AgenticWorkspace />}
-    {mode === "vr" && <VRWorkspace />}
   </div>;
+
 }
 
-function AirQualityWorkspace({ view, onViewChange }) {
-  const modeled = view === "modeled";
-  return <section className="dashboard-special-workspace dashboard-tableau-workspace dashboard-air-workspace">
-    <div className="air-quality-subtabs" role="tablist" aria-label="Air Quality view">
-      <button type="button" role="tab" aria-selected={!modeled} className={!modeled ? "active" : ""} onClick={() => onViewChange("live")}>Live Sensors</button>
-      <button type="button" role="tab" aria-selected={modeled} className={modeled ? "active" : ""} onClick={() => onViewChange("modeled")}>Modeled PM₂.₅</button>
-    </div>
-    <p className="air-quality-view-description">{modeled ? "Explore modeled neighborhood-scale PM₂.₅ patterns across South Park." : "View the latest available PM₂.₅ measurements from active community sensors."}</p>
-    <div className="air-quality-viewer-label"><span>{modeled ? "MODELED ESTIMATE" : "SENSOR MEASUREMENTS · LATEST AVAILABLE"}</span><span>{modeled ? "Tableau visualization" : "Clarity monitoring network"}</span></div>
-    <Suspense fallback={<div className="tableau-route-loading" role="status">Preparing the Air Quality visualization…</div>}>
-      {modeled ? <AirQualityTableau compact /> : <div className="dashboard-live-air-content"><LiveAirQualityContent /></div>}
-    </Suspense>
-    <Link className="air-quality-module-link" to="/air-quality">Explore Air Quality Module →</Link>
-  </section>;
-}
-
-function SpatialWorkspace({ mode }) {
-  const viewer = spatialViewers[mode];
-  return <div className="dashboard-grid spatial-workspace spatial-workspace-map-only">
-    <ViewerPanel {...viewer} />
-  </div>;
-}
-
-function AgenticWorkspace() {
-  const questions = [
-    "Compare baseline and retrofit conditions.",
-    "Explain which evidence supports a scenario.",
-    "Summarize available energy and air-quality records.",
-    "Identify missing data or uncertainty."
-  ];
-  return <section className="dashboard-special-workspace gateway-workspace">
-    <header className="workspace-intro">
-      <span className="eyebrow">Decision support</span>
-      <h2>Agentic AI</h2>
-      <p>Guided queries connect building, environmental, and scenario records to support comparison, interpretation, and evidence-grounded explanation.</p>
-    </header>
-    <div className="gateway-grid">
-      <div className="integration-gateway">
-        <span className="status">Integration gateway</span>
-        <h3>Project agent connection</h3>
-        <p>The working agent component has not yet been connected to this frontend. This gateway does not simulate a chat interface.</p>
-        <a className="button" href={externalPlatforms.agentic} target="_blank" rel="noreferrer">Open Agentic Model ↗</a>
-        <small>Configurable placeholder URL</small>
+function SpatialWorkspace({mode,infoOpen,controlsOpen}){
+  const model=spatialModels[mode];
+  const {theme}=useTheme();
+  const [reload,setReload]=useState(0);
+  const [frameLoaded,setFrameLoaded]=useState(false);
+  const [frameError,setFrameError]=useState(false);
+  const frame=useRef(null);
+  const src=`/twin-scene.html?scene=${model.sceneId}`;
+  const syncTheme=()=>frame.current?.contentWindow?.postMessage({type:"decarb-theme",theme},window.location.origin);
+  useEffect(()=>{syncTheme()},[theme]);
+  useEffect(()=>{
+    const onMessage=event=>{if(event.origin!==window.location.origin||event.source!==frame.current?.contentWindow||event.data?.sceneId!==model.sceneId)return;if(["decarb-scene-ready","decarb-scene-error"].includes(event.data.type)){setFrameLoaded(true);setFrameError(event.data.type==="decarb-scene-error")}};
+    window.addEventListener("message",onMessage);
+    return()=>window.removeEventListener("message",onMessage);
+  },[model.sceneId]);
+  useEffect(()=>{frame.current?.contentWindow?.postMessage({type:"decarb-panels",controlsOpen,infoOpen},window.location.origin)},[controlsOpen,infoOpen,frameLoaded]);
+  const reloadScene=()=>{setFrameLoaded(false);setFrameError(false);setReload(value=>value+1)};
+  return <section className={`twin-spatial-layout ${infoOpen?"":"without-info"}`} aria-label={model.title}>
+    <div className="twin-map-column">
+      <div className="twin-map-stage">
+        {!frameLoaded&&<div className="twin-map-loading" role="status"><span/>Loading South Park 3D scene…</div>}
+        <iframe ref={frame} key={`${mode}-${reload}`} src={src} title={`South Park ${model.title} interactive 3D scene`} onLoad={syncTheme} allowFullScreen/>
       </div>
-      <div className="example-query-list">
-        <span className="eyebrow">Example questions</span>
-        {questions.map((question, index) => <div key={question}><b>{String(index + 1).padStart(2, "0")}</b><p>{question}</p></div>)}
-      </div>
+      <div className="twin-map-footer"><span><i/>Published South Park model · ArcGIS</span></div>
+      <details className="twin-map-options"><summary aria-label="Map options"><WorkspaceIcon name="more"/></summary><div><button type="button" onClick={reloadScene}><WorkspaceIcon name="refresh"/>Reload scene</button><a href={arcgisUrl(model)} target="_blank" rel="noopener noreferrer">Open in ArcGIS</a></div></details>
+      {frameError&&<div className="twin-recovery" role="alert"><strong>The scene could not load.</strong><button type="button" onClick={reloadScene}>Try again</button><a href={arcgisUrl(model)} target="_blank" rel="noopener noreferrer">Open in ArcGIS </a></div>}
     </div>
-  </section>;
-}
-
-function VRWorkspace() {
-  return <section className="dashboard-special-workspace gateway-workspace vr-dashboard-workspace">
-    <header className="workspace-intro">
-      <span className="eyebrow">Immersive engagement</span>
-      <h2>VR &amp; Community Engagement</h2>
-      <p>The VR environment translates PM2.5 Concentration (µg/m³) data into time-based spatial experiences for community exploration and education.</p>
-    </header>
-    <div className="vr-gateway-layout">
-      <img src={vrPreview} alt="Ground-level PM2.5 Concentration VR environment around Concord International School"/>
-      <div>
-        <ul>
-          <li>Ground-level exploration</li>
-          <li>Bird’s-eye neighborhood view</li>
-          <li>High- and low-PM2.5-Concentration comparison</li>
-          <li>Community engagement</li>
-        </ul>
-        <a className="button" href={externalPlatforms.vr} target="_blank" rel="noreferrer">Enter VR Experience ↗</a>
-        <small>External experience URL pending confirmation</small>
-      </div>
-    </div>
+    {infoOpen&&<aside className="twin-information" id="twin-view-info">
+      <div className="twin-panel-heading"><WorkspaceIcon name="info"/><h2>Data & methods</h2></div>
+      <div className="twin-info-block"><span className="twin-label">Available in building details</span><ul>{model.fields.map(field=><li key={field}><i/>{field}</li>)}</ul></div>
+      <details className="twin-guide-details"><summary>How to explore the scene</summary><p>{model.guide}</p><p>Use zoom, rotation, saved views, and the legend inside the map.</p></details>
+      {model.href&&<Link className="twin-primary-link" to={model.href}>{model.action}</Link>}
+      <p className="twin-evidence-note">{model.note}</p>
+    </aside>}
   </section>;
 }

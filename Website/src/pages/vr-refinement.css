@@ -1,0 +1,240 @@
+/* Scoped editorial treatment for the immersive research route. */
+.vr-page .vr-research-hero{padding:28px max(var(--page-gutter),calc((100% - var(--content-max-width))/2)) 0;background:var(--theme-surface,#090909);color:var(--theme-primary,#fff)}
+.vr-research-meta{display:flex;justify-content:space-between;gap:20px;padding-bottom:24px;border-bottom:1px solid var(--theme-border,#333);font-size:10px;letter-spacing:.12em;color:var(--theme-secondary,#aaa)}
+.vr-research-intro{display:grid;grid-template-columns:1.4fr 1fr;gap:clamp(28px,5vw,72px);align-items:center;padding:0 0 28px}
+.vr-research-intro h1{font-size:clamp(36px,4.5vw,64px);font-weight:500;line-height:1.02;letter-spacing:-.055em;margin:0}
+.vr-research-intro h1 em{font-family:Georgia,serif;font-weight:400;letter-spacing:-.055em}
+.vr-research-intro p{font-size:clamp(15px,1.2vw,17px);line-height:1.7;max-width:410px;color:var(--theme-secondary,#aaa);margin:0}
+.vr-research-action{display:flex;justify-content:space-between;gap:30px;align-items:center;padding:17px 20px;background:var(--theme-primary,#fff);color:var(--theme-surface,#090909);font-size:14px;text-decoration:none;max-width:340px}
+.vr-research-action:hover{opacity:.8}.vr-research-secondary{display:inline-block;font-size:13px;margin-top:16px;color:inherit;text-underline-offset:5px}
+.vr-research-cover{width:100%;margin:0}.vr-research-cover>img{display:block;width:100%;aspect-ratio:2.15;object-fit:cover;object-position:center}
+.vr-research-cover figcaption{display:flex;justify-content:space-between;gap:16px;padding:14px 0;font-size:10px;letter-spacing:.06em;color:var(--theme-secondary,#aaa);border-bottom:1px solid var(--theme-border,#333)}
+.vr-research-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin:0;padding:25px 0 34px}.vr-research-facts dt{font-size:9px;letter-spacing:.12em;color:var(--theme-secondary,#aaa)}.vr-research-facts dd{margin:9px 0 0;font-size:14px}
+.vr-page :is(#vr-scenes,#vr-guide){scroll-margin-top:100px}
+.vr-page .vr-entry-section{padding-top:60px}
+.vr-page .vr-entry-heading h2,.vr-page .vr-guide-heading h2{font-weight:500;letter-spacing:-.035em;font-size:clamp(34px,4vw,60px)}
+.vr-page .vr-scene-card{border-radius:0;box-shadow:none}.vr-page .vr-scene-image img{transition:transform .3s ease}.vr-page .vr-scene-card:hover .vr-scene-image img{transform:scale(1.025)}
+.vr-page a:focus-visible,.vr-page summary:focus-visible{outline:2px solid var(--theme-primary,#fff);outline-offset:5px}
+@media(max-width:800px){.vr-research-meta{font-size:9px}.vr-research-meta>span:last-child{max-width:160px;text-align:right}.vr-research-intro{grid-template-columns:1fr;gap:18px;padding:0 0 24px}.vr-research-intro p{max-width:540px;font-size:16px}.vr-research-cover>img{aspect-ratio:1.5}.vr-research-cover figcaption{font-size:9px;flex-direction:column;gap:5px}.vr-research-facts{gap:15px}.vr-research-facts dd{font-size:12px}}
+@media(max-width:440px){.vr-research-facts{grid-template-columns:1fr}.vr-research-facts>div{display:flex;align-items:baseline;justify-content:space-between;gap:15px}.vr-research-facts dd{margin:0}.vr-research-meta{font-size:8px}}
+@media(prefers-reduced-motion:reduce){.vr-page .vr-scene-image img{transition:none}}
+
+/* Display the supplied guide illustration in full, including its time-of-day strip. */
+.vr-page .vr-guide-artwork img{display:block;width:100%;height:auto;min-height:0;max-height:none;object-fit:contain;filter:none}
+.vr-page .vr-guide-artwork:after{display:none}
+/* Preserve the complete Concord artwork, including its hourly thumbnails. */
+.vr-page .vr-scene-card:first-child .vr-scene-image{height:auto;aspect-ratio:1320/1192}
+.vr-page .vr-scene-card:first-child .vr-scene-image img{object-fit:contain;object-position:center;filter:none}
+/* Put the two scene entrances before imagery and provenance. */
+.vr-page .vr-scene-grid{align-items:start;gap:28px}
+.vr-page article.vr-scene-card{display:flex;flex-direction:column;min-width:0;padding:0;background:var(--journal-soft);border:1px solid var(--theme-border,var(--journal-line));border-radius:16px;overflow:hidden;box-shadow:0 12px 35px #00000008}
+.vr-page article.vr-scene-card .vr-scene-copy{padding:28px 28px 22px}
+.vr-page .vr-launch-eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.vr-page .vr-launch-eyebrow .vr-scene-index{position:static;display:grid;place-items:center;width:30px;height:30px;padding:0;background:var(--journal-bg);color:var(--journal-muted);border:1px solid var(--theme-border,var(--journal-line));border-radius:50%;font-size:10px;flex-shrink:0;margin:0}
+.vr-page .vr-launch-eyebrow small{font-size:9px;line-height:1.6;letter-spacing:.075em;color:var(--journal-muted)}
+.vr-page article.vr-scene-card h3{font-family:var(--journal-serif);font-size:clamp(28px,2.5vw,38px);font-weight:400;letter-spacing:-.035em;line-height:1.15;color:var(--journal-ink);margin:0 0 18px}
+.vr-page article.vr-scene-card .vr-scene-copy>p{font-size:14px;color:var(--journal-muted);line-height:1.8;margin:0 0 24px;min-height:76px}
+.vr-page .vr-scene-launch{display:flex;align-items:center;justify-content:space-between;gap:14px;width:100%;min-height:56px;padding:15px 18px;background:#287f89;border:1px solid #287f89;border-radius:9px;color:#fff;font-size:15px;font-weight:600;line-height:1.5;text-decoration:none;transition:background .2s,transform .2s}
+.vr-page .vr-scene-launch>span:nth-child(2){flex:1}
+.vr-page .vr-scene-launch .vr-launch-play{display:grid;place-items:center;width:27px;height:27px;font-size:10px;background:#ffffff25;border-radius:50%;flex-shrink:0}
+.vr-page .vr-scene-launch:hover{background:#216c75;transform:translateY(-2px);color:#fff}
+.vr-page .vr-scene-launch:focus-visible{outline:3px solid var(--journal-ink);outline-offset:4px}
+.vr-page .vr-launch-hint{display:block;font-size:10px;line-height:1.7;margin-top:10px;color:var(--journal-muted)}
+.vr-page article.vr-scene-card .vr-scene-image,.vr-page article.vr-scene-card:first-child .vr-scene-image{height:300px;aspect-ratio:auto;background:var(--journal-bg);margin:0 28px;border-radius:8px;overflow:hidden}
+.vr-page article.vr-scene-card .vr-scene-image img{width:100%;height:100%;object-fit:contain;object-position:center;filter:none;transform:none}
+.vr-page article.vr-scene-card .vr-scene-image:after{display:none}
+.vr-page .vr-scene-data{padding:0 28px;margin-top:20px}
+.vr-page .vr-scene-data>summary{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:19px 0;cursor:pointer;list-style:none;border-top:1px solid var(--theme-border,var(--journal-line));font-size:12px;color:var(--journal-muted)}
+.vr-page .vr-scene-data>summary::-webkit-details-marker{display:none}
+.vr-page .vr-scene-data[open]>summary>span{transform:rotate(45deg)}
+.vr-page .vr-scene-data .vr-scene-provenance{padding:0 0 22px;margin:0;border:0}
+@media(max-width:700px){.vr-page .vr-scene-grid{gap:24px}.vr-page article.vr-scene-card .vr-scene-copy{padding:22px 20px 18px}.vr-page article.vr-scene-card .vr-scene-copy>p{min-height:0;font-size:13px;margin-bottom:20px}.vr-page article.vr-scene-card .vr-scene-image,.vr-page article.vr-scene-card:first-child .vr-scene-image{margin-inline:20px;height:260px}.vr-page .vr-scene-data{padding-inline:20px}.vr-page .vr-scene-launch{font-size:14px;min-height:54px}.vr-page .vr-launch-eyebrow{gap:10px;margin-bottom:17px}}
+@media(prefers-reduced-motion:reduce){.vr-page .vr-scene-launch{transition:none}.vr-page .vr-scene-launch:hover{transform:none}}
+
+.vr-page .vr-research-cover>img{width:100%;height:auto;max-height:none;aspect-ratio:auto;object-fit:contain}
+@media(max-width:800px){.vr-page .vr-research-hero{padding-top:24px}}
+
+.vr-page .vr-guided-tour-note{display:grid;grid-template-columns:180px minmax(0,1fr);gap:24px;align-items:start;margin:0 0 28px;padding:19px 22px;border-left:3px solid #287f89;background:var(--journal-soft);border-radius:0 8px 8px 0}
+.vr-page .vr-guided-tour-note>strong{font-size:14px;font-weight:500;line-height:1.7;color:var(--journal-ink)}
+.vr-page .vr-guided-tour-note p{font-size:13px;line-height:1.85;color:var(--journal-muted);margin:0}
+.vr-page .vr-guided-tour-note b{font-weight:500;color:var(--journal-ink)}
+@media(max-width:700px){.vr-page .vr-guided-tour-note{grid-template-columns:1fr;gap:8px;padding:17px 18px}.vr-page .vr-guided-tour-note p{font-size:12px}}
+
+/* Match the homepage platform entrances: image first, shared typography and actions. */
+.vr-page .vr-scene-grid{gap:28px;border:0;align-items:stretch}
+.vr-page article.vr-scene-card{border-radius:14px;box-shadow:none;background:var(--journal-soft)}
+.vr-page article.vr-scene-card:hover{background:var(--journal-soft)}
+.vr-page article.vr-scene-card .vr-scene-image,.vr-page article.vr-scene-card:first-child .vr-scene-image{width:100%;height:auto;aspect-ratio:16/9;margin:0;border-radius:0;background:#19292b;flex-shrink:0}
+.vr-page article.vr-scene-card .vr-scene-image img{display:block;width:100%;height:100%;object-fit:contain;filter:none;transform:none}
+.vr-page article.vr-scene-card .vr-scene-copy{padding:27px 28px 28px;display:flex;align-items:flex-start;flex-direction:column;flex:1}
+.vr-page .vr-launch-eyebrow{margin-bottom:14px}
+.vr-page article.vr-scene-card h3{font-family:var(--journal-serif);font-size:29px;font-weight:400;line-height:1.2;letter-spacing:-.025em;margin:0 0 15px}
+.vr-page article.vr-scene-card .vr-scene-copy>p{font-size:14px;line-height:1.85;margin:0 0 24px;min-height:0;max-width:550px}
+.vr-page .vr-scene-launch{display:inline-flex;width:auto;align-items:center;justify-content:center;min-height:48px;padding:13px 23px;border-radius:7px;font-size:13px;font-weight:500;line-height:1.5;margin-top:auto;background:#287f89;border-color:#287f89}
+.vr-page .vr-scene-launch:hover{background:#216b74;border-color:#216b74;transform:none}
+.vr-page .vr-scene-data{margin-top:0;padding-inline:28px;width:100%;box-sizing:border-box}
+.vr-page :is(.vr-entry-heading h2,.vr-guide-heading h2,.vr-aqi-explainer h2,.vr-qa-block h2,.vr-live-air header h2){font-family:var(--journal-serif);font-size:clamp(28px,2.8vw,38px);font-weight:400;line-height:1.2;letter-spacing:-.035em}
+.vr-page :is(.vr-entry-heading p,.vr-guide-heading p,.vr-aqi-explainer>header p,.vr-qa-block>header p,.vr-live-air header p){font-size:14px;line-height:1.8;color:var(--journal-muted)}
+.vr-page .vr-indicator-panel{background:var(--journal-soft);border:1px solid var(--theme-border,var(--journal-line));border-radius:14px;padding:27px 28px;box-shadow:none}
+.vr-page .vr-guide-layout{gap:28px}
+@media(max-width:720px){
+.vr-page .vr-scene-grid{grid-template-columns:1fr;gap:24px}
+.vr-page article.vr-scene-card .vr-scene-copy{padding:22px}
+.vr-page article.vr-scene-card h3{font-size:27px}
+.vr-page article.vr-scene-card .vr-scene-copy>p{font-size:13px}
+.vr-page .vr-scene-launch{min-height:46px;font-size:12px}
+.vr-page .vr-scene-data{padding-inline:22px}
+.vr-page .vr-indicator-panel{padding:22px}
+}
+
+/* Compact scene cards with edge-to-edge previews. */
+.vr-page .vr-scene-grid{width:100%;max-width:1040px;margin-inline:auto;gap:24px}
+.vr-page article.vr-scene-card .vr-scene-image,.vr-page article.vr-scene-card:first-child .vr-scene-image{width:100%;height:auto;aspect-ratio:16/9;margin:0;padding:0;border-radius:0;overflow:hidden}
+.vr-page article.vr-scene-card .vr-scene-image img{display:block;width:100%;height:100%;object-fit:cover;object-position:center;transform:none}
+.vr-page article.vr-scene-card .vr-scene-copy{padding:22px 24px 24px}
+.vr-page article.vr-scene-card h3{font-size:27px}
+.vr-page article.vr-scene-card .vr-scene-copy>p{font-size:13px;line-height:1.8;margin-bottom:20px}
+.vr-page .vr-scene-data{padding-inline:24px}
+@media(max-width:720px){.vr-page .vr-scene-grid{max-width:520px}.vr-page article.vr-scene-card .vr-scene-copy{padding:20px}.vr-page article.vr-scene-card h3{font-size:25px}.vr-page .vr-scene-data{padding-inline:20px}}
+
+/* Preserve each preview's full natural proportions without cropping. */
+.vr-page article.vr-scene-card .vr-scene-image,.vr-page article.vr-scene-card:first-child .vr-scene-image{height:auto;aspect-ratio:auto}
+.vr-page article.vr-scene-card .vr-scene-image img{display:block;width:100%;height:auto;max-height:none;aspect-ratio:auto;object-fit:contain;transform:none}
+
+/* Separate VR content through whitespace rather than decorative rules. */
+.vr-page :is(.vr-entry-section,.vr-interface-guide,.vr-editorial,.vr-gallery,.vr-cta,.vr-aqi-explainer,.vr-qa-block,.vr-model-scope,.vr-glossary-block){border-top:0;border-bottom:0}
+.vr-page :is(.vr-research-meta,.vr-research-cover figcaption,.vr-indicator-panel>header,.vr-scene-data>summary,.vr-live-air footer){border-top:0;border-bottom:0}
+
+/* Match homepage entrances, with a larger image-led presentation. */
+.vr-page .vr-scene-grid{max-width:1200px;gap:28px}
+.vr-page article.vr-scene-card{border:1px solid var(--theme-border,var(--journal-line));border-radius:14px;background:var(--journal-soft);box-shadow:none}
+.vr-page article.vr-scene-card .vr-scene-copy{padding:22px 24px 24px;display:flex;flex-direction:column;align-items:flex-start;flex:1}
+.vr-page article.vr-scene-card h3{font-family:var(--journal-serif);font-size:27px;font-weight:400;line-height:1.2;letter-spacing:-.025em;margin:0 0 12px}
+.vr-page article.vr-scene-card .vr-scene-copy>p{font-size:13px;line-height:1.8;margin:0 0 20px;min-height:0}
+.vr-page .vr-scene-launch{width:auto;min-height:44px;padding:11px 20px;font-size:12px;font-weight:500;line-height:1.5;border-radius:7px;margin-top:auto}
+.vr-page article.vr-scene-card .vr-scene-image,.vr-page article.vr-scene-card:first-child .vr-scene-image{width:100%;height:auto;aspect-ratio:auto;margin:0;padding:0;border-radius:0}
+.vr-page article.vr-scene-card .vr-scene-image img{width:100%;height:auto;max-height:none;object-fit:contain;transform:none}
+@media(max-width:720px){.vr-page .vr-scene-grid{max-width:580px}.vr-page article.vr-scene-card .vr-scene-copy{padding:20px}.vr-page article.vr-scene-card h3{font-size:25px}}
+
+/* Equal preview areas based on the Concord illustration's proportions. */
+.vr-page article.vr-scene-card .vr-scene-image,.vr-page article.vr-scene-card:first-child .vr-scene-image{position:relative;width:100%;height:auto;aspect-ratio:1320/1192;flex-shrink:0;overflow:hidden;background:var(--journal-soft)}
+.vr-page article.vr-scene-card .vr-scene-image img{position:absolute;inset:0;display:block;width:100%;height:100%;max-height:100%;object-fit:contain;object-position:center;transform:none}
+
+.vr-page .vr-architecture-caption{padding-top:24px;text-align:left;color:var(--journal-muted)}
+.vr-page .vr-architecture-caption h3{font-family:var(--journal-serif);font-size:23px;font-weight:400;line-height:1.3;letter-spacing:-.025em;color:var(--journal-ink);margin:0 0 20px}
+.vr-page .vr-architecture-caption dl{display:grid;gap:16px;margin:0}
+.vr-page .vr-architecture-caption dl>div{display:grid;grid-template-columns:112px minmax(0,1fr);gap:18px}
+.vr-page .vr-architecture-caption dt{font-size:12px;font-weight:500;line-height:1.8;color:var(--journal-ink)}
+.vr-page .vr-architecture-caption dd{font-size:12px;line-height:1.8;margin:0}
+.vr-page .vr-architecture-caption>p{font-size:11px;line-height:1.8;margin:22px 0 0}
+@media(max-width:600px){.vr-page .vr-architecture-caption dl>div{grid-template-columns:1fr;gap:3px}.vr-page .vr-architecture-caption h3{font-size:22px}}
+
+/* Tighten the transition from scene entrances to the reading guide. */
+.vr-page .vr-entry-section{padding-bottom:28px}
+.vr-page .vr-interface-guide{padding-top:28px}
+@media(max-width:720px){.vr-page .vr-entry-section{padding-bottom:20px}.vr-page .vr-interface-guide{padding-top:20px}}
+
+/* Give the reading guide room for comfortable, sequential scanning. */
+.vr-page .vr-guide-layout{grid-template-columns:minmax(0,1fr);gap:36px}
+.vr-page .vr-guide-layout .vr-overview-figure{position:static;width:100%;max-width:960px;margin-inline:auto}
+.vr-page .vr-indicator-panel{padding:clamp(22px,3vw,40px);border-radius:16px;background:var(--journal-soft);border:1px solid var(--theme-border,var(--journal-line))}
+.vr-page .vr-indicator-panel>header{grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:14px 20px;padding:0;margin:0 0 28px;border:0}
+.vr-page .vr-indicator-panel>header>span{font:500 11px/1.5 "Helvetica Neue",Arial,sans-serif;letter-spacing:.12em;color:var(--journal-muted)}
+.vr-page .vr-indicator-panel>header>strong{padding:7px 12px;border-radius:20px;background:var(--journal-bg);border:1px solid var(--theme-border,var(--journal-line));font:500 11px/1.4 "Helvetica Neue",Arial,sans-serif;text-transform:none;color:var(--journal-ink);white-space:nowrap}
+.vr-page .vr-indicator-panel>header>p{max-width:620px;font-size:15px;line-height:1.75;color:var(--journal-muted)}
+.vr-page .vr-indicator-panel .vr-element-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;background:transparent;border:0}
+.vr-page .vr-element-grid article{grid-template-columns:36px minmax(0,1fr);gap:16px;align-items:start;padding:24px;background:var(--journal-bg);border:1px solid var(--theme-border,var(--journal-line));border-radius:10px}
+.vr-page .vr-element-grid article>span{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:var(--journal-soft);color:var(--theme-primary,var(--journal-ink));font:500 12px/1 ui-monospace,monospace;letter-spacing:0}
+.vr-page .vr-element-grid h3{margin:6px 0 10px;font-size:17px;font-weight:500;line-height:1.4;letter-spacing:-.02em;color:var(--journal-ink)}
+.vr-page .vr-element-grid p{font-size:14px;line-height:1.8;color:var(--journal-muted)}
+@media(max-width:720px){.vr-page .vr-guide-layout{gap:24px}.vr-page .vr-indicator-panel .vr-element-grid{grid-template-columns:1fr;gap:12px}.vr-page .vr-element-grid article{padding:20px;gap:14px}.vr-page .vr-indicator-panel>header{gap:14px 10px;margin-bottom:22px}.vr-page .vr-indicator-panel>header>span{font-size:10px}.vr-page .vr-indicator-panel>header>p{font-size:14px}.vr-page .vr-element-grid h3{font-size:16px}}
+
+/* Pair the architecture illustration with its explanatory caption. */
+.vr-page .vr-live-architecture{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);align-items:center;gap:clamp(28px,4vw,60px);width:100%;max-width:1040px;margin:0 auto clamp(32px,4vw,52px);overflow:visible}
+.vr-page .vr-live-architecture>img{width:100%;max-width:480px;height:auto;justify-self:center;object-fit:contain}
+.vr-page .vr-live-architecture .vr-architecture-caption{padding:0}
+.vr-page .vr-architecture-caption dl>div{grid-template-columns:1fr;gap:4px}
+.vr-page .vr-architecture-caption dt{font-size:13px}
+.vr-page .vr-architecture-caption dd{font-size:13px;line-height:1.75}
+.vr-page .vr-architecture-caption>p{font-size:12px;line-height:1.75}
+@media(max-width:760px){.vr-page .vr-live-architecture{grid-template-columns:1fr;gap:24px;max-width:600px}.vr-page .vr-live-architecture>img{max-width:420px}}
+
+/* Remove the enclosing outline around architecture and live-air reference. */
+.vr-page .vr-editorial .vr-live-air{border:0;box-shadow:none;outline:0}
+
+/* Restore the reading guide's image-left, indicators-right layout. */
+.vr-page .vr-guide-layout{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:28px;align-items:start}
+.vr-page .vr-guide-layout .vr-overview-figure{grid-column:1;min-width:0;margin:0;position:sticky;top:100px}
+.vr-page .vr-guide-layout .vr-indicator-panel{grid-column:2;min-width:0}
+.vr-page .vr-guide-artwork img{width:100%;height:auto;min-height:0;object-fit:contain}
+@media(max-width:720px){.vr-page .vr-guide-layout{grid-template-columns:1fr}.vr-page .vr-guide-layout .vr-overview-figure,.vr-page .vr-guide-layout .vr-indicator-panel{grid-column:1;position:static}}
+
+/* Compact the trend reference without reducing already-small reference text. */
+.vr-page .vr-aqi-explainer{gap:24px clamp(28px,4vw,56px);margin-top:clamp(64px,6vw,88px);padding:clamp(24px,3vw,36px)}
+.vr-page .vr-aqi-explainer>header h2{font-size:clamp(24px,2.3vw,30px);line-height:1.2;margin:18px 0 16px}
+.vr-page .vr-aqi-explainer>header p{font-size:13px;line-height:1.7}
+.vr-page .vr-aqi-source{margin-top:16px}
+.vr-page .vr-aqi-standard-list{gap:5px}
+.vr-page .vr-aqi-standard-list article{padding:11px 13px;gap:12px;grid-template-columns:4px minmax(0,1fr)}
+.vr-page .vr-aqi-standard-list article>div{column-gap:12px}
+.vr-page .vr-aqi-standard-list h3{font-size:14px;line-height:1.3}
+.vr-page .vr-aqi-standard-list p{margin-top:5px;line-height:1.5}
+.vr-page .vr-aqi-method-note{margin:0}
+@media(max-width:900px){.vr-page .vr-aqi-explainer{grid-template-columns:1fr;gap:24px}.vr-page .vr-aqi-method-note{grid-column:1}}
+@media(max-width:480px){.vr-page .vr-aqi-standard-list article>div{grid-template-columns:minmax(0,1fr);row-gap:5px}.vr-page .vr-aqi-standard-list h3,.vr-page .vr-aqi-standard-list p{margin:0}}
+
+/* One numbered indicator per row at every screen width. */
+.vr-page .vr-indicator-panel .vr-element-grid{display:grid;grid-template-columns:minmax(0,1fr)}
+
+/* Keep the system architecture close to the preceding scene guide. */
+.vr-page .vr-interface-guide{padding-bottom:36px}
+.vr-page .vr-editorial{padding-top:36px}
+.vr-page .vr-editorial .vr-live-air{padding-top:0}
+@media(max-width:720px){.vr-page .vr-interface-guide{padding-bottom:26px}.vr-page .vr-editorial{padding-top:26px}}
+
+/* Add breathing room before the live air reference heading. */
+.vr-page .vr-live-architecture{margin-bottom:clamp(64px,6vw,88px)}
+@media(max-width:760px){.vr-page .vr-live-architecture{margin-bottom:48px}}
+
+/* A compact, unboxed reading key aligned with the accompanying illustration. */
+.vr-page .vr-guide-layout{align-items:stretch}
+.vr-page .vr-guide-layout .vr-overview-figure{position:static}
+.vr-page .vr-guide-layout .vr-indicator-panel{display:flex;flex-direction:column;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none}
+.vr-page .vr-indicator-panel>header{margin:0 0 18px;gap:12px;padding:0;border:0}
+.vr-page .vr-indicator-panel>header>strong{padding:0;border:0;border-radius:0;background:transparent;font-size:10px;font-weight:400;color:var(--journal-muted)}
+.vr-page .vr-indicator-panel .vr-element-grid{flex:1;grid-template-columns:minmax(0,1fr);gap:10px;align-content:space-between;border:0;background:transparent}
+.vr-page .vr-element-grid article{grid-template-columns:24px minmax(0,1fr);gap:10px;padding:0;border:0;border-radius:0;background:transparent;align-content:start}
+.vr-page .vr-element-grid article>span{display:block;width:auto;height:auto;padding-top:2px;border:0;border-radius:0;background:transparent;font-size:10px;line-height:1.5;color:var(--journal-muted)}
+.vr-page .vr-element-grid h3{font-size:13px;line-height:1.4;margin:0 0 3px;font-weight:500}
+.vr-page .vr-element-grid p{font-size:12px;line-height:1.5;margin:0}
+@media(max-width:1000px){.vr-page .vr-guide-layout{grid-template-columns:minmax(0,1fr);gap:28px}.vr-page .vr-guide-layout .vr-indicator-panel{grid-column:1}.vr-page .vr-indicator-panel .vr-element-grid{gap:16px}.vr-page .vr-element-grid h3{font-size:14px}.vr-page .vr-element-grid p{font-size:13px}}
+
+/* Square module frames throughout the VR experience page. */
+.vr-page article.vr-scene-card,
+.vr-page .vr-indicator-panel,
+.vr-page .vr-qa-card,
+.vr-page .vr-live-air,
+.vr-page .vr-live-map,
+.vr-page .vr-live-metrics,
+.vr-page .vr-live-metrics article,
+.vr-page .vr-live-error,
+.vr-page .vr-concentration-summary,
+.vr-page .vr-aqi-standard-list>article,
+.vr-page .vr-guided-tour-note{border-radius:0}
+
+/* Shared vertical rhythm for the VR page's major content modules. */
+.vr-page{--vr-module-space:104px;--vr-heading-space:48px}
+.vr-page .vr-research-facts{padding-bottom:0}
+.vr-page .vr-entry-section{padding-top:var(--vr-module-space);padding-bottom:0}
+.vr-page .vr-interface-guide{padding-top:var(--vr-module-space);padding-bottom:0}
+.vr-page .vr-editorial{padding-top:var(--vr-module-space);padding-bottom:var(--vr-module-space)}
+.vr-page .vr-editorial .vr-live-air{margin-top:0;padding-top:0}
+.vr-page .vr-aqi-explainer{margin-top:var(--vr-module-space)}
+.vr-page .vr-qa-block{margin-top:var(--vr-module-space);padding-top:0}
+.vr-page .vr-live-architecture{margin-top:0;margin-bottom:var(--vr-module-space)}
+.vr-page :is(.vr-entry-heading,.vr-guide-heading){margin-bottom:var(--vr-heading-space)}
+.vr-page .vr-live-air header{margin-bottom:var(--vr-heading-space)}
+@media(max-width:720px){.vr-page{--vr-module-space:72px;--vr-heading-space:36px}}
+
+/* Fill the South Park preview while keeping both scene frames equal. */
+.vr-page article.vr-scene-card:last-child .vr-scene-image img{object-fit:cover;object-position:center}

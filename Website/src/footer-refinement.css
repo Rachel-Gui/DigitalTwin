@@ -1,0 +1,20 @@
+/* A compact shared footer, with a narrower reading width and no repeated sitemap. */
+.site-footer.site-footer-compact{display:block;grid-template-columns:none;padding:24px 0;background:var(--journal-bg);color:var(--journal-ink);border-top:1px solid var(--theme-border,var(--journal-line));min-height:0}
+.site-footer.site-footer-compact .footer-inner{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:24px;width:min(calc(100% - 64px),1120px);max-width:1120px;margin-inline:auto}
+.site-footer.site-footer-compact .footer-brand{display:inline-flex;align-items:center;gap:10px;width:fit-content;min-height:36px;color:var(--journal-ink);text-decoration:none}
+.site-footer.site-footer-compact .footer-brand img{display:block;width:28px;height:28px;object-fit:contain;filter:grayscale(1)}
+html[data-theme="light"] .site-footer.site-footer-compact .footer-brand img{filter:grayscale(1) invert(1)}
+.site-footer.site-footer-compact .footer-brand>span{font-family:inherit;font-size:14px;letter-spacing:-.035em;font-weight:500;line-height:1.3;color:var(--journal-ink)}
+.site-footer.site-footer-compact .footer-credit{font-size:10px;line-height:1.8;font-weight:400;letter-spacing:0;color:var(--journal-muted);margin:0;text-align:center}
+.site-footer.site-footer-compact .footer-credit>span{padding-inline:5px;color:var(--journal-muted)}
+.site-footer.site-footer-compact nav{display:flex;flex-direction:row;align-items:center;gap:22px;grid-column:auto;padding:0;margin:0}
+.site-footer.site-footer-compact nav a{display:inline-flex;align-items:center;gap:6px;min-height:40px;color:var(--journal-muted);font-size:11px;line-height:1.5;white-space:nowrap}
+.site-footer.site-footer-compact nav a:hover{color:var(--journal-ink)}
+.site-footer.site-footer-compact a:focus-visible{outline:2px solid var(--journal-ink);outline-offset:4px}
+@media(max-width:900px){.site-footer.site-footer-compact .footer-inner{grid-template-columns:1fr auto;gap:12px 24px}.site-footer.site-footer-compact .footer-credit{grid-column:1/-1;grid-row:2;text-align:left}.site-footer.site-footer-compact nav{justify-self:end}}
+@media(max-width:600px){.site-footer.site-footer-compact{padding:18px 0 calc(18px + env(safe-area-inset-bottom))}.site-footer.site-footer-compact .footer-inner{width:calc(100% - 40px);gap:9px 16px}.site-footer.site-footer-compact .footer-brand{gap:8px}.site-footer.site-footer-compact .footer-brand>span{font-size:13px}.site-footer.site-footer-compact .footer-brand img{width:25px;height:25px}.site-footer.site-footer-compact nav{gap:15px}.site-footer.site-footer-compact nav a{font-size:10px}.site-footer.site-footer-compact .footer-credit{font-size:9px}}
+
+/* Keep disclosure controls functional without decorative arrow markers. */
+.app summary{list-style:none}
+.app summary::marker{content:""}
+.app summary::-webkit-details-marker{display:none}

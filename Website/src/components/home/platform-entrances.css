@@ -1,0 +1,27 @@
+.platform-home .platform-entrances{padding-top:96px}
+.platform-home .platform-entrances>header{margin-bottom:28px}
+.platform-home .platform-entrances>header h2{font-family:var(--journal-serif);font-size:clamp(28px,2.8vw,38px);font-weight:400;line-height:1.2;letter-spacing:-.035em;margin:0 0 14px}
+.platform-home .platform-entrances>header p{font-size:14px;line-height:1.8;color:var(--journal-muted);margin:0;max-width:700px}
+.platform-home .platform-entrance-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}
+.platform-home .platform-entrance{display:flex;flex-direction:column;min-width:0;border:1px solid var(--theme-border,var(--journal-line));border-radius:14px;overflow:hidden;background:var(--journal-soft)}
+.platform-home .platform-entrance>img{display:block;box-sizing:border-box;width:100%;max-width:none;height:clamp(160px,16vw,220px);min-height:clamp(160px,16vw,220px);max-height:clamp(160px,16vw,220px);flex:0 0 auto;object-fit:cover;object-position:center;margin:0;border-radius:0}
+.platform-home .platform-entrance>div{padding:27px 28px 28px;display:flex;align-items:flex-start;flex-direction:column;flex:1}
+.platform-home .platform-entrance h3{font-family:var(--journal-serif);font-size:29px;font-weight:400;line-height:1.2;letter-spacing:-.025em;margin:0 0 15px;color:var(--journal-ink)}
+.platform-home .platform-entrance p{font-size:14px;line-height:1.85;color:var(--journal-muted);margin:0 0 24px;max-width:550px}
+.platform-home .platform-enter-button{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:13px 23px;border:1px solid #287f89;border-radius:7px;font-size:13px;font-weight:500;line-height:1.5;background:#287f89;color:#fff;text-decoration:none;margin-top:auto}
+.platform-home .platform-enter-button:hover{background:#216b74;border-color:#216b74}
+.platform-home .platform-enter-button:focus-visible{outline:3px solid var(--journal-ink);outline-offset:4px}
+.platform-home .platform-entry-note{font-size:10px;line-height:1.7;color:var(--journal-muted);margin-top:11px}
+@media(max-width:720px){.platform-home .platform-entrances{padding-top:64px}.platform-home .platform-entrance-grid{grid-template-columns:1fr;gap:24px}.platform-home .platform-entrance>div{padding:22px}.platform-home .platform-entrance h3{font-size:27px}.platform-home .platform-entrance p{font-size:13px}.platform-home .platform-enter-button{min-height:46px;font-size:12px}}
+
+/* Compact homepage entrances with matching preview dimensions. */
+.platform-home .platform-entrance-grid{width:100%;max-width:1040px;margin-inline:auto;gap:36px}
+.platform-home .platform-entrance>img{display:block;width:100%;height:auto;min-height:0;max-height:none;aspect-ratio:16/9;object-fit:cover;object-position:center}
+.platform-home .platform-entrance>div{padding:22px 24px 24px}
+.platform-home .platform-entrance h3{font-size:27px;margin-bottom:12px}
+.platform-home .platform-entrance p{font-size:13px;line-height:1.8;margin-bottom:20px}
+.platform-home .platform-enter-button{min-height:44px;padding:11px 20px;font-size:12px}
+@media(max-width:720px){.platform-home .platform-entrance-grid{max-width:520px;gap:32px}.platform-home .platform-entrance>div{padding:20px}.platform-home .platform-entrance h3{font-size:25px}}
+
+/* Square outer corners for the homepage platform entrance modules. */
+.platform-home .platform-entrance{border-radius:0}

@@ -118,7 +118,7 @@ export default function AirQualityTableau({ compact = false, showGuidance = fals
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Open in Tableau ↗
+                  Open in Tableau
                 </a>
               </div>
             ) : (
@@ -159,7 +159,7 @@ export default function AirQualityTableau({ compact = false, showGuidance = fals
             target="_blank"
             rel="noopener noreferrer"
           >
-            Open in Tableau ↗
+            Open in Tableau
           </a>
         </div>}
       </div>

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef } from "react";
 import "leaflet/dist/leaflet.css";
 import { formatAirQualityValue, pm25Level } from "../data/airQuality";
 
-export default function ClaritySensorMap({ sources, onSelect }) {
+export default function ClaritySensorMap({ sources, onSelect, showPopups = true }) {
   const mapElement = useRef(null);
   const mappableSources = useMemo(
     () => sources.filter((source) => Number.isFinite(source.latitude) && Number.isFinite(source.longitude)),
@@ -12,11 +12,13 @@ export default function ClaritySensorMap({ sources, onSelect }) {
   useEffect(() => {
     if (!mapElement.current) return undefined;
     let map;
+    let resizeObserver;
+    let resizeFrame;
     let cancelled = false;
     import("leaflet").then((module) => {
       if (cancelled || !mapElement.current) return;
       const L = module.default || module;
-      map = L.map(mapElement.current, { zoomControl: true, scrollWheelZoom: false, preferCanvas: true })
+      map = L.map(mapElement.current, { zoomControl: true, scrollWheelZoom: false, preferCanvas: true, zoomAnimation: false, fadeAnimation: false, markerZoomAnimation: false })
         .setView([47.53, -122.32], 12);
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: "© OpenStreetMap contributors",
@@ -42,19 +44,28 @@ export default function ClaritySensorMap({ sources, onSelect }) {
         label.className = "air-map-marker-label";
         label.textContent = `${source.name.split("(")[0].trim()} · ${value === null || value === undefined ? "—" : formatAirQualityValue(value)}`;
         L.circleMarker(location, { radius: 18, stroke: false, fillColor: color, fillOpacity: .2, interactive: false }).addTo(map);
-        L.circleMarker(location, { radius: 11, color: "#ffffff", weight: 2, fillColor: color, fillOpacity: .94 })
-          .bindPopup(popup)
+        const marker = L.circleMarker(location, { radius: 11, color: "#ffffff", weight: 2, fillColor: color, fillOpacity: .94 })
           .bindTooltip(label, { permanent: true, direction: "top", offset: [0, -12], className: "air-map-sensor-tooltip" })
           .on("click", () => onSelect?.(source))
           .addTo(map);
+        if (showPopups) marker.bindPopup(popup);
       });
-      if (bounds.length) map.fitBounds(bounds, { padding: [55, 55], maxZoom: 14 });
+      if (bounds.length) map.fitBounds(bounds, { padding: [55, 55], maxZoom: 14, animate: false });
+      resizeObserver = new ResizeObserver(() => {
+        cancelAnimationFrame(resizeFrame);
+        resizeFrame = requestAnimationFrame(() => {
+          if (!cancelled) map.invalidateSize({ pan: false, animate: false });
+        });
+      });
+      resizeObserver.observe(mapElement.current);
     });
     return () => {
       cancelled = true;
-      if (map) map.remove();
+      resizeObserver?.disconnect();
+      cancelAnimationFrame(resizeFrame);
+      if (map) { map.stop(); map.remove(); }
     };
-  }, [mappableSources, onSelect]);
+  }, [mappableSources, onSelect, showPopups]);
 
   return <div className="clarity-sensor-map" ref={mapElement} aria-label={`Interactive map of ${mappableSources.length} Clarity monitoring locations`}/>;
 }

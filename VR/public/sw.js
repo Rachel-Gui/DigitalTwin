@@ -1,4 +1,4 @@
-const CACHE = "phi-webxr-v19";
+const CACHE = "phi-webxr-v20";
 const CORE = [
   "/",
   "/runtime-assets/scene-manifest.json",

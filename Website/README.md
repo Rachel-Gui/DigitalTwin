@@ -11,6 +11,22 @@ npm run dev
 
 Open the local URL shown by Vite.
 
+## Website structure
+
+The homepage presents the project overview, five illustrated capabilities,
+frontier AI research, and Digital Twin and VR entry points. The Seattle hero
+is a conceptual visualization; the application previews use project assets.
+Publications are available at `/publications`; partner acknowledgments are on
+`/team`. Legacy `/research` and `/energy` URLs redirect to `/publications` and
+`/dashboard?module=energy`, respectively.
+
+All pages share navigation and light/dark themes. The homepage and `/vr` share
+an animated scroll ruler. `/dashboard` provides a full-screen South Park pilot
+workspace for energy, retrofit, renewable energy, and air-quality layers.
+The VR page links to the school and neighborhood experiences and explains
+historical PM2.5 profiles, the Concord position-and-direction map, and the
+separate Clarity reference snapshot.
+
 ## Clarity Air Monitoring data
 
 Recent DAISY air-quality measurements are available on `/analytics` through the

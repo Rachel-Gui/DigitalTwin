@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { SchoolNavigation, type NavigationPose, type SchoolMap, type SchoolView } from "./SchoolNavigation";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js";
@@ -522,6 +523,19 @@ export function SceneCanvas({
 }: Props) {
   const mountRef = useRef<HTMLDivElement>(null);
   const stateRef = useRef({ record, hour, narrationStatus });
+  const [schoolMap, setSchoolMap] = useState<SchoolMap | null>(null);
+  const [navigationPose, setNavigationPose] = useState<NavigationPose>({ x: 0, z: 0, heading: 0, immersive: false });
+  const navigateRef = useRef<((id: string) => void) | null>(null);
+  const schoolViews = useMemo<SchoolView[]>(() => sceneConfig.particles.kind === "concord-populate" ? [
+    { id: "home", label: "Reset view", position: sceneConfig.cameraPosition, target: sceneConfig.cameraTarget },
+    ...sceneConfig.particles.groups.filter((group) => group.role === "station").slice(0, 2).map((group, index) => {
+      const x = (group.box.min[0] + group.box.max[0]) / 2;
+      const z = (group.box.min[2] + group.box.max[2]) / 2;
+      return { id: group.id, label: `Zone ${index + 1}`, position: [x, sceneConfig.groundY + 14, z + 30] as [number, number, number], target: [x, sceneConfig.groundY + 2, z] as [number, number, number] };
+    }),
+  ] : [], [sceneConfig]);
+  const viewsRef = useRef(schoolViews);
+  useEffect(() => { viewsRef.current = schoolViews; }, [schoolViews]);
 
   useEffect(() => {
     stateRef.current = { record, hour, narrationStatus };
@@ -598,6 +612,75 @@ export function SceneCanvas({
     const sunPosition = new THREE.Vector3();
     const teleportTargets: THREE.Object3D[] = [];
     const loadedAssets: THREE.Object3D[] = [];
+    // Use the same model coordinates for the plan, camera marker and XR HUD.
+    // This is intentionally not a geographic/GPS map.
+    let mapSpan = 320;
+    let mapMinX = sceneConfig.cameraTarget[0] - mapSpan / 2;
+    let mapMinZ = sceneConfig.cameraTarget[2] - mapSpan / 2;
+    const schoolBounds = new THREE.Box3();
+    const mapCanvas = document.createElement("canvas");
+    mapCanvas.width = 320;
+    mapCanvas.height = 380;
+    const mapContext = mapCanvas.getContext("2d");
+    const mapTexture = new THREE.CanvasTexture(mapCanvas);
+    mapTexture.colorSpace = THREE.SRGBColorSpace;
+    const mapMaterial = new THREE.MeshBasicMaterial({ map: mapTexture, depthTest: false, transparent: true });
+    const mapHud = new THREE.Mesh(new THREE.PlaneGeometry(0.8, 0.95), mapMaterial);
+    mapHud.position.set(-0.95, 1.5, -2.3);
+    mapHud.visible = false;
+    mapHud.renderOrder = 1000;
+    player.add(mapHud);
+    let mapImage: HTMLImageElement | null = null;
+    let mapCapturePending = false;
+
+    function captureSchoolMap() {
+      if (!schoolBounds.isEmpty()) {
+        const center = schoolBounds.getCenter(new THREE.Vector3());
+        const size = schoolBounds.getSize(new THREE.Vector3());
+        mapSpan = Math.max(140, Math.max(size.x, size.z) * 3);
+        mapMinX = center.x - mapSpan / 2;
+        mapMinZ = center.z - mapSpan / 2;
+      }
+      const target = new THREE.WebGLRenderTarget(512, 512);
+      target.texture.colorSpace = THREE.SRGBColorSpace;
+      const planCamera = new THREE.OrthographicCamera(-mapSpan / 2, mapSpan / 2, mapSpan / 2, -mapSpan / 2, 0.1, 1200);
+      planCamera.position.set(mapMinX + mapSpan / 2, 500, mapMinZ + mapSpan / 2);
+      planCamera.up.set(0, 0, -1);
+      planCamera.lookAt(mapMinX + mapSpan / 2, sceneConfig.groundY, mapMinZ + mapSpan / 2);
+      const visibility = scene.children.map((child) => ({ child, visible: child.visible }));
+      const previousFog = scene.fog;
+      const previousBackground = scene.background;
+      const previousTarget = renderer.getRenderTarget();
+      const previousXr = renderer.xr.enabled;
+      try {
+        for (const { child } of visibility) if (!(child instanceof THREE.Light) && !loadedAssets.includes(child)) child.visible = false;
+        scene.fog = null;
+        scene.background = new THREE.Color(0xd9e2db);
+        renderer.xr.enabled = false;
+        renderer.setRenderTarget(target);
+        renderer.render(scene, planCamera);
+        const pixels = new Uint8Array(512 * 512 * 4);
+        renderer.readRenderTargetPixels(target, 0, 0, 512, 512, pixels);
+        const canvas = document.createElement("canvas");
+        canvas.width = canvas.height = 512;
+        const context = canvas.getContext("2d");
+        if (!context) return;
+        const image = context.createImageData(512, 512);
+        for (let row = 0; row < 512; row += 1) image.data.set(pixels.subarray(row * 2048, (row + 1) * 2048), (511 - row) * 2048);
+        context.putImageData(image, 0, 0);
+        const url = canvas.toDataURL("image/png");
+        if (!cancelled) setSchoolMap({ image: url, minX: mapMinX, minZ: mapMinZ, span: mapSpan });
+        mapImage = new Image();
+        mapImage.src = url;
+      } finally {
+        for (const { child, visible } of visibility) child.visible = visible;
+        scene.fog = previousFog;
+        scene.background = previousBackground;
+        renderer.setRenderTarget(previousTarget);
+        renderer.xr.enabled = previousXr;
+        target.dispose();
+      }
+    }
 
     const concordParticles = sceneConfig.particles.kind === "concord-populate"
       ? createConcordParticles(scene, mount, sceneConfig.particles)
@@ -632,6 +715,7 @@ export function SceneCanvas({
         let failedCount = 0;
         const updateStatus = () => {
           if (!cancelled) onSceneStatus(failedCount ? `${loadedCount}/${expectedCount} ready · ${failedCount} failed` : `${loadedCount}/${expectedCount} ready`);
+          if (!cancelled && sceneConfig.id === "concord" && loadedCount + failedCount === expectedCount) mapCapturePending = true;
         };
         for (const chunk of readyChunks) {
           loader.load(chunk.url!, (gltf) => {
@@ -678,6 +762,7 @@ export function SceneCanvas({
             });
             loadedAssets.push(gltf.scene);
             scene.add(gltf.scene);
+            if (chunk.id === "school_core") schoolBounds.expandByObject(gltf.scene);
             loadedCount += 1;
             updateStatus();
           }, undefined, () => {
@@ -778,6 +863,7 @@ export function SceneCanvas({
       camera.position.set(0, 1.6, 0);
       player.position.set(...sceneConfig.xrStart);
       vrHud.mesh.visible = true;
+      mapHud.visible = sceneConfig.id === "concord";
     };
     const handleSessionEnd = () => {
       if (xrGlobal.__phiActiveImmersiveSession === renderer.xr.getSession()) {
@@ -789,6 +875,7 @@ export function SceneCanvas({
       controls.target.copy(desktopTarget);
       controls.enabled = true;
       vrHud.mesh.visible = false;
+      mapHud.visible = false;
     };
     renderer.xr.addEventListener("sessionstart", handleSessionStart);
     renderer.xr.addEventListener("sessionend", handleSessionEnd);
@@ -798,10 +885,31 @@ export function SceneCanvas({
     const beforeTurn = new THREE.Vector3();
     const afterTurn = new THREE.Vector3();
     const snapLatch = new Map<string, boolean>();
+    let resetLatched = false;
+    navigateRef.current = (id) => {
+      const view = viewsRef.current.find((item) => item.id === id);
+      if (!view) return;
+      if (renderer.xr.isPresenting) {
+        const destination = id === "home" ? sceneConfig.xrStart : view.position;
+        renderer.xr.getCamera().getWorldPosition(headsetPosition);
+        player.position.x += destination[0] - headsetPosition.x;
+        player.position.z += destination[2] - headsetPosition.z;
+        player.position.y = id === "home" ? sceneConfig.xrStart[1] : sceneConfig.groundY;
+      } else {
+        controls.target.set(...view.target);
+        camera.position.set(...view.position);
+        controls.update();
+      }
+    };
     function updateXrLocomotion(delta: number) {
       const session = renderer.xr.getSession() as null | { inputSources: Iterable<{ handedness: string; gamepad?: Gamepad }> };
       if (!session) return;
       for (const source of session.inputSources) {
+        if (source.handedness === "right") {
+          const pressed = source.gamepad?.buttons[4]?.pressed ?? false;
+          if (pressed && !resetLatched) navigateRef.current?.("home");
+          resetLatched = pressed;
+        }
         const axes = source.gamepad?.axes;
         if (!axes || axes.length < 2) continue;
         const x = axes.length >= 4 ? axes[2] : axes[0];
@@ -839,6 +947,9 @@ export function SceneCanvas({
     resizeObserver.observe(mount);
     const clock = new THREE.Clock();
     let previousHudKey = "";
+    let lastNavigationUpdate = -Infinity;
+    const navigationPosition = new THREE.Vector3();
+    const navigationDirection = new THREE.Vector3();
 
     renderer.setAnimationLoop((time) => {
       const delta = Math.min(clock.getDelta(), 0.05);
@@ -873,6 +984,35 @@ export function SceneCanvas({
         previousHudKey = hudKey;
       }
       controls.update();
+      if (mapCapturePending) {
+        mapCapturePending = false;
+        captureSchoolMap();
+      }
+      if (sceneConfig.id === "concord" && time - lastNavigationUpdate > 150) {
+        const activeCamera = renderer.xr.isPresenting ? renderer.xr.getCamera() : camera;
+        activeCamera.getWorldPosition(navigationPosition);
+        activeCamera.getWorldDirection(navigationDirection);
+        const pose = { x: navigationPosition.x, z: navigationPosition.z, heading: Math.atan2(navigationDirection.x, -navigationDirection.z) * 180 / Math.PI, immersive: renderer.xr.isPresenting };
+        setNavigationPose(pose);
+        if (mapContext && mapImage?.complete && mapImage.naturalWidth) {
+          mapContext.fillStyle = "#102026";
+          mapContext.fillRect(0, 0, 320, 380);
+          mapContext.drawImage(mapImage, 0, 0, 320, 320);
+          mapContext.save();
+          mapContext.translate(Math.max(10, Math.min(310, (pose.x - mapMinX) / mapSpan * 320)), Math.max(10, Math.min(310, (pose.z - mapMinZ) / mapSpan * 320)));
+          mapContext.rotate(pose.heading * Math.PI / 180);
+          mapContext.beginPath();
+          mapContext.moveTo(0, -13); mapContext.lineTo(9, 10); mapContext.lineTo(0, 6); mapContext.lineTo(-9, 10); mapContext.closePath();
+          mapContext.fillStyle = "#d9ff68"; mapContext.strokeStyle = "#102026"; mapContext.lineWidth = 3;
+          mapContext.fill(); mapContext.stroke(); mapContext.restore();
+          mapContext.fillStyle = "#ffffff"; mapContext.font = "18px sans-serif";
+          mapContext.fillText("YOU ARE HERE · MODEL PLAN", 10, 345);
+          mapContext.font = "15px sans-serif";
+          mapContext.fillText("Right A: return to start · not GPS", 10, 370);
+          mapTexture.needsUpdate = true;
+        }
+        lastNavigationUpdate = time;
+      }
       renderer.render(scene, camera);
     });
 
@@ -891,6 +1031,10 @@ export function SceneCanvas({
         void session.end().catch(() => undefined);
       }
       controls.dispose();
+      navigateRef.current = null;
+      mapHud.geometry.dispose();
+      mapMaterial.dispose();
+      mapTexture.dispose();
       concordParticles?.dispose();
       southParkParticles?.dispose();
       sky.geometry.dispose();
@@ -916,5 +1060,8 @@ export function SceneCanvas({
     };
   }, [onSceneStatus, onVrSupport, sceneConfig, simulationSeed, vrButtonHostId]);
 
-  return <div className="scene-canvas" ref={mountRef} aria-label="Interactive air-quality scene" />;
+  return <>
+    <div className="scene-canvas" ref={mountRef} aria-label="Interactive air-quality scene" />
+    {sceneConfig.id === "concord" && <SchoolNavigation map={schoolMap} pose={navigationPose} views={schoolViews} onNavigate={(id) => navigateRef.current?.(id)} />}
+  </>;
 }

@@ -125,13 +125,13 @@ export function LiveAirQualityContent({ showHero = false }) {
           <section className="air-map-panel">
             <header>
               <div><span className="eyebrow">DAISY live sensor network</span><h2>Clarity monitoring map</h2></div>
-              <div><span><i/> {sources.filter((source) => Number.isFinite(source.latitude) && Number.isFinite(source.longitude)).length} locations mapped</span><a href="https://dashboard.clarity.io/daisy4I1NK/live-data" target="_blank" rel="noreferrer">Compare with Clarity ↗</a></div>
+              <div><span><i/> {sources.filter((source) => Number.isFinite(source.latitude) && Number.isFinite(source.longitude)).length} locations mapped</span><a href="https://dashboard.clarity.io/daisy4I1NK/live-data" target="_blank" rel="noreferrer">Compare with Clarity </a></div>
             </header>
             <div className="air-map-frame">
               <ClaritySensorMap sources={sources}/>
               <div className="air-map-legend" aria-label="PM2.5 map legend"><span><i className="good"/>Good</span><span><i className="moderate"/>Moderate</span><span><i className="elevated"/>Elevated</span></div>
             </div>
-            <footer><span>Live monitoring locations</span><p>Marker position and latest PM2.5 reading come directly from the Clarity API. Select a marker to inspect its current value and status.</p><a href="https://dashboard.clarity.io/daisy4I1NK/live-data" target="_blank" rel="noreferrer">Open source dashboard ↗</a></footer>
+            <footer><span>Live monitoring locations</span><p>Marker position and latest PM2.5 reading come directly from the Clarity API. Select a marker to inspect its current value and status.</p><a href="https://dashboard.clarity.io/daisy4I1NK/live-data" target="_blank" rel="noreferrer">Open source dashboard </a></footer>
           </section>
 
           <section className="air-dashboard-grid">
@@ -191,7 +191,7 @@ export function LiveAirQualityContent({ showHero = false }) {
 
           <div className="analytics-footnote">
             <p>Values are the latest measurements returned by Clarity Air. Sensor temperature and humidity describe internal device conditions, not calibrated ambient weather.</p>
-            <a href="https://dashboard.clarity.io/daisy4I1NK/live-data" target="_blank" rel="noreferrer">Open Clarity Live Data ↗</a>
+            <a href="https://dashboard.clarity.io/daisy4I1NK/live-data" target="_blank" rel="noreferrer">Open Clarity Live Data </a>
           </div>
         </div>
       </main>
