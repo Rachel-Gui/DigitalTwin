@@ -73,21 +73,7 @@
 .platform-home .cap-environment .cap-image-frame>img{padding:10px}
 .platform-home .cap-housing .cap-image-frame>img{padding:24px}
 .platform-home .cap-community .cap-image-frame>img{object-fit:cover}
-/* Explain the modeling method as an open sequence, without nested preview cards. */
 .platform-home .cap-story-visual.cap-visual-open{background:transparent;border:0;border-radius:0;box-shadow:none;overflow:visible}
-.platform-home .cap-visual-open>.cap-visual-header{display:none}
-.platform-home .cap-method-sequence{margin:0;padding:20px 0 20px 36px}
-.platform-home .cap-method-sequence ol{list-style:none;margin:0;padding:0;display:grid;gap:0}
-.platform-home .cap-method-sequence li{position:relative;display:grid;grid-template-columns:46px minmax(0,1fr);gap:24px;padding:0 0 37px;align-items:start}
-.platform-home .cap-method-sequence li:not(:last-child):before{content:"";position:absolute;left:22px;top:44px;bottom:0;width:1px;background:var(--theme-border,var(--journal-line))}
-.platform-home .cap-method-node{display:grid;place-items:center;width:46px;height:46px;border:1px solid var(--theme-border,var(--journal-line));border-radius:50%;font-size:11px;font-weight:500;color:var(--cap-accent)}
-.platform-home .cap-method-sequence li strong{display:block;font-size:20px;font-weight:500;letter-spacing:-.025em;line-height:1.4;margin:5px 0 7px;color:var(--journal-ink)}
-.platform-home .cap-method-sequence li p{font-size:13px;line-height:1.8;color:var(--journal-muted);margin:0;max-width:390px}
-.platform-home .cap-method-sequence li:last-child{padding-bottom:0}
-.platform-home .cap-method-sequence figcaption{font-size:10px;line-height:1.7;color:var(--journal-muted);margin:29px 0 0 70px}
-@media(prefers-reduced-motion:no-preference){.platform-home .cap-story[data-visible=true] .cap-method-sequence li{animation:cap-workflow-enter .7s ease both;animation-delay:calc(.2s + var(--step)*.13s)}}
-@media(max-width:720px){.platform-home .cap-method-sequence{padding:8px 0 8px 4px}.platform-home .cap-method-sequence li{grid-template-columns:40px minmax(0,1fr);gap:18px;padding-bottom:28px}.platform-home .cap-method-node{width:40px;height:40px;font-size:10px}.platform-home .cap-method-sequence li:not(:last-child):before{left:19px;top:40px}.platform-home .cap-method-sequence li strong{font-size:18px;margin-top:4px}.platform-home .cap-method-sequence li p{font-size:12px}.platform-home .cap-method-sequence figcaption{margin-left:58px}}
-
 
 /* Present research images directly, without a surrounding application card. */
 .platform-home .cap-story-visual{border:0;border-radius:0;box-shadow:none;background:transparent;overflow:visible}
@@ -102,12 +88,3 @@
 .platform-home .cap-archetype-switch button[aria-pressed=true]{border-color:var(--journal-ink);box-shadow:none}
 .platform-home .cap-archetype-switch button img{border-radius:0}
 .platform-home .cap-question-panel{margin:16px 0 0;padding:0;background:transparent;border:0;border-radius:0;box-shadow:none}
-
-/* Trigger the method sequence when the sequence itself enters the viewport. */
-@media(prefers-reduced-motion:no-preference){
-.platform-home .cap-story[data-visible=true] .cap-method-sequence li{animation:none}
-.platform-home .cap-method-sequence[data-animate=true] li{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .65s cubic-bezier(.2,.65,.25,1);transition-delay:calc(var(--step)*.18s)}
-.platform-home .cap-method-sequence[data-animate=true] li:before{transform:scaleY(0);transform-origin:top;transition:transform .6s ease;transition-delay:calc(.2s + var(--step)*.18s)}
-.platform-home .cap-method-sequence[data-entered=true] li{opacity:1;transform:translateY(0)}
-.platform-home .cap-method-sequence[data-entered=true] li:before{transform:scaleY(1)}
-}

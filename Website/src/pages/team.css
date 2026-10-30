@@ -51,3 +51,7 @@
 .team-page .partner-research,.team-page .partner-community{gap:48px}
 .team-page .partner-institutions{gap:64px}
 @media(max-width:600px){.team-page{padding-bottom:72px}.team-page .team-intro{padding-block:44px 52px}.team-page .team-network-heading{margin-bottom:36px}.team-page .partner-grid{row-gap:48px;padding-block:12px 16px}.team-page .partner-column{gap:28px}.team-page .partner-research,.team-page .partner-community{gap:36px}.team-page .partner-institutions{gap:40px}}
+
+/* Preserve official artwork colors independently of the page theme. */
+.team-page .partner-grid img.partner-brand-color{filter:none}
+.team-page .partner-grid img.partner-urbi-color{width:90px;background:#111;padding:6px}

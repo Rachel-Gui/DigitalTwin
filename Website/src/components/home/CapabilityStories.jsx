@@ -11,6 +11,7 @@ import single from "../../assets/energy/single-family-high-resolution.png";
 import duplex from "../../assets/energy/duplex-high-resolution.png";
 import quadplex from "../../assets/energy/quadplex-high-resolution.png";
 import apartment from "../../assets/energy/ten-unit-apartment-high-resolution.png";
+import ModelingBridge from "./ModelingBridge";
 import "./capability-stories.css";
 
 const copy={
@@ -41,34 +42,7 @@ export default function CapabilityStories(){
 function CapabilityVisual({type,locale}){
  const words=copy[locale];
  const [choice,setChoice]=useState(0);
- const sequenceRef=useRef(null);
- useEffect(()=>{
-   const sequence=sequenceRef.current;
-   if(type!=="analytics"||!sequence||!("IntersectionObserver" in window)||window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;
-   sequence.dataset.animate="true";
-   const observer=new IntersectionObserver(entries=>{
-     if(entries.some(entry=>entry.isIntersecting)){
-       sequence.dataset.entered="true";
-       observer.disconnect();
-     }
-   },{threshold:.25});
-   observer.observe(sequence);
-   return()=>{observer.disconnect();delete sequence.dataset.animate;delete sequence.dataset.entered};
- },[type]);
- if(type==="analytics"){
-   const steps=locale==="es"?[
-     ["Datos de edificios","Arquetipos residenciales localizados", "01"],
-     ["Simulación física","Simulaciones paramétricas de EnergyPlus", "02"],
-     ["Modelos predictivos","Entrenamiento y prueba con datos sintéticos", "03"],
-     ["Evaluación y análisis","Validación cruzada y análisis de rehabilitación", "04"]
-   ]:[
-     ["Building inputs","Localized residential archetypes", "01"],
-     ["Physics-based simulation","Parametric EnergyPlus simulations", "02"],
-     ["Predictive models","Training and testing on synthetic data", "03"],
-     ["Evaluation & analysis","Cross-validation and retrofit analysis", "04"]
-   ];
-   return <figure className="cap-method-sequence" ref={sequenceRef} aria-label={words.workflow}><ol>{steps.map(([title,detail,number],i)=><li key={number} style={{'--step':i}}><span className="cap-method-node">{number}</span><div><strong>{title}</strong><p>{detail}</p></div></li>)}</ol></figure>;
- }
+ if(type==="analytics")return <ModelingBridge archetypes={archetypes} locale={locale}/>;
  if(type==="environment")return <figure className="cap-figure cap-environment"><div className="cap-preview-switch" role="group" aria-label={locale==="es"?"Tipo de evidencia ambiental":"Environmental evidence type"}>{[words.observed,words.modeled].map((label,i)=><button type="button" key={label} aria-pressed={choice===i} onClick={()=>setChoice(i)}>{label}</button>)}</div><div className="cap-image-frame" key={choice}><img src={choice===0?clarity:figures.airMap.src} alt={choice===0?words.sensors:words.concentration} loading="lazy"/></div></figure>;
  if(type==="energy")return <figure className="cap-figure cap-housing"><div className="cap-image-frame" key={choice}><img src={archetypes[choice].image} alt={archetypes[choice][locale]} loading="lazy"/></div><div className="cap-archetype-switch" role="group" aria-label={words.archetype}>{archetypes.map((building,i)=><button type="button" key={building.id} aria-pressed={choice===i} onClick={()=>setChoice(i)}><img src={building.image} alt="" loading="lazy"/><span>{building[locale]}</span></button>)}</div></figure>;
  if(type==="visualization")return <figure className="cap-figure cap-immersive"><div className="cap-preview-switch" role="group" aria-label={locale==="es"?"Modo de visualización":"Visualization mode"}>{[words.web,words.vr].map((label,i)=><button type="button" key={label} aria-pressed={choice===i} onClick={()=>setChoice(i)}>{label}</button>)}</div><div className="cap-image-frame" key={choice}><img src={choice===0?scene:vr} alt={choice===0?words.map:words.immersive} loading="lazy"/></div></figure>;

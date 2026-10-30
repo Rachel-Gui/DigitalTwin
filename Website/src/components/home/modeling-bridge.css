@@ -1,0 +1,12 @@
+.platform-home .cap-modeling-bridge{margin:0;width:100%;padding:0}
+.platform-home .cap-modeling-bridge svg{display:block;width:100%;height:auto;overflow:visible}
+.cap-modeling-bridge text{font-family:"Helvetica Neue",Arial,sans-serif;letter-spacing:0}
+.cap-modeling-bridge .bridge-label{font-size:13px;fill:var(--journal-muted)}
+.cap-modeling-bridge .bridge-title{font-size:18px;font-weight:500;fill:var(--journal-ink)}
+.cap-modeling-bridge .bridge-detail{font-size:12px;fill:var(--journal-muted)}
+.cap-modeling-bridge .bridge-connections{stroke:var(--journal-muted);stroke-width:1;opacity:.5}
+.cap-modeling-bridge .bridge-method>circle:first-child{fill:none;stroke:var(--journal-line);stroke-width:1}
+.cap-modeling-bridge .bridge-method path{fill:none;stroke:var(--journal-ink);stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
+.cap-modeling-bridge .bridge-network-node{fill:var(--journal-bg);stroke:var(--journal-ink);stroke-width:1.4}
+.cap-modeling-bridge .bridge-label-ground{fill:var(--journal-bg)}
+@media(max-width:720px){.cap-modeling-bridge .bridge-title{font-size:24px}.cap-modeling-bridge .bridge-label{font-size:20px}.cap-modeling-bridge .bridge-detail{display:none}}
