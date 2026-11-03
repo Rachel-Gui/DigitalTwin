@@ -1,4 +1,5 @@
 export const workspaceSpanish = {
+  "The ArcGIS map engine could not be loaded. Check your connection or content blocker and try again.":"No se pudo cargar el motor de ArcGIS. Revisa la conexión o el bloqueador de contenido e inténtalo de nuevo.",
   "Loading map engine…":"Cargando motor del mapa…",
   "Loading scene data…":"Cargando datos de la escena…",
   "Starting the 3D map…":"Iniciando el mapa 3D…",

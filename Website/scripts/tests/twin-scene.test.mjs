@@ -3,7 +3,8 @@ import vm from "node:vm";
 import test from "node:test";
 import assert from "node:assert/strict";
 
-const code = await readFile(new URL("../../public/twin-scene.js", import.meta.url), "utf8");
+const source = await readFile(new URL("../../src/scene/createSceneViewer.js", import.meta.url), "utf8");
+const code = source.replace("export function createSceneViewer", "function createSceneViewer") + "\ncreateSceneViewer(loadModules);";
 const sceneId = "93638c71042f4e7a84fd1a6762c3210b";
 const origin = "http://localhost:5176";
 const pending = () => new Promise(() => {});
@@ -17,7 +18,7 @@ const collection = values => ({
 function viewer(options = {}) {
   let now = 0, nextTimer = 0;
   const timers = new Map(), messages = [], listeners = new Map();
-  const state = { basemaps: [], views: [], sdkRequests: 0, popupCalls: 0 };
+  const state = { basemaps: [], views: [], moduleRequests: 0, popupCalls: 0 };
   const elements = Object.fromEntries(["message", "scene", "arcgis-theme"].map(id => [id, {
     hidden: false, textContent: "", dataset: {}, style: {}, setAttribute() {},
   }]));
@@ -49,10 +50,6 @@ function viewer(options = {}) {
       };
     },
   };
-  const require = (ids, callback) => {
-    if (!options.modulesPending) callback(WebScene, SceneView, Basemap, SceneLayer, Widget, Widget, Widget);
-  };
-  require.on = (name, callback) => { state.loaderError = callback; return { remove() {} }; };
   const parent = {
     document: { documentElement: root },
     postMessage: message => messages.push(message),
@@ -68,13 +65,14 @@ function viewer(options = {}) {
       createElement: tag => tag === "canvas" ? {
         getContext: () => options.noWebGL ? null : { getExtension: () => ({ loseContext() {} }) },
       } : {},
-      head: { appendChild: script => {
-        state.sdkRequests++;
-        if (options.sdkPending) return;
-        queueMicrotask(() => options.sdkError ? script.onerror() : script.onload());
-      } },
     },
-    require: options.missingLoader ? undefined : require,
+    // Regression: no global require or $arcgis loader exists in this environment.
+    loadModules: () => {
+      state.moduleRequests++;
+      if (options.modulesPending) return pending();
+      if (options.moduleError) return Promise.reject(new Error("module download failed"));
+      return Promise.resolve([WebScene, SceneView, Basemap, SceneLayer, Widget, Widget, Widget]);
+    },
     applyCityTwinPopupFormatting: () => { state.popupCalls++; return options.popupPending ? pending() : Promise.resolve(); },
   };
   context.window = context;
@@ -109,17 +107,15 @@ test("the scene starts without waiting for popup formatting or themed basemaps",
   assert.equal(h.state.scene.basemap, h.publishedBasemap);
 });
 
-test("missing WebGL2 fails immediately before downloading the SDK", async () => {
+test("missing WebGL2 fails immediately before downloading the engine", async () => {
   const h = viewer({ noWebGL: true }); await h.flush();
   assert.equal(h.messages.at(-1).type, "decarb-scene-error");
   assert.match(h.messages.at(-1).message, /WebGL2/);
-  assert.equal(h.state.sdkRequests, 0);
+  assert.equal(h.state.moduleRequests, 0);
 });
 
 for (const [name, options, duration, message] of [
-  ["SDK download failure", { sdkError: true }, 0, /could not be downloaded/],
-  ["missing module loader", { missingLoader: true }, 0, /did not initialize/],
-  ["stalled SDK download", { sdkPending: true }, 60000, /took too long/],
+  ["module download failure", { moduleError: true }, 0, /map engine could not be loaded/],
   ["stalled module request", { modulesPending: true }, 60000, /took too long/],
   ["stalled scene metadata", { scenePending: true }, 20000, /scene data took too long/],
   ["stalled SceneView", { viewPending: true }, 30000, /3D map could not start/],
@@ -132,12 +128,6 @@ for (const [name, options, duration, message] of [
     if (h.state.views.length) assert.equal(h.state.views[0].destroyed, true);
   });
 }
-
-test("module errors notify the parent", async () => {
-  const h = viewer({ modulesPending: true }); await h.flush();
-  h.state.loaderError(new Error("unreachable module"));
-  assert.equal(h.messages.at(-1).type, "decarb-scene-error");
-});
 
 test("the load handshake replays readiness if the first message was missed", async () => {
   const h = viewer(); await h.flush();
@@ -153,4 +143,10 @@ test("switching theme loads the selected basemap on demand", async () => {
   h.send({ type: "decarb-theme", theme: "dark" }); await h.flush();
   assert.deepEqual(h.state.basemaps, ["gray-vector", "dark-gray-vector"]);
   assert.equal(h.elements.scene.dataset.basemap, "dark-gray");
+});
+
+test("the renderer starts without global require or $arcgis loaders", async () => {
+  const h = viewer(); await h.flush();
+  assert.equal(h.state.moduleRequests, 1);
+  assert.equal(h.messages.at(-1).type, "decarb-scene-ready");
 });

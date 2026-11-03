@@ -1,4 +1,4 @@
-(() => {
+export function createSceneViewer(loadModules) {
   const allowedScenes = new Set([
     "93638c71042f4e7a84fd1a6762c3210b",
     "32d83750ea704ed4bfad6e2d4075a52a",
@@ -76,23 +76,7 @@
   }
   gl.getExtension("WEBGL_lose_context")?.loseContext();
   progress("Loading map engine…");
-  const sdk = document.createElement("script");
-  sdk.src = "https://js.arcgis.com/4.34/";
-  sdk.onerror = () => fail("The ArcGIS map engine could not be downloaded. Check your connection or content blocker.");
-  sdk.onload = () => {
-    if (status.type === "decarb-scene-error") return;
-    if (typeof window.require !== "function") {
-      fail("The ArcGIS map engine did not initialize. Reload the scene or try another browser.");
-      return;
-    }
-    const loaderError = window.require.on?.("error", error => {
-      console.error("ArcGIS module loading failed", error);
-      if (status.type !== "decarb-scene-ready") fail("An ArcGIS map component could not load. Check your connection or content blocker.");
-    });
-    window.require([
-      "esri/WebScene", "esri/views/SceneView", "esri/Basemap", "esri/layers/SceneLayer",
-      "esri/widgets/Home", "esri/widgets/Legend", "esri/widgets/Expand",
-    ], async (WebScene, SceneView, Basemap, SceneLayer, Home, Legend, Expand) => {
+  Promise.resolve().then(loadModules).then(async ([WebScene, SceneView, Basemap, SceneLayer, Home, Legend, Expand]) => {
       try {
         if (status.type === "decarb-scene-error") return;
         progress("Loading scene data…");
@@ -112,7 +96,6 @@
         clearTimeout(watchdog);
         status = { type: "decarb-scene-ready", message: "" };
         report();
-        loaderError?.remove();
 
         // A missing or slow formatting helper leaves the original popups usable.
         Promise.resolve().then(() => window.applyCityTwinPopupFormatting?.(scene))
@@ -174,7 +157,8 @@
           fail(error.message || "The 3D scene could not load. Reload the scene or open it in ArcGIS.");
         }
       }
-    });
-  };
-  document.head.appendChild(sdk);
-})();
+  }).catch(error => {
+    console.error("ArcGIS module loading failed", error);
+    fail("The ArcGIS map engine could not be loaded. Check your connection or content blocker and try again.");
+  });
+}
