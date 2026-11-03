@@ -6,48 +6,6 @@
 @media(max-width:1100px) and (min-width:901px){.esri-ui-top-left{left:312px!important}.esri-ui-top-right{right:290px!important}}@media(max-width:600px){.esri-ui-top-left{top:auto!important;bottom:52px!important;left:12px!important}.esri-ui-top-right{top:285px!important;right:12px!important}}
 </style>
 </head><body><div id="scene" aria-label="South Park interactive 3D scene"></div><div id="message" role="status">Loading South Park 3D scene…</div>
-<script>
-const allowedScenes=new Set(['93638c71042f4e7a84fd1a6762c3210b','32d83750ea704ed4bfad6e2d4075a52a','d154dd70fd9242daa6d4542631ac3138']);
-const sceneId=new URLSearchParams(location.search).get('scene');
-let activeTheme='light',applyTheme=null;
-addEventListener('message',event=>{if(event.origin!==location.origin||event.source!==parent||event.data?.type!=='decarb-panels')return;document.documentElement.style.setProperty('--scene-tools-left',event.data.controlsOpen?'336px':'16px');document.documentElement.style.setProperty('--scene-tools-right',event.data.infoOpen?'312px':'16px')});
-try{activeTheme=parent.document.documentElement.dataset.theme==='dark'?'dark':'light'}catch{}
-function paintChrome(theme){document.documentElement.dataset.theme=theme;document.body.classList.toggle('calcite-mode-dark',theme==='dark');document.getElementById('arcgis-theme').href=`https://js.arcgis.com/4.34/esri/themes/${theme}/main.css`;document.body.style.background=theme==='dark'?'#152025':'#f5f6f5';document.getElementById('scene').style.background=document.body.style.background;}
-paintChrome(activeTheme);
-addEventListener('message',event=>{if(event.origin!==location.origin||event.source!==parent||event.data?.type!=='decarb-theme')return;activeTheme=event.data.theme==='dark'?'dark':'light';paintChrome(activeTheme);applyTheme?.(activeTheme)});
-function report(type){parent.postMessage({type,sceneId},location.origin)}
-function fail(){const message=document.getElementById('message');message.textContent='The 3D scene could not load. Use Map options to reload the scene or open the published ArcGIS viewer.';message.hidden=false;message.setAttribute('role','alert');report('decarb-scene-error')}
-</script>
-<script src="/twin-popup-overrides.js"></script>
-<script src="https://js.arcgis.com/4.34/" onerror="fail()"></script>
-<script>
-if(!allowedScenes.has(sceneId)){fail()}else if(window.require){require(['esri/WebScene','esri/views/SceneView','esri/Basemap','esri/layers/SceneLayer','esri/widgets/Home','esri/widgets/Legend','esri/widgets/Expand'],async(WebScene,SceneView,Basemap,SceneLayer,Home,Legend,Expand)=>{
-try{
- const scene=new WebScene({portalItem:{id:sceneId}});await scene.load();
- await applyCityTwinPopupFormatting(scene).catch(error=>console.warn("Popup formatting unavailable; using published templates.",error));
- // Reuse only the basemap's contextual building geometry. Operational layers,
- // classifications, units and model values remain as published; popup display is formatted locally.
- const contextBuildings=scene.basemap.baseLayers.filter(layer=>layer.type==='scene'&&/Buildings/i.test(layer.title)).toArray();
- scene.basemap.baseLayers.removeMany(contextBuildings);
- // Some SDK versions relocate the published 3D basemap context during loading.
- // Retain the same public geometry service if it is not in baseLayers.
- if(!contextBuildings.length)contextBuildings.push(new SceneLayer({url:'https://basemaps3d.arcgis.com/arcgis/rest/services/Esri3D_Buildings_v1/SceneServer/layers/0',title:'Buildings',popupEnabled:false,listMode:'hide'}));
- const basemaps={light:Basemap.fromId('gray-vector'),dark:Basemap.fromId('dark-gray-vector')};
- for(const basemap of Object.values(basemaps)){await basemap.load();contextBuildings.forEach(layer=>basemap.baseLayers.add(layer.clone()))}
- scene.basemap=basemaps[activeTheme];
- const view=new SceneView({container:'scene',map:scene,qualityProfile:'medium',popup:{dockEnabled:true,dockOptions:{position:'bottom-center',buttonEnabled:true,breakpoint:false}}});
- applyTheme=theme=>{
-   scene.basemap=basemaps[theme];
-   scene.basemap.baseLayers.forEach(layer=>{if(layer.type==='scene'&&/Buildings/i.test(layer.title))layer.renderer={type:'simple',symbol:{type:'mesh-3d',symbolLayers:[{type:'fill',material:{color:theme==='light'?'#e1e5e5':'#454b52',colorMixMode:'replace'}}]}}});
-   view.environment.background={type:'color',color:theme==='light'?'#f5f6f5':'#152025'};
-   document.getElementById('scene').dataset.basemap=theme==='light'?'light-gray':'dark-gray';
- };
- await view.when();applyTheme(activeTheme);
- view.ui.add(new Home({view}),'top-left');
- view.ui.add(new Expand({view,content:new Legend({view}),expandTooltip:'Map legend'}),'top-right');
- const slides=scene.presentation?.slides;
- if(slides?.length){const select=document.createElement('select');select.setAttribute('aria-label','Saved scene views');select.style.cssText='max-width:160px;padding:9px;border:1px solid #bbc8c9;border-radius:6px;background:var(--esri-widget-background-color);color:var(--esri-widget-text-color);font:12px Arial';const placeholder=new Option('Saved views','');select.add(placeholder);slides.forEach((slide,index)=>select.add(new Option(slide.title.text||`View ${index+1}`,String(index))));select.addEventListener('change',async()=>{if(select.value==='')return;await slides.getItemAt(Number(select.value)).applyTo(view);applyTheme(activeTheme)});view.ui.add(select,'top-right')}
- document.getElementById('message').hidden=true;report('decarb-scene-ready');
-}catch(error){console.error('South Park scene initialization failed',error);fail()}
-},fail)}
-</script></body></html>
+<script defer src="/twin-popup-overrides.js"></script>
+<script defer src="/twin-scene.js"></script>
+</body></html>

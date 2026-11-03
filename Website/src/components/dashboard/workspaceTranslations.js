@@ -1,4 +1,17 @@
 export const workspaceSpanish = {
+  "Loading map engine…":"Cargando motor del mapa…",
+  "Loading scene data…":"Cargando datos de la escena…",
+  "Starting the 3D map…":"Iniciando el mapa 3D…",
+  "This browser cannot start WebGL2. Enable hardware acceleration or try another browser.":"Este navegador no puede iniciar WebGL2. Activa la aceleración por hardware o prueba otro navegador.",
+  "The ArcGIS map engine could not be downloaded. Check your connection or content blocker.":"No se pudo descargar el motor de ArcGIS. Revisa la conexión o el bloqueador de contenido.",
+  "The ArcGIS map engine did not initialize. Reload the scene or try another browser.":"El motor de ArcGIS no se inició. Recarga la escena o prueba otro navegador.",
+  "An ArcGIS map component could not load. Check your connection or content blocker.":"No se pudo cargar un componente de ArcGIS. Revisa la conexión o el bloqueador de contenido.",
+  "The map engine or scene took too long to load. Check your connection and try again.":"El motor o la escena tardó demasiado en cargar. Revisa la conexión e inténtalo de nuevo.",
+  "The published scene data took too long to load. Check your connection to ArcGIS and try again.":"Los datos de la escena tardaron demasiado en cargar. Revisa la conexión a ArcGIS e inténtalo de nuevo.",
+  "The 3D map could not start in time. Check WebGL2 and hardware acceleration, then try again.":"El mapa 3D no se inició a tiempo. Revisa WebGL2 y la aceleración por hardware e inténtalo de nuevo.",
+  "The scene is not responding. Reload the scene or open it in ArcGIS.":"La escena no responde. Recárgala o ábrela en ArcGIS.",
+  "The scene page could not load. Reload the scene or open it in ArcGIS.":"No se pudo cargar la página de la escena. Recárgala o ábrela en ArcGIS.",
+
   "What the indicators mean":"Qué significan los indicadores",
   "Mass concentration of fine particles up to 2.5 micrometers in diameter.":"Concentración en masa de partículas finas de hasta 2,5 micrómetros de diámetro.",
   "Mass concentration of particles up to 10 micrometers in diameter.":"Concentración en masa de partículas de hasta 10 micrómetros de diámetro.",

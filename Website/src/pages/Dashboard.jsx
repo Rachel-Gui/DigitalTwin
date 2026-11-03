@@ -52,29 +52,46 @@ export default function Dashboard(){
 function SpatialWorkspace({mode,infoOpen,controlsOpen}){
   const model=spatialModels[mode];
   const {theme}=useTheme();
+  const {t}=useLanguage();
   const [reload,setReload]=useState(0);
   const [frameLoaded,setFrameLoaded]=useState(false);
-  const [frameError,setFrameError]=useState(false);
+  const [frameError,setFrameError]=useState("");
+  const [frameStatus,setFrameStatus]=useState("Loading map engine…");
   const frame=useRef(null);
   const src=`/twin-scene.html?scene=${model.sceneId}`;
   const syncTheme=()=>frame.current?.contentWindow?.postMessage({type:"decarb-theme",theme},window.location.origin);
   useEffect(()=>{syncTheme()},[theme]);
   useEffect(()=>{
-    const onMessage=event=>{if(event.origin!==window.location.origin||event.source!==frame.current?.contentWindow||event.data?.sceneId!==model.sceneId)return;if(["decarb-scene-ready","decarb-scene-error"].includes(event.data.type)){setFrameLoaded(true);setFrameError(event.data.type==="decarb-scene-error")}};
+    const timer=setTimeout(()=>{setFrameLoaded(true);setFrameError("The scene is not responding. Reload the scene or open it in ArcGIS.")},65000);
+    const onMessage=event=>{
+      if(event.origin!==window.location.origin||event.source!==frame.current?.contentWindow||event.data?.sceneId!==model.sceneId)return;
+      if(event.data.type==="decarb-scene-progress"&&typeof event.data.message==="string")setFrameStatus(event.data.message);
+      if(["decarb-scene-ready","decarb-scene-error"].includes(event.data.type)){
+        clearTimeout(timer);
+        setFrameLoaded(true);
+        setFrameError(event.data.type==="decarb-scene-error"?(event.data.message||"The scene could not load."):"");
+      }
+    };
     window.addEventListener("message",onMessage);
-    return()=>window.removeEventListener("message",onMessage);
-  },[model.sceneId]);
+    frame.current?.contentWindow?.postMessage({type:"decarb-scene-status"},window.location.origin);
+    return()=>{clearTimeout(timer);window.removeEventListener("message",onMessage)};
+  },[model.sceneId,reload]);
   useEffect(()=>{frame.current?.contentWindow?.postMessage({type:"decarb-panels",controlsOpen,infoOpen},window.location.origin)},[controlsOpen,infoOpen,frameLoaded]);
-  const reloadScene=()=>{setFrameLoaded(false);setFrameError(false);setReload(value=>value+1)};
+  const reloadScene=()=>{setFrameLoaded(false);setFrameError("");setFrameStatus("Loading map engine…");setReload(value=>value+1)};
+  const onFrameLoad=()=>{
+    syncTheme();
+    frame.current?.contentWindow?.postMessage({type:"decarb-panels",controlsOpen,infoOpen},window.location.origin);
+    frame.current?.contentWindow?.postMessage({type:"decarb-scene-status"},window.location.origin);
+  };
   return <section className={`twin-spatial-layout ${infoOpen?"":"without-info"}`} aria-label={model.title}>
     <div className="twin-map-column">
       <div className="twin-map-stage">
-        {!frameLoaded&&<div className="twin-map-loading" role="status"><span/>Loading South Park 3D scene…</div>}
-        <iframe ref={frame} key={`${mode}-${reload}`} src={src} title={`South Park ${model.title} interactive 3D scene`} onLoad={syncTheme} allowFullScreen/>
+        {!frameLoaded&&<div className="twin-map-loading" role="status"><span/>{t(frameStatus)}</div>}
+        <iframe ref={frame} key={`${mode}-${reload}`} src={src} title={`South Park ${model.title} interactive 3D scene`} onLoad={onFrameLoad} onError={()=>{setFrameLoaded(true);setFrameError("The scene page could not load. Reload the scene or open it in ArcGIS.")}} allowFullScreen/>
       </div>
       <div className="twin-map-footer"><span><i/>Published South Park model · ArcGIS</span></div>
       <details className="twin-map-options"><summary aria-label="Map options"><WorkspaceIcon name="more"/></summary><div><button type="button" onClick={reloadScene}><WorkspaceIcon name="refresh"/>Reload scene</button><a href={arcgisUrl(model)} target="_blank" rel="noopener noreferrer">Open in ArcGIS</a></div></details>
-      {frameError&&<div className="twin-recovery" role="alert"><strong>The scene could not load.</strong><button type="button" onClick={reloadScene}>Try again</button><a href={arcgisUrl(model)} target="_blank" rel="noopener noreferrer">Open in ArcGIS </a></div>}
+      {frameError&&<div className="twin-recovery" role="alert"><strong>{t(frameError)}</strong><button type="button" onClick={reloadScene}>Try again</button><a href={arcgisUrl(model)} target="_blank" rel="noopener noreferrer">Open in ArcGIS </a></div>}
     </div>
     {infoOpen&&<aside className="twin-information" id="twin-view-info">
       <div className="twin-panel-heading"><WorkspaceIcon name="info"/><h2>Data & methods</h2></div>
