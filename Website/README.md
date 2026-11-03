@@ -68,7 +68,7 @@ npm run build
 ## Notes
 
 - The ArcGIS 3D viewer is embedded on `/dashboard` and requires network access.
-- All scientific metrics and chart forms are explicitly illustrative placeholders.
-- The external air-quality platform URL remains a placeholder.
+- Dashboard values come from the published ArcGIS scenes, Clarity endpoint, and Tableau model. The editable solar comparison is an explicitly labeled example.
+- The dashboard links to the DAISY Clarity source. Local sensor observations require a server-side API key.
 - The only public backend endpoint is the server-side Clarity analytics proxy.
 - No database, application authentication, LLM API, or custom 3D engine is included.

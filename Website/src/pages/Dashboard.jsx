@@ -3,6 +3,8 @@ import { Link, useSearchParams } from "react-router-dom";
 import { useTheme } from "../theme";
 import WorkspaceIcon from "../components/dashboard/WorkspaceIcon";
 import { spatialModels, arcgisUrl } from "../components/dashboard/workspaceContent";
+import AssessmentDefinitions, { AssessmentTakeaway, AssessmentLegend, AssessmentSteps } from "../components/dashboard/AssessmentGuide";
+import { useLanguage } from "../i18n";
 import "./dashboard-workspace.css";
 import "./dashboard-refinement.css";
 
@@ -11,6 +13,7 @@ const availableModes=["energy","retrofit","renewable","air"];
 const navigation=[...Object.entries(spatialModels).map(([id,model])=>({id,label:model.short,icon:model.icon})),{id:"air",label:"Air Quality",icon:"air"}];
 
 export default function Dashboard(){
+  const { language, t } = useLanguage();
   const [params,setParams]=useSearchParams();
   const requested=params.get("module");
   const mode=availableModes.includes(requested)?requested:"energy";
@@ -26,12 +29,13 @@ export default function Dashboard(){
   const model=mode==="air"?null:spatialModels[mode];
   return <div className="dashboard-page twin-workspace-page twin-immersive twin-refined">
     <div className="twin-app">
-      <aside id="twin-assessment-controls" className="twin-control-dock" aria-label="Assessment controls" hidden={!controlsOpen}>
+      <aside id="twin-assessment-controls" className="twin-control-dock" aria-label={t("Assessment controls")} hidden={!controlsOpen}>
         <div className="twin-analysis-card">
-          <div className="twin-study-picker"><WorkspaceIcon name="map"/><div><h1>South Park</h1><span>Seattle, Washington</span></div><span className="twin-study-tag">PILOT STUDY</span></div>
-          <nav className="twin-rail" aria-label="Digital Twin module">{navigation.map(item=><button type="button" key={item.id} aria-pressed={mode===item.id} onClick={()=>changeMode(item.id)}><WorkspaceIcon name={item.icon}/><span>{item.label}</span></button>)}</nav>
+          <div className="twin-study-picker"><WorkspaceIcon name="map"/><div><h1>South Park</h1><span>Seattle, Washington</span></div><span className="twin-study-tag">{language === "es" ? "ESTUDIO PILOTO" : "PILOT STUDY"}</span></div>
+          <nav className="twin-rail" aria-label="Digital Twin module">{navigation.map(item=><button type="button" key={item.id} aria-pressed={mode===item.id} onClick={()=>changeMode(item.id)}><WorkspaceIcon name={item.icon}/><span>{t(item.label)}</span></button>)}</nav>
           <div className="twin-assessment-summary"><span className="twin-source-tag">{model?model.badge:"Observations & model outputs"}</span><h2>{model?model.title:"Air quality"}</h2><p>{model?model.description:"Explore the latest DAISY sensor observations and modeled annual-average PM₂.₅ across Seattle."}</p>
-            {model&&<div className="twin-active-measure"><span>Map measure</span><strong>{model.metric}</strong><small>{model.unit}</small></div>}
+            {model&&<div className="twin-active-measure"><span>Map measure</span><strong>{t(model.metric)}</strong><small>{t(model.unit)}</small></div>}
+            {model && <><AssessmentTakeaway mode={mode}/><AssessmentLegend mode={mode}/><AssessmentSteps/></>}
           </div>
           <div className="twin-air-control-slot" ref={setAirControlSlot}/>
         </div>
@@ -74,7 +78,7 @@ function SpatialWorkspace({mode,infoOpen,controlsOpen}){
     </div>
     {infoOpen&&<aside className="twin-information" id="twin-view-info">
       <div className="twin-panel-heading"><WorkspaceIcon name="info"/><h2>Data & methods</h2></div>
-      <div className="twin-info-block"><span className="twin-label">Available in building details</span><ul>{model.fields.map(field=><li key={field}><i/>{field}</li>)}</ul></div>
+      <AssessmentDefinitions key={mode} mode={mode}/>
       <details className="twin-guide-details"><summary>How to explore the scene</summary><p>{model.guide}</p><p>Use zoom, rotation, saved views, and the legend inside the map.</p></details>
       {model.href&&<Link className="twin-primary-link" to={model.href}>{model.action}</Link>}
       <p className="twin-evidence-note">{model.note}</p>

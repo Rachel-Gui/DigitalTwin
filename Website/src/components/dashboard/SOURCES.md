@@ -39,3 +39,41 @@ It is kept separate from latest sensor observations.
 
 The expand control expands the application workspace within the browser and
 supports Escape; it does not require the browser Fullscreen API.
+
+## Local preview revision — 2026-11-03
+
+- `legendScales.js` transcribes the color-variable stops from each active published
+  WebScene layer. These are continuous ramps, not five class bins. Energy and
+  retrofit increase from dark orange to pale orange; solar increases from pale
+  yellow to dark purple. Context buildings are outside these classifications.
+- Renewable map units remain kWh/year (the actual source field). Definitions
+  explain the popup's division by 1,000 to MWh/year, rather than relabeling the map.
+- The editable annual solar comparison uses PV **electricity**, not incident roof
+  resource. The input starts empty, so no example result can be mistaken for a selected
+  building or a pilot total. Users manually enter a popup's estimated PV generation.
+  Adjacent wording distinguishes annual energy totals from continuous supply.
+- Starting annual comparison denominator: EIA's 2022 U.S. average residential
+  electric-utility customer purchases of 10,791 kWh/year. This is not a Seattle
+  household average, a forecast, or a building-specific demand figure.
+  Source: https://www.eia.gov/tools/faqs/faq.php?id=97&t=7
+- A read-only query of all 1,437 building-layer records returned no truncated
+  results. For each of the 1,286 records with usable baseline/scenario EUI and
+  savings, the recorded percentage agreed with `(baseline - scenario) / baseline
+  * 100` within 0.05 percentage points for envelope, electrification and deep
+  retrofit (consistent with rounding). This supports the displayed EUI savings
+  definition; it does not validate simulation assumptions or measured performance.
+- Apartment records include three distinct baseline EUI values. Identical values
+  alone do not establish the same archetype/model configuration. Zero and equal
+  savings remain unchanged; their modeling interpretation and priority-tier
+  scoring still need confirmation from the model owner.
+- `public/twin-popup-overrides.js` only formats the website's in-memory popup
+  templates: construction years have no grouping/decimals, missing heating or
+  construction year is "Not available", and the obsolete energy-profile link is
+  removed. No source values, renderers, ArcGIS items, or services are updated.
+- Existing native building popups are retained. No building-selection-to-sidebar
+  synchronization or fabricated selection has been added.
+
+The household comparison is now a default-collapsed optional reference below the
+metric definitions. Estimated PV generation is listed first and its explanation
+is initially expanded. Household equivalence is shown in ordinary text, without
+a featured count or colored result card.

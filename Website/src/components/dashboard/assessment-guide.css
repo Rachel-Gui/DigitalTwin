@@ -1,0 +1,34 @@
+.twin-refined .assessment-takeaway{font-size:12px;line-height:1.75;color:var(--tw-secondary);margin:14px 0 0}
+.assessment-legend,.assessment-steps{border-top:1px solid var(--tw-border);padding-top:18px;margin-top:20px}
+.assessment-legend h3,.assessment-steps h3,.assessment-definitions h3{font-family:inherit;font-weight:600;font-size:12px;line-height:1.5;margin:0 0 10px}
+.assessment-legend p,.assessment-legend small{font-size:10px;line-height:1.65;color:var(--tw-secondary);margin:8px 0;display:block}
+.assessment-color-bar{height:12px;border:1px solid var(--tw-border);border-radius:4px;margin-top:12px}
+.assessment-color-labels{display:flex;justify-content:space-between;gap:8px;font-size:10px;line-height:1.5;margin-top:6px;font-variant-numeric:tabular-nums}
+.assessment-color-labels span:nth-child(2){text-align:center}
+.assessment-steps ol{padding-left:18px;margin:0;display:grid;gap:8px;font-size:11px;line-height:1.7;color:var(--tw-secondary)}
+.assessment-meaning{font-size:12px;line-height:1.8;color:var(--tw-secondary);margin:0 0 18px}
+.assessment-definitions{border-top:1px solid var(--tw-border);padding-top:18px}
+.assessment-definitions details{border-bottom:1px solid var(--tw-border)}
+.assessment-definitions summary{display:flex;justify-content:space-between;gap:12px;list-style:none;cursor:pointer;font-size:12px;line-height:1.6;padding:13px 0}
+.assessment-definitions summary span{color:var(--tw-accent)}
+.assessment-definitions details[open] summary span{transform:rotate(45deg)}
+.assessment-definitions p,.assessment-limitation{font-size:11px;line-height:1.8;color:var(--tw-secondary);margin:0 0 14px}
+.assessment-limitation{margin-top:18px}
+.solar-equivalence{padding:0;border:0;border-top:1px solid var(--tw-border);border-radius:0;background:transparent;margin-top:20px;margin-bottom:14px}
+.solar-equivalence>summary{padding:14px 0;font-size:11px;color:var(--tw-secondary)}
+.solar-equivalence-content{padding:0 0 8px}
+.assessment-eyebrow{font-size:9px;line-height:1.6;letter-spacing:.05em;text-transform:uppercase;color:var(--tw-accent)}
+.solar-equivalence h3{font-size:18px;line-height:1.4;letter-spacing:-.02em;margin:8px 0}
+.solar-equivalence p,.solar-equivalence summary,.solar-equivalence a{font-size:11px;line-height:1.75;color:var(--tw-secondary)}
+.solar-equivalence p{margin:8px 0 14px}
+.solar-equivalence label{display:block;font-size:10px;line-height:1.6;margin:12px 0 6px;color:var(--tw-ink)}
+.solar-equivalence input{box-sizing:border-box;width:100%;min-height:40px;padding:9px 10px;border:1px solid var(--tw-border);border-radius:7px;background:var(--tw-surface);color:var(--tw-ink);font:inherit;font-size:14px}
+.solar-equivalence input:focus-visible{outline:2px solid var(--tw-accent);outline-offset:2px}
+.solar-equivalence .solar-equivalence-result{display:block;padding:10px 0;font-size:11px;font-weight:500;color:var(--tw-ink)}
+.solar-equivalence-result strong{font-size:32px;font-weight:600;color:var(--tw-accent);line-height:1.2;font-variant-numeric:tabular-nums}
+.solar-equivalence-result span{font-size:11px;line-height:1.5;color:var(--tw-secondary)}
+.solar-equivalence summary{cursor:pointer;color:var(--tw-accent)}
+.solar-equivalence a{text-decoration:underline;color:var(--tw-accent)}
+@media(max-width:600px){.twin-refined .assessment-takeaway,.assessment-steps{display:none}.assessment-legend{margin-top:12px;padding-top:12px}.assessment-legend>small:last-child,.assessment-legend>p:last-of-type{display:none}}
+
+.air-metric-definitions{font-size:11px;line-height:1.75;color:var(--tw-secondary);margin:12px 0 0}.air-metric-definitions dt{font-weight:600;color:var(--tw-ink);margin-top:12px}.air-metric-definitions dd{margin:4px 0 0}

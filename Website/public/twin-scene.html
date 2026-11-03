@@ -18,13 +18,15 @@ addEventListener('message',event=>{if(event.origin!==location.origin||event.sour
 function report(type){parent.postMessage({type,sceneId},location.origin)}
 function fail(){const message=document.getElementById('message');message.textContent='The 3D scene could not load. Use Map options to reload the scene or open the published ArcGIS viewer.';message.hidden=false;message.setAttribute('role','alert');report('decarb-scene-error')}
 </script>
+<script src="/twin-popup-overrides.js"></script>
 <script src="https://js.arcgis.com/4.34/" onerror="fail()"></script>
 <script>
 if(!allowedScenes.has(sceneId)){fail()}else if(window.require){require(['esri/WebScene','esri/views/SceneView','esri/Basemap','esri/layers/SceneLayer','esri/widgets/Home','esri/widgets/Legend','esri/widgets/Expand'],async(WebScene,SceneView,Basemap,SceneLayer,Home,Legend,Expand)=>{
 try{
  const scene=new WebScene({portalItem:{id:sceneId}});await scene.load();
+ await applyCityTwinPopupFormatting(scene).catch(error=>console.warn("Popup formatting unavailable; using published templates.",error));
  // Reuse only the basemap's contextual building geometry. Operational layers,
- // classifications, popups, units and data remain exactly as published.
+ // classifications, units and model values remain as published; popup display is formatted locally.
  const contextBuildings=scene.basemap.baseLayers.filter(layer=>layer.type==='scene'&&/Buildings/i.test(layer.title)).toArray();
  scene.basemap.baseLayers.removeMany(contextBuildings);
  // Some SDK versions relocate the published 3D basemap context during loading.
