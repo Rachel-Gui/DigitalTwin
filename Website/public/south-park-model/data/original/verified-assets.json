@@ -1,0 +1,39 @@
+{
+  "verified_date": "2026-11-05",
+  "assets": [
+    {
+      "asset": "south_park_ground.glb",
+      "source": "https://decarb-city-twin-vr.ruichg.chatgpt.site/runtime-assets/scenes/south_park_ground.glb",
+      "sha256": "0c83860a88b01a55714c2f33062928f9f15225a52317f975760562f9c178ae64",
+      "bytes": 78116,
+      "identical_to_repository": true
+    },
+    {
+      "asset": "south_park_roads.glb",
+      "source": "https://decarb-city-twin-vr.ruichg.chatgpt.site/runtime-assets/scenes/south_park_roads.glb",
+      "sha256": "15e9f76679bd6e0448eec74490d76ab062c7720ceeeb3c9f697fc856bd54886d",
+      "bytes": 69504,
+      "identical_to_repository": true
+    },
+    {
+      "asset": "south_park_buildings.glb",
+      "source": "https://decarb-city-twin-vr.ruichg.chatgpt.site/runtime-assets/scenes/south_park_buildings.glb",
+      "sha256": "bd224996df55bb9d846c8b44c0351f7cadf8ba0026a11e0ccb4af4f7a8ec63cb",
+      "bytes": 4307760,
+      "identical_to_repository": true
+    }
+  ],
+  "triangles": 70488,
+  "bounds": {
+    "min": [
+      -950.92821,
+      0.1,
+      -1180.6725000000001
+    ],
+    "max": [
+      1000.2158000000001,
+      30.42,
+      1337.992
+    ]
+  }
+}

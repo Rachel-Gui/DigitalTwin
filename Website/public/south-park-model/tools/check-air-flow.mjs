@@ -1,0 +1,18 @@
+import fs from 'node:fs/promises';
+import assert from 'node:assert/strict';
+const sourceURL=new URL('../flow.js',import.meta.url);
+const threeURL=new URL('../../../../VR/node_modules/three/build/three.module.js',import.meta.url);
+const fieldURL=new URL('../field-shader.js',import.meta.url);
+const source=(await fs.readFile(sourceURL,'utf8')).replace("'three'",JSON.stringify(threeURL.href)).replace("'./field-shader.js'",JSON.stringify(fieldURL.href));
+const {createAirFlow}=await import('data:text/javascript;base64,'+Buffer.from(source).toString('base64'));
+const flow=createAirFlow();assert.equal(flow.group.visible,false);
+const [lines,particles]=flow.group.children;assert.equal(lines.geometry.attributes.aSeed.count,3600);assert.equal(particles.geometry.attributes.aSeed.count,2600);
+for(const object of [lines,particles])for(const attribute of Object.values(object.geometry.attributes))for(const v of attribute.array)assert.ok(Number.isFinite(v));
+const region={scaleMin:6,scaleMax:7,centerY:110,halfHeight:75,bounds:{minX:-100,maxX:100,minZ:-200,maxZ:200},enabled:true};
+flow.setField({...region,samples:[]});assert.equal(flow.group.visible,false);
+flow.setField({...region,samples:[{x:-50,z:-50,value:6.15},{x:50,z:50,value:6.7}]});assert.equal(flow.group.visible,true);
+const u=lines.material.uniforms;assert.deepEqual(u.uSize.value.toArray(),[200,150,400]);assert.equal(u.uSensorCount.value,2);assert.deepEqual(u.uValues.value.slice(0,2),[6.15,6.7]);assert.equal(u,particles.material.uniforms);
+flow.update(1000);flow.update(1100);const elapsed=u.uTime.value;assert.ok(elapsed>0);flow.settings({speed:0,lines:false});flow.update(1200);assert.equal(u.uTime.value,elapsed);assert.equal(lines.visible,false);assert.equal(particles.visible,true);
+assert.ok(lines.material.vertexShader.includes('float field(vec3 p)'));assert.ok(lines.material.vertexShader.includes('vec3 palette(float t)'));
+flow.dispose();assert.equal(flow.group.children.length,0);
+console.log('Air flow: finite geometry, empty-data suppression, shared data/color field, regional bounds, pause and visibility controls: PASS');

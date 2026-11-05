@@ -1,0 +1,32 @@
+{
+  "method": "Robust affine fit: matching Seattle 2015 FEATURE_ID bounding-box centers to original Rhino GIS bounding-box centers",
+  "source": "https://services.arcgis.com/ZOyb2t4B0UYuYNYH/arcgis/rest/services/Building_Outline_2015/FeatureServer/0",
+  "source_date": "2015 imagery; retrieved 2026-11-05",
+  "origin_mercator": [
+    -13617400,
+    6029200
+  ],
+  "coefficients": [
+    [
+      0.6762146401957578,
+      -0.005906320645768037
+    ],
+    [
+      -0.005857980014991368,
+      -0.6741240575028815
+    ],
+    [
+      -338.50312293538417,
+      -43.309609996898374
+    ]
+  ],
+  "matched_controls": 1421,
+  "training_inliers": 1093,
+  "holdout_count": 285,
+  "holdout_median_m": 0.028735134218169835,
+  "holdout_p95_m": 0.11350338866172772,
+  "holdout_max_m": 86.41996529899929,
+  "all_controls_within_3m": 1370,
+  "excluded_mismatches": 51,
+  "limitation": "Source-data registration only, not surveyed accuracy; mismatched/changed footprints excluded from training. 95th percentile is unfiltered held-out data. No sensor altitude measurement."
+}
