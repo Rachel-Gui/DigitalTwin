@@ -557,7 +557,8 @@ export function SceneCanvas({
     scene.add(player);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
-    renderer.setPixelRatio(Math.min(devicePixelRatio, 1.75));
+    // Match Retina displays; resize() bounds the framebuffer on very large screens.
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2.5));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.12;
@@ -580,7 +581,7 @@ export function SceneCanvas({
     const isSouthPark = sceneConfig.id === "south-park";
     const sun = new THREE.DirectionalLight(0xfff0d0, 3.5);
     sun.castShadow = true;
-    sun.shadow.mapSize.set(isSouthPark ? 2048 : 1024, isSouthPark ? 2048 : 1024);
+    sun.shadow.mapSize.set(2048, 2048);
     sun.shadow.camera.near = 1;
     sun.shadow.camera.far = isSouthPark ? 3200 : 700;
     const shadowExtent = isSouthPark ? 1800 : 180;
@@ -729,6 +730,13 @@ export function SceneCanvas({
               object.receiveShadow = chunk.role === "visual";
               const materials = Array.isArray(object.material) ? object.material : [object.material];
               for (const material of materials) {
+                // Preserve oblique ground and facade detail using hardware texture filtering.
+                for (const value of Object.values(material)) {
+                  if (value instanceof THREE.Texture) {
+                    value.anisotropy = renderer.capabilities.getMaxAnisotropy();
+                    value.needsUpdate = true;
+                  }
+                }
                 if (/Door glass|Curtain glass|^Glass$/i.test(material.name)) {
                   material.transparent = true;
                   material.depthWrite = false;
@@ -941,6 +949,9 @@ export function SceneCanvas({
       const height = mountElement.clientHeight;
       camera.aspect = width / Math.max(height, 1);
       camera.updateProjectionMatrix();
+      const nativeRatio = Math.min(window.devicePixelRatio || 1, 2.5);
+      const pixelBudgetRatio = Math.sqrt(16_777_216 / Math.max(width * height, 1));
+      renderer.setPixelRatio(Math.min(nativeRatio, pixelBudgetRatio, renderer.capabilities.maxTextureSize / Math.max(width, height, 1)));
       renderer.setSize(width, height);
     }
     const resizeObserver = new ResizeObserver(resize);

@@ -1,0 +1,12 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>School VR interface recording</title><style>body{margin:0;background:#102026;color:white;font:14px system-ui}iframe{position:absolute;inset:0;width:100%;height:100%;border:0}#record{position:fixed;z-index:1000;bottom:20px;left:50%;transform:translateX(-50%);padding:14px 24px;background:#e7ff99;color:#173c36;border:0;font:15px system-ui;cursor:pointer}#done{position:fixed;z-index:1000;top:20px;left:20px;color:white;background:#102026;padding:15px;display:none}</style></head><body><iframe id="vr" src="http://localhost:3000/?film=1#concord" allow="fullscreen; xr-spatial-tracking"></iframe><button id="record">Record School interface · 24 seconds</button><div id="done"></div><script type="module">
+const button=document.getElementById('record');button.onclick=async()=>{
+ try{
+ const stream=await navigator.mediaDevices.getDisplayMedia({video:{displaySurface:'browser',frameRate:24,width:{ideal:1920},height:{ideal:1080}},audio:false,preferCurrentTab:true,selfBrowserSurface:'include'});
+ const chunks=[],recorder=new MediaRecorder(stream,{mimeType:MediaRecorder.isTypeSupported('video/webm;codecs=vp9')?'video/webm;codecs=vp9':'video/webm',videoBitsPerSecond:7000000});
+ recorder.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};
+ recorder.onstop=()=>{stream.getTracks().forEach(t=>t.stop());const blob=new Blob(chunks,{type:'video/webm'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='concord-school-interface.webm';a.click();button.style.display='block';button.textContent='School interface recording complete';};
+ button.style.display='none';await new Promise(r=>setTimeout(r,600));
+ document.getElementById('vr').contentWindow.postMessage({type:'school-film-start'},'http://localhost:3000');recorder.start();setTimeout(()=>recorder.stop(),24000);
+ }catch(e){button.textContent=e.message;}
+};
+</script></body></html>

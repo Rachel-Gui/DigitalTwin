@@ -1,0 +1,59 @@
+diff --git a/VR/app/components/PhiExperience.tsx b/VR/app/components/PhiExperience.tsx
+index 6c3b83c..184bac0 100644
+--- a/VR/app/components/PhiExperience.tsx
++++ b/VR/app/components/PhiExperience.tsx
+@@ -142,6 +142,12 @@ export function PhiExperience() {
+   const dailyAirQuality = airQualityCategory(dashboardStats.average);
+   const dailyReferenceExceeded = isComplete24HourPeriod && dashboardStats.average > EPA_PM25_24H_NAAQS;
+ 
++  useEffect(() => {
++    if (process.env.NODE_ENV === 'development' && new URLSearchParams(location.search).has('film')) {
++      setSceneId('concord');setConcordHour(7);setReplayPlaying(false);
++    }
++  }, []);
++
+   useEffect(() => {
+     if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(() => undefined);
+   }, []);
+diff --git a/VR/app/components/SceneCanvas.tsx b/VR/app/components/SceneCanvas.tsx
+index 8612eed..4ff1efb 100644
+--- a/VR/app/components/SceneCanvas.tsx
++++ b/VR/app/components/SceneCanvas.tsx
+@@ -945,6 +945,14 @@ export function SceneCanvas({
+     }
+     const resizeObserver = new ResizeObserver(resize);
+     resizeObserver.observe(mount);
++    const filmMode = process.env.NODE_ENV === 'development' && sceneConfig.id === 'concord' && new URLSearchParams(location.search).has('film');
++    let filmRunning = false, filmTime = 0;
++    const filmPath = new THREE.CatmullRomCurve3([new THREE.Vector3(-49,1.15,-43),new THREE.Vector3(-40,1.15,-41),new THREE.Vector3(-29,1.15,-40),new THREE.Vector3(-18,1.15,-39),new THREE.Vector3(-7,1.15,-39)]);
++    const filmGaze = new THREE.CatmullRomCurve3([new THREE.Vector3(-27,5,-20),new THREE.Vector3(-16,5.5,-20),new THREE.Vector3(-8,5,-22),new THREE.Vector3(1,4,-24),new THREE.Vector3(10,4,-25)]);
++    const startFilm = (event: MessageEvent) => {
++      if (filmMode && event.source === parent && event.origin === 'http://127.0.0.1:5173' && event.data?.type === 'school-film-start') {filmTime=0;filmRunning=true;}
++    };
++    if(filmMode){controls.enabled=false;window.addEventListener('message',startFilm);}
+     const clock = new THREE.Clock();
+     let previousHudKey = "";
+     let lastNavigationUpdate = -Infinity;
+@@ -983,7 +991,13 @@ export function SceneCanvas({
+         updateVrHud(vrHud.canvas, vrHud.texture, current, currentHour, sceneConfig.label, stateRef.current.narrationStatus);
+         previousHudKey = hudKey;
+       }
+-      controls.update();
++      if(filmMode){
++        if(filmRunning)filmTime+=delta;
++        const progress=Math.min(filmTime/24,1);
++        camera.position.copy(filmPath.getPointAt(progress));
++        camera.position.y+=Math.sin(filmTime*6)*.012;
++        camera.lookAt(filmGaze.getPointAt(progress));
++      }else controls.update();
+       if (mapCapturePending) {
+         mapCapturePending = false;
+         captureSchoolMap();
+@@ -1019,6 +1033,7 @@ export function SceneCanvas({
+     resize();
+     return () => {
+       cancelled = true;
++      window.removeEventListener("message",startFilm);
+       abortController.abort();
+       resizeObserver.disconnect();
+       renderer.setAnimationLoop(null);

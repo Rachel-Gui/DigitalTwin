@@ -1,45 +1,37 @@
-/* Shared partner artwork and spacing on Home and Team. */
-:is(.platform-home,.team-page) .partner-network .team-network-heading{margin-bottom:28px;text-align:center}
-:is(.platform-home,.team-page) .partner-network .team-network-heading>.platform-eyebrow{font-size:10px;letter-spacing:.13em;color:var(--journal-muted);margin-bottom:12px}
-:is(.platform-home,.team-page) .partner-network .team-network-heading h2{font-family:var(--journal-serif);font-size:23px;font-weight:400;letter-spacing:-.025em;line-height:1.3;margin:0}
-:is(.platform-home,.team-page) .partner-network .partner-grid{display:grid;grid-template-columns:1.08fr 1fr 1.16fr 1.16fr;gap:clamp(28px,3vw,44px);align-items:start;padding:12px 0 8px}
-:is(.platform-home,.team-page) .partner-network .partner-column{display:flex;flex-direction:column;min-width:0;gap:28px}
-:is(.platform-home,.team-page) .partner-network .partner-column img{display:block;max-width:100%;height:auto;object-fit:contain}
-:is(.platform-home,.team-page) .partner-network .partner-column p{margin:0;font-size:16px;font-weight:500;line-height:1.4;color:var(--journal-ink)}
-:is(.platform-home,.team-page) .partner-network .partner-uw-signature{width:230px;align-self:center;margin-bottom:8px}
-:is(.platform-home,.team-page) .partner-network .partner-column .partner-university-unit{font-family:Georgia,serif;text-transform:uppercase;font-size:clamp(12px,1.05vw,15px);letter-spacing:.015em;line-height:1.5}
-:is(.platform-home,.team-page) .partner-network .partner-column .partner-real{font-family:Georgia,serif;font-size:clamp(20px,1.65vw,24px);font-weight:600;line-height:1.15}
-:is(.platform-home,.team-page) .partner-network .partner-lockup{display:flex;align-items:center;gap:16px;min-width:0}
-:is(.platform-home,.team-page) .partner-network .partner-lockup>img,:is(.platform-home,.team-page) .partner-network .partner-lockup>.partner-sil-mark{width:64px;flex-shrink:0}
-:is(.platform-home,.team-page) .partner-network .partner-lockup p span{display:block;font-size:12px;margin-top:4px;line-height:1.5}
-:is(.platform-home,.team-page) .partner-network .partner-idl{width:230px;max-width:100%;color:var(--journal-ink)}
-:is(.platform-home,.team-page) .partner-network .partner-idl>div{display:flex;align-items:center;gap:10px}
-:is(.platform-home,.team-page) .partner-network .partner-idl strong{font-size:22px;line-height:1;font-weight:800;letter-spacing:-.04em}
-:is(.platform-home,.team-page) .partner-network .partner-idl img{width:52px;filter:brightness(0) invert(1)}
-:is(.platform-home,.team-page) .partner-network .partner-idl>span{display:block;font-size:9px;letter-spacing:.07em;border-top:1px solid var(--journal-line);margin-top:9px;padding-top:7px}
-:is(.platform-home,.team-page) .partner-network .partner-siu>img{width:100%}
-:is(.platform-home,.team-page) .partner-network .partner-siu>p{font-size:13px;text-transform:uppercase;letter-spacing:.035em;margin-top:10px}
-:is(.platform-home,.team-page) .partner-network .partner-urbi>img{width:75px}
-:is(.platform-home,.team-page) .partner-network .partner-urbi p{font-size:13px;text-transform:uppercase}
-:is(.platform-home,.team-page) .partner-network .partner-seattle>img{width:64px}
-:is(.platform-home,.team-page) .partner-network .partner-seattle p{font-size:15px;text-transform:uppercase}
-:is(.platform-home,.team-page) .partner-network .partner-seattle p span{font-size:11px;text-transform:none}
-:is(.platform-home,.team-page) .partner-network .partner-drcc>img{width:76px}
-:is(.platform-home,.team-page) .partner-network .partner-drcc p{font-size:15px}
-:is(.platform-home,.team-page) .partner-network .partner-research{gap:32px}
-:is(.platform-home,.team-page) .partner-network .partner-institutions{gap:54px}
-:is(.platform-home,.team-page) .partner-network .partner-community{gap:32px}
-:is(.platform-home,.team-page) .partner-network .partner-research .partner-lockup p{font-size:17px;line-height:1.35}
-:is(.platform-home,.team-page) .partner-network .team-network-heading{margin-bottom:48px}
-:is(.platform-home,.team-page) .partner-network .partner-grid{row-gap:56px;padding-block:20px 24px}
-:is(.platform-home,.team-page) .partner-network .partner-column{gap:40px}
-:is(.platform-home,.team-page) .partner-network .partner-research,:is(.platform-home,.team-page) .partner-network .partner-community{gap:48px}
-:is(.platform-home,.team-page) .partner-network .partner-institutions{gap:64px}
-:is(.platform-home,.team-page) .partner-network .partner-grid img.partner-brand-color{filter:none}
-:is(.platform-home,.team-page) .partner-network .partner-grid img.partner-urbi-color{width:90px;background:#111;padding:6px}
-
-.platform-home .partner-network{margin-top:80px}
-@media(max-width:1100px){:is(.platform-home,.team-page) .partner-network .partner-grid{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:42px}}
-@media(max-width:600px){.platform-home .partner-network{margin-top:56px}:is(.platform-home,.team-page) .partner-network .team-network-heading{margin-bottom:36px}:is(.platform-home,.team-page) .partner-network .team-network-heading h2{font-size:22px}:is(.platform-home,.team-page) .partner-network .partner-grid{grid-template-columns:1fr;gap:48px;padding-block:12px 16px}:is(.platform-home,.team-page) .partner-network .partner-column{gap:28px}:is(.platform-home,.team-page) .partner-network .partner-research,:is(.platform-home,.team-page) .partner-network .partner-community{gap:36px}:is(.platform-home,.team-page) .partner-network .partner-institutions{gap:40px}:is(.platform-home,.team-page) .partner-network .partner-uw-signature{width:220px}:is(.platform-home,.team-page) .partner-network .partner-university-unit{max-width:280px}:is(.platform-home,.team-page) .partner-network .partner-siu>img{width:250px}}
-.platform-home .partner-network .team-network-heading h2{font-size:clamp(28px,2.6vw,38px);line-height:1.15}
-@media(max-width:720px){.platform-home .partner-network .team-network-heading h2{font-size:30px}}
+/* One compact directory, isolated from the previous partner-grid theme overrides. */
+.partners-network{margin-top:56px;scroll-margin-top:100px;color:var(--journal-ink)}
+.partners-network .partners-heading{margin:0 0 26px;padding:0 0 20px;border-bottom:1px solid var(--journal-line)}
+.partners-network .partners-heading h2{font-family:var(--journal-serif);font-size:clamp(25px,2.3vw,34px);font-weight:400;line-height:1.2;letter-spacing:-.025em;margin:0}
+.partners-directory{display:grid;grid-template-columns:1.06fr 1fr 1.12fr 1.05fr;gap:24px;align-items:start}
+.partners-directory .partners-group{display:flex;flex-direction:column;min-width:0;gap:16px;padding:0 0 0 22px;border-left:1px solid var(--journal-line)}
+.partners-directory .partners-group:first-child{border-left:0;padding-left:0}
+.partners-directory img{display:block;max-width:100%;height:auto;object-fit:contain;filter:none}
+.partners-directory p{margin:0;color:var(--journal-ink);font-family:var(--font-body);font-size:var(--text-sm);font-weight:500;line-height:1.35;letter-spacing:0;text-transform:none}
+.partners-brand-row{display:flex;align-items:center;min-height:76px}
+.partners-directory .partners-uw-logo{width:166px}
+.partners-units{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.partners-units li{font-size:var(--text-sm);line-height:1.4;font-weight:400;color:var(--journal-muted);max-width:220px}
+.partners-lockup{display:flex;align-items:center;gap:11px;min-width:0;min-height:48px}
+.partners-lockup>img{width:42px;flex:0 0 42px}
+.partners-lockup p>span{white-space:nowrap;font-weight:400;color:var(--journal-muted);font-size:var(--text-xs)}
+.partners-lockup .partners-detail{display:block;white-space:normal;font-size:var(--text-xs);line-height:1.4;margin-top:4px;max-width:180px}
+.partners-directory .partners-real-name{font-family:var(--journal-serif);font-size:var(--text-lg);line-height:1.25;font-weight:600;color:#5a81b5;min-height:48px;display:flex;align-items:center;max-width:225px}
+.partners-directory .partners-sil-logo{padding:3px;background:#fff;border:1px solid #e0e0dc}
+.partners-idl{width:max-content;max-width:100%;padding-top:2px}
+.partners-idl>div{display:flex;align-items:center;gap:10px}
+.partners-idl strong{font-size:var(--text-base);line-height:1.02;letter-spacing:-.035em;font-weight:800;color:#4b2e83}
+.partners-directory .partners-idl img{width:40px}
+.partners-idl>span{display:block;padding-top:6px;margin-top:6px;border-top:1px solid var(--journal-line);font-size:var(--text-2xs);text-transform:uppercase;letter-spacing:.045em;color:var(--journal-muted)}
+.partners-directory .partners-siu-logo{width:235px}
+.partners-directory .partners-college{font-size:var(--text-xs);color:var(--journal-muted);font-weight:400;margin-top:-6px}
+.partners-directory .partners-urbi{margin-top:7px;align-items:center}
+.partners-directory .partners-urbi>img{width:65px;flex-basis:65px;padding:5px;background:#111}
+.partners-directory .partners-urbi p{font-size:var(--text-sm)}
+.partners-directory .partners-community-group{gap:22px;padding-top:11px}
+.partners-directory .partners-city>img{background:#fff;border-radius:50%;padding:3px}
+.partners-directory .partners-coalition>img{width:46px;flex-basis:46px}
+html[data-theme="light"] .partners-directory .partners-coalition>img{filter:brightness(0)}
+html[data-theme="dark"] .partners-idl strong{color:#b7a57a}
+html[data-theme="dark"] .partners-directory .partners-real-name{color:#8eacd4}
+@media(max-width:1050px){.partners-directory{grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 32px}.partners-directory .partners-group:nth-child(3){border-left:0;padding-left:0}.partners-directory .partners-group{gap:14px}.partners-brand-row{min-height:74px}}
+@media(max-width:580px){.partners-network{margin-top:40px}.partners-network .partners-heading{padding-bottom:16px;margin-bottom:22px}.partners-directory{grid-template-columns:1fr;gap:22px}.partners-directory .partners-group{border-left:0;padding:20px 0 0;border-top:1px solid var(--journal-line);gap:12px}.partners-directory .partners-group:first-child{border-top:0;padding-top:0}.partners-directory .partners-group:nth-child(3){padding-top:20px}.partners-brand-row{min-height:0}.partners-directory .partners-uw-logo{width:154px;margin-bottom:5px}.partners-units{gap:6px}.partners-units li{max-width:none}.partners-directory .partners-real-name{min-height:0;max-width:none;font-size:var(--text-lg)}.partners-directory .partners-college{margin-top:0}.partners-directory .partners-community-group{gap:18px}.partners-directory .partners-urbi{margin-top:4px}.partners-lockup p{max-width:240px}}

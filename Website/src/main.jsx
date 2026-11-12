@@ -8,6 +8,7 @@ import "./theme.css";
 import "./journal.css";
 import "./header-refinement.css";
 import "./footer-refinement.css";
+import "./typography.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter><LanguageProvider><ThemeProvider><App /></ThemeProvider></LanguageProvider></BrowserRouter>

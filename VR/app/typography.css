@@ -1,0 +1,16 @@
+@import url('/styles/type-foundations.css');
+/* Same families and compact UI hierarchy as the main Website. */
+body{font-family:var(--font-body);font-size:var(--text-sm);font-weight:400;line-height:1.5;font-synthesis:none;-webkit-font-smoothing:antialiased}
+.experience-shell :is(button,input,select,textarea,p,span,small,dt,dd){font-family:var(--font-body)}
+.experience-shell :is(h1,h2,h3,h4){font-family:var(--font-display);font-weight:500;letter-spacing:-.025em;line-height:1.2}
+.experience-shell :is(h1,h2){font-size:var(--text-2xl)}
+.experience-shell :is(h3,h4){font-size:var(--text-lg)}
+.experience-shell p{font-size:var(--text-sm);line-height:1.55}
+.experience-shell :is(button,select,input){font-size:var(--text-sm);line-height:1.35}
+.experience-shell :is(.field-control>span,.data-source-label,.section-line,.wind-grid span,.station-grid span,.scenario-provenance dt,.reading-meta,.school-map-location span,.school-navigation p,.school-navigation small){font-family:var(--font-body);font-size:var(--text-2xs);line-height:1.45;letter-spacing:.025em}
+.experience-shell .scenario-provenance dd{font-family:var(--font-body);font-size:var(--text-xs);line-height:1.4;letter-spacing:0}
+.experience-shell .scenario-provenance>strong{font-family:var(--font-display);font-size:var(--text-sm);font-weight:500;line-height:1.3}
+.experience-shell :is(.school-navigation-heading,.school-map-location strong){font-size:var(--text-xs);line-height:1.4}
+.experience-shell .school-navigation-views button{font-size:var(--text-2xs)}
+.experience-shell :is(.reading-value,.reading-value strong,.time-display,.station-grid strong){font-family:var(--font-display);font-variant-numeric:tabular-nums;letter-spacing:-.035em}
+@media(max-width:760px){.experience-shell :is(button,select,input){font-size:var(--text-xs)}.experience-shell :is(h1,h2){font-size:var(--text-xl)}}
