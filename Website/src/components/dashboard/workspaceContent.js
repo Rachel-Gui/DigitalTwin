@@ -18,14 +18,14 @@ export const spatialModels = {
     metric: "Modeled retrofit opportunity", unit: "Priority tier · 1–5", field: "priority_q",
     fields: ["Retrofit opportunity tier", "Deep retrofit savings (%)", "Electrification savings (%)", "Envelope upgrade savings (%)", "Modeled baseline EUI"],
     guide: "Select a residential building to inspect its opportunity tier and modeled savings for the available intervention types.",
-    note: "Tier 5 indicates the highest modeled opportunity. Savings are modeled estimates, not verified post-retrofit performance.",
+    note: "Tier 5 indicates the highest modeled opportunity. Savings compare each scenario with modeled baseline energy use.",
     action: "Compare residential retrofit strategies", href: null
   },
   renewable: {
     title: "Solar potential", short: "Renewable", icon: "sun", badge: "Modeled solar resource",
     appId: "9d99a4a0c2e2482b912608249bf3248f", sceneId: "d154dd70fd9242daa6d4542631ac3138",
     description: "Explore modeled rooftop solar resource and estimated PV generation.",
-    metric: "Annual roof solar potential", unit: "kWh/year · source field", field: "annual_roof",
+    metric: "Annual roof solar potential", unit: "kWh/year · solar resource", field: "annual_roof",
     fields: ["Roof solar potential (MWh/year)", "Annual roof irradiation (kWh/m²/year)", "Estimated PV generation (MWh/year)"],
     guide: "Select a building to inspect the published scene’s solar-resource and estimated PV outputs.",
     note: "Solar resource and PV electricity are different quantities. The scene’s PV estimate assumes 70% usable roof area, 20% module efficiency, and 85% system performance.",
